@@ -1,4 +1,6 @@
-# kinectsit
+# kinectsit       
+
+####Master branch build status: ![](https://travis-ci.org/Kinectsit/kinects-it.svg?branch=master)
 
 > Bringing your 1.0 stuff to the 2.0 world....kinectsit.
 > Bringing your things into the Internet of Things.
