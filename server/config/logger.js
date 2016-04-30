@@ -1,7 +1,7 @@
 const winston = require('winston');
 const fs = require('fs');
 
-/* Configure the logger */
+/** Configure the logger */
 const logDir = __dirname.concat('/../logs');
 const env = process.env.NODE_ENV || 'development';
 

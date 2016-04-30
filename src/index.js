@@ -6,6 +6,8 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './styles/styles.scss';
 
+/** Test to make sure that JSDOC works */
+
 const store = configureStore();
 
 render(
