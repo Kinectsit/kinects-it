@@ -1,15 +1,12 @@
 const supertest = require('supertest');
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "should" }] */
 const should = require('should');
-
-// This agent refers to PORT where program is runninng.
-
-const server = supertest.agent('http://localhost:3000');
+const app = require('./server');
 
 describe('Home page request test', () => {
   it('should return home page', (done) => {
     // calling home page
-    server
+    supertest(app)
     .get('/')
     .expect(200)
     .end((err, res) => {

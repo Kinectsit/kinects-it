@@ -26,3 +26,5 @@ app.use(express.static(__dirname.concat('/../src')));
 */
 
 app.listen(port, () => logger.info('Kinectsit API server listening on port: ', port));
+
+module.exports = app;
