@@ -45,8 +45,8 @@
 - Webpack
 
 #### Continuous Integration and Testing
-- Jest (Mocha/Chai/JSDON) ?
-- Frisby
+- Mocha
+- Supertest
 - TravisCI
 
 #### Deployment
