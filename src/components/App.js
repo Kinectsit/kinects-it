@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
-import { Link, IndexLink } from 'react-router';
+import { IndexLink } from 'react-router';
 
 const App = (props) => (
   <div>
-    <IndexLink to="/">Home</IndexLink> | <Link to="/About">About</Link>
+    <h1>Hello</h1>
+    <IndexLink to="/">Home</IndexLink>
     <br />
     {props.children}
   </div>
