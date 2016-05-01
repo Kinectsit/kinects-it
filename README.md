@@ -47,7 +47,7 @@
 #### Continuous Integration and Testing
 - Mocha
 - Supertest
-- TravisCI
+- TravisCI - https://travis-ci.org/Kinectsit/kinects-it
 
 #### Deployment
 - AWS EC2 
