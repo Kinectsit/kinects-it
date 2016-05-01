@@ -1,3 +1,4 @@
+/* eslint new-cap: ["error", { "capIsNewExceptions": "Router" }] */
 const userRouter = require('express').Router();
 const userController = require('../controllers/userController.js');
 
