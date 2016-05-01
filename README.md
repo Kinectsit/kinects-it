@@ -22,7 +22,7 @@
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
+## Usage 
 
 > Some usage instructions
 
