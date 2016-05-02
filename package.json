@@ -15,7 +15,7 @@
     "build:html": "babel-node tools/buildHtml.js",
     "prebuild": "npm run clean-dist && npm run build:html && npm run lint",
     "build": "babel-node tools/build.js && npm run open:dist",
-    "test": "mocha tools/testSetup.js src/**/*.spec.js --reporter progress",
+    "test": "mocha tools/testSetup.js src/**/*.spec.js server/**/*.spec.js --reporter progress",
     "test:watch": "npm run test -- --watch"
   },
   "author": "Cory House",
@@ -67,9 +67,11 @@
     "redux-immutable-state-invariant": "1.2.3",
     "rimraf": "2.5.2",
     "sass-loader": "3.2.0",
+    "should": "8.3.1",
     "sinon": "1.17.3",
     "sinon-chai": "2.8.0",
     "style-loader": "0.13.1",
+    "supertest": "1.2.0",
     "webpack": "1.13.0",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0"

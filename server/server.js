@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Serve static files
-app.use(express.static(__dirname.concat('/../client')));
+app.use(express.static(__dirname.concat('/../src')));
 
 /*
    Middleware to configure routes for each api
@@ -26,3 +26,5 @@ app.use(express.static(__dirname.concat('/../client')));
 */
 
 app.listen(port, () => logger.info('Kinectsit API server listening on port: ', port));
+
+module.exports = app;
