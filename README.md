@@ -20,8 +20,8 @@
     1. [Installing Dependencies](#installing-dependencies)
     1. [Tasks](#tasks)
 1. [Team](#team)
-1. [Contributing](#contributing)
 1. [Resources] (#resources)
+1. [Contributing](#contributing)
 
 ## Usage 
 
@@ -72,7 +72,7 @@ View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
 
 ## Resources
 Below are some of the helpful resources used to build this application
-__Project Boilerplate__- [React Slingshot] (https://github.com/coryhouse/react-slingshot)
+- __Project Boilerplate__- [React Slingshot] (https://github.com/coryhouse/react-slingshot)
 
 ## Contributing
 
