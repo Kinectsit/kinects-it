@@ -39,6 +39,6 @@ export default {
     ],
   },
   sassLoader: {
-    includePaths: [path.resolve(__dirname, 'node_modules')],
+    includePaths: [path.resolve(__dirname, 'node_modules/foundation-sites/scss/')],
   },
 };
