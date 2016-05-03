@@ -1,8 +1,8 @@
 import React from 'react';
 // import {Link} from 'react-router';
 
-export const HomeView = () => (
+export const LandingPageView = () => (
   <div>
-    <h1>Here's how it works</h1>
+    <h2>Here's how it works</h2>
   </div>
 );

@@ -1,12 +1,10 @@
 import React from 'react';
-import { LandingPageView } from '../views/LandingPageView';
 // import {Link} from 'react-router';
 
 // for now this is pretty simple, but I'm thinking that we will place components in here
 // depending on the status of the client (e.g. logged in or not)
-export const Home = () => (
+export const Login = () => (
   <div>
-    <h1>Welcome to Kinects.It!</h1>
-    <LandingPageView />
+    <h2>Login to your account</h2>
   </div>
 );
