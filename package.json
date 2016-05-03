@@ -15,7 +15,7 @@
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",
     "prebuild": "npm run clean-dist && npm run build:html && npm run lint",
-    "build": "babel-node tools/build.js && npm run start:api-server",
+    "build": "babel-node tools/build.js",
     "test": "mocha tools/testSetup.js src/**/*.spec.js server/**/*.spec.js --reporter progress",
     "test:watch": "npm run test -- --watch"
   },
