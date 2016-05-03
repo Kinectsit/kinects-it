@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 
 import { NavLink } from './NavLink';
 
+import '../styles/styles.scss';
+
 export const App = (props) => (
   <div>
     <ul role="navigation">
