@@ -5,7 +5,7 @@ env:
   - NODE_ENV=production
 script:
   - "Travis running build........."
-  - "npm build"
+  - "npm run build"
   - "Travis running test........."
   - "npm test"
 
