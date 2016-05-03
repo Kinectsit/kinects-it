@@ -5,7 +5,8 @@
   "scripts": {
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm-run-all --parallel start-message remove-dist",
-    "start": "npm-run-all --parallel test:watch open:src lint:watch",
+    "start": "npm-run-all --parallel start:api-server open:src lint:watch",
+    "start:api-server": "node server/server.js",
     "open:src": "babel-node tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
@@ -14,7 +15,7 @@
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",
     "prebuild": "npm run clean-dist && npm run build:html && npm run lint",
-    "build": "babel-node tools/build.js && npm run open:dist",
+    "build": "babel-node tools/build.js",
     "test": "mocha tools/testSetup.js src/**/*.spec.js server/**/*.spec.js --reporter progress",
     "test:watch": "npm run test -- --watch"
   },
@@ -23,15 +24,20 @@
   "dependencies": {
     "body-parser": "1.15.0",
     "express": "4.13.4",
+    "http-proxy": "1.13.2",
     "ink-docstrap": "1.1.4",
     "jsdoc": "3.4.0",
     "morgan": "1.7.0",
     "object-assign": "4.0.1",
+    "path": "0.12.7",
+    "proxy-middleware": "0.15.0",
     "react": "15.0.1",
     "react-dom": "15.0.1",
     "react-redux": "4.4.5",
     "react-router": "2.3.0",
     "redux": "3.5.2",
+    "sequelize": "3.22.0",
+    "url": "0.11.0",
     "winston": "2.2.0"
   },
   "devDependencies": {

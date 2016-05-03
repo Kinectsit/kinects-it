@@ -1,15 +1,12 @@
-const Sequelize = require('sequelize');
-
-/*
-  Sequelize for the user model
-*/
+// const Sequelize = require('sequelize');
+const logger = require('../config/logger.js');
 
 /*
   Only an example to be replaced
 */
-const User = Sequelize.define('user', {
-  username: Sequelize.STRING,
-});
+const User = {
+  test: () => logger.info('Inside user test'),
+};
 
 module.exports = User;
 

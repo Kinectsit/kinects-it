@@ -10,8 +10,14 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack.config.dev';
+import url from 'url';
+import proxy from 'proxy-middleware';
 
 const bundler = webpack(config);
+
+// Create proxy to be used for API server for any URL paths starting with /api
+const proxyOptions = url.parse('http://localhost:3000/api');
+proxyOptions.route = '/api';
 
 // Run Browsersync and use middleware for Hot Module Replacement
 browserSync({
@@ -35,6 +41,9 @@ browserSync({
 
       // bundler should be the same as above
       webpackHotMiddleware(bundler),
+
+      // proxy for /api requests
+      proxy(proxyOptions),
 
       historyApiFallback(),
     ],
