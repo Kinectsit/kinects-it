@@ -3,6 +3,6 @@ import React from 'react';
 
 export const LandingPageView = () => (
   <div>
-    <h2>Here's how it works</h2>
+    <h2 id="how-it-works">Here's how it works</h2>
   </div>
 );
