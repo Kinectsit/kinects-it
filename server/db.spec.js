@@ -1,35 +1,19 @@
 import { expect } from 'chai';
-const Sequelize = require('sequelize');
-const createArticle = require('./controllers/articleController');
-const ArticleModel = require('./models/articleModel');
+const User = require('./models/User');
 
-// Sequelize initialization
-const sequelize = new Sequelize('kinecttestdb', 'postgres', '', {
-  dialect: 'postgres',
-});
-
-describe('The database', () => {
-  const newArticle = { title: 'Test title', body: 'Test body' };
+describe('Users', () => {
+  const newUser = { name: 'Jon', isHost: 'true' };
 
   beforeEach((done) => {
-    sequelize.sync({ logging: console.log, force: true })
+    User.sync({ logging: console.log, force: true })
       .then(() => { done(); })
       .catch((err) => console.log(err));
   });
 
-  it('should have a new article added from the MODEL', (done) => {
-    ArticleModel.create(newArticle)
+  it('should be created from the model', (done) => {
+    User.create(newUser)
       .then((res) => {
-        expect(res.dataValues.title).to.eql(newArticle.title);
-        done();
-      })
-      .catch((err) => console.log(err));
-  });
-
-  it('should have a new article added from the CONTROLLER', (done) => {
-    createArticle(newArticle)
-      .then((res) => {
-        expect(res.dataValues.title).to.eql(newArticle.title);
+        expect(res.dataValues.title).to.eql(newUser.title);
         done();
       })
       .catch((err) => console.log(err));
