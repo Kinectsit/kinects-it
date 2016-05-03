@@ -34,4 +34,7 @@ export default {
       { test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap'] },
     ],
   },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, 'node_modules')],
+  },
 };

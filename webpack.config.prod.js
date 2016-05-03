@@ -38,4 +38,7 @@ export default {
       },
     ],
   },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, 'node_modules')],
+  },
 };
