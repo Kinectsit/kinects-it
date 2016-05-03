@@ -5,3 +5,4 @@ exports.signin = function signin() {
   logger.info('Log a message');
   User.test();
 };
+

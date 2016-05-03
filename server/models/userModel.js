@@ -1,15 +1,21 @@
 const Sequelize = require('sequelize');
+const db = require('../db');
 
-/*
-  Sequelize for the user model
-*/
-
-/*
-  Only an example to be replaced
-*/
-const User = Sequelize.define('user', {
-  username: Sequelize.STRING,
+const User = db.define('user', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  isHost: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  houseId: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
 });
+
 
 module.exports = User;
 
