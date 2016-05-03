@@ -3,17 +3,15 @@ const app = module.exports = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const logger = require('./config/logger.js');
-
-// configuration variables
-
-
-const port = process.env.PORT || 3000;
-const srcPath = process.env.NODE_ENV === 'development' ? '/../src/' : '/../dist';
-console.log('srcPath ', srcPath);
 /*
   Set up routers for the different APIs
 */
 const userRouter = require('./routers/userRouter.js');
+
+// configuration variables
+const port = process.env.PORT || 3000;
+const srcPath = process.env.NODE_ENV === 'development' ? '/../src/' : '/../dist';
+
 
 app.use(require('morgan')('combined', { stream: logger.stream }));
 
