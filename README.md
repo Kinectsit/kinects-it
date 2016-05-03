@@ -66,6 +66,15 @@ npm install
 bower install
 ```
 
+### Database
+
+From within postgres terminal:
+
+```sh
+create user postgres
+create database kinectdb owner postgres
+```
+
 ### Roadmap
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
