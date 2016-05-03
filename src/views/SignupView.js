@@ -5,6 +5,6 @@ import React from 'react';
 // depending on the status of the client (e.g. logged in or not)
 export const SignupView = () => (
   <div>
-    <h1>Register for an account!</h1>
+    <h2>Register for an account!</h2>
   </div>
 );
