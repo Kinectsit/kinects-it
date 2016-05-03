@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-const User = require('./models/User');
+const User = require('./models/userModel');
 
 describe('Users', () => {
   const newUser = { name: 'Jon', isHost: 'true' };
