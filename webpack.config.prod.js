@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
@@ -36,9 +37,11 @@ export default {
         include: path.join(__dirname, 'src'),
         loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
       },
+      { test: /\.css$/, loader: 'style-loader!css-loader!postcss-loader' },
     ],
   },
   sassLoader: {
     includePaths: [path.resolve(__dirname, 'node_modules/foundation-sites/scss/')],
   },
+  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 };
