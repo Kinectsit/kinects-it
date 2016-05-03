@@ -1,18 +1,20 @@
 import React, { PropTypes } from 'react';
-import { IndexLink } from 'react-router';
 
-const App = (props) => (
+import { NavLink } from './NavLink';
+
+export const App = (props) => (
   <div>
-    <h1>Hello</h1>
-    <IndexLink to="/">Home</IndexLink>
-    <br />
+    <ul role="navigation">
+      <li><NavLink to="/" onlyActiveOnIndex>Home</NavLink></li>
+      <li><a href="/#how-it-works">How it Works</a></li>
+      <li><NavLink to="/login">Login</NavLink></li>
+      <li><NavLink to="/signup">Signup</NavLink></li>
+    </ul>
     {props.children}
   </div>
 );
 
 App.propTypes = {
   children: PropTypes.element,
+  route: PropTypes.object,
 };
-
-export default App;
-
