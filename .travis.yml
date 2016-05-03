@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "stable"
 env:
-  - NODE_ENV=production
+  - NODE_ENV=development
 script:
   - "Travis running build........."
   - "npm run build"
