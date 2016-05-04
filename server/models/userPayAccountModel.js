@@ -11,13 +11,13 @@ const UserPayAccount = db.define('user_pay_account', {
     autoIncrement: true,
   },
   nickname: Sequelize.STRING,
-  accountId: Sequelize.INTEGER,
+  userId: Sequelize.INTEGER,
+  methodId: Sequelize.INTEGER,
   apiAccess: Sequelize.STRING,
-  defaultViewHost: Sequelize.BOOLEAN,
 }, { freezeTableName: true });
 
-UserPayAccount.hasOne(User);
-UserPayAccount.belongsTo(PayMethods);
+UserPayAccount.belongsTo(PayMethods, { foreignKey: 'methodId' });
+UserPayAccount.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = UserPayAccount;
 

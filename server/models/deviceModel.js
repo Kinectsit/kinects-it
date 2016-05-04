@@ -14,8 +14,8 @@ const Device = db.define('device', {
   isActive: Sequelize.BOOLEAN,
   hardwareKey: Sequelize.STRING,
   hardwareType: Sequelize.STRING,
-  usageTimeOptions: Sequelize.INTEGER,
-  usageCostOptions: Sequelize.INTEGER,
+  usageTimeOptions: Sequelize.ARRAY,
+  usageCostOptions: Sequelize.ARRAY,
   totalTimeSpent: Sequelize.INTEGER,
   totalCostSpent: Sequelize.INTEGER,
 }, { freezeTableName: true });

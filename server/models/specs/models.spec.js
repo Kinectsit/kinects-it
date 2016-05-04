@@ -7,13 +7,14 @@ const db = require('../../db');
 // const DeviceCategory = require('../deviceCategoryModel');
 // const DeviceTransaction = require('../deviceTransactionModel');
 // const PayMethods = require('../payMethodsModel');
-// const UserPayAccount = require('../userPayAccountModel');
+const UserPayAccount = require('../userPayAccountModel');
 const User = require('../userModel');
 
 describe('The database', () => {
   const users = [
     { name: 'Jon Snow', defaultViewHost: 'true' },
     { name: 'Arya Stark', defaultViewHost: 'true' },
+    { name: 'Cersei Lannister', defaultViewHost: 'true' },
   ];
 
   // will drop and recreate all tables before running tests
@@ -49,6 +50,30 @@ describe('The database', () => {
       });
   });
 
+  // it('should create a device', (done) => {
+  //   User.create(users[2])
+  //     .then((newUser) => {
+  //       newUser.addUserPayAccount()
+  //       .then((res) => {
+
+  //         console.log('=========', res);
+  //         // expect(res.dataValues.name).to.equal(users[1].name);
+  //         done();
+  //       });
+  //     });
+  // });
   // needs test for all models, for adding foreign keys, and for controllers
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
