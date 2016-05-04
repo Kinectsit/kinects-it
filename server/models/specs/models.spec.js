@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 const db = require('../../db');
 
-const UsersHouses = require('../usersHousesModel');
-const House = require('../houseModel');
-const Device = require('../deviceModel');
-const DeviceCategory = require('../deviceCategoryModel');
-const DeviceTransaction = require('../deviceTransactionModel');
-const PayMethods = require('../payMethodsModel');
-const UserPayAccount = require('../userPayAccountModel');
+// const UsersHouses = require('../usersHousesModel');
+// const House = require('../houseModel');
+// const Device = require('../deviceModel');
+// const DeviceCategory = require('../deviceCategoryModel');
+// const DeviceTransaction = require('../deviceTransactionModel');
+// const PayMethods = require('../payMethodsModel');
+// const UserPayAccount = require('../userPayAccountModel');
 const User = require('../userModel');
 
 describe('The database', () => {
@@ -49,14 +49,6 @@ describe('The database', () => {
       });
   });
 
-  // it('should add a foreign key to the users_houses table', (done) => {
-  //   User.add(users[1])
-  //     .then(() => {
-  //       User.findOne({ where: { name: 'Arya Stark' } })
-  //         .then((res) => {
-  //           expect(res.dataValues.name).to.equal(users[1].name);
-  //           done();
-  //         });
-  //     });
-  // });
+  // needs test for all models, for adding foreign keys, and for controllers
 });
+
