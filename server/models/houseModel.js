@@ -1,15 +1,14 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const User = db.define('users', {
+const House = db.define('house', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  name: Sequelize.STRING,
-  defaultViewHost: Sequelize.BOOLEAN,
-});
+  inviteCode: Sequelize.STRING,
+}, { freezeTableName: true });
 
-module.exports = User;
+module.exports = House;
 

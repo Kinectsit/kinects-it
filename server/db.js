@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const db = new Sequelize('kinectdb', 'postgres', null, {
+const db = new Sequelize('kinecttestdb', 'postgres', null, {
   dialect: 'postgres',
 });
 
