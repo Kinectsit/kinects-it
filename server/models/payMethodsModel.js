@@ -1,15 +1,14 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const User = db.define('users', {
+const PayMethods = db.define('pay_methods', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   name: Sequelize.STRING,
-  defaultViewHost: Sequelize.BOOLEAN,
-});
+}, { freezeTableName: true });
 
-module.exports = User;
+module.exports = PayMethods;
 
