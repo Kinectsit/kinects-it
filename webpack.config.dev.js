@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
+import autoprefixer from 'autoprefixer';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('development'),
@@ -32,6 +33,11 @@ export default {
       { test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel'] },
       { test: /\.(jpe?g|png|gif|svg)$/i, loaders: ['file'] },
       { test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap'] },
+      { test: /\.css$/, loader: 'style-loader!css-loader!postcss-loader' },
     ],
   },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, 'node_modules/foundation-sites/scss/')],
+  },
+  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 };

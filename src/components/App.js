@@ -2,6 +2,12 @@ import React, { PropTypes } from 'react';
 
 import { NavLink } from './NavLink';
 
+/**
+* This is an import the global styles sheet.
+* Webpack combines this and ouputs as a unique stylesheet when run
+*/
+import '../assets/scss/app.scss';
+
 export const App = (props) => (
   <div>
     <ul role="navigation">
