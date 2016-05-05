@@ -7,11 +7,13 @@
 
 // This assures the .babelrc dev config (which includes
 // hot module reloading code) doesn't apply for tests.
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'development';
 
 // Disable webpack-specific features for tests since
 // Mocha doesn't know what to do with them.
 require.extensions['.css'] = () => null;
+
+require.extensions['.scss'] = () => null;
 
 require.extensions['.png'] = () => null;
 
