@@ -7,7 +7,3 @@ env:
   - NODE_ENV=development
 before_script:
   - npm run build && psql -c 'create database kinectdb;' -U postgres
-  
-
-
-

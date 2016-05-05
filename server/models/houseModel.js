@@ -7,6 +7,8 @@ const House = db.define('house', {
     primaryKey: true,
     autoIncrement: true,
   },
+  name: Sequelize.STRING,
+  description: Sequelize.STRING,
   inviteCode: Sequelize.STRING,
 }, { freezeTableName: true });
 

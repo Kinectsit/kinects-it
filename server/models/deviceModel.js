@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const House = require('./houseModel');
-const DeviceCategory = require('./deviceCategoryModel');
-
 const Device = db.define('device', {
   id: {
     type: Sequelize.INTEGER,
@@ -14,14 +11,11 @@ const Device = db.define('device', {
   isActive: Sequelize.BOOLEAN,
   hardwareKey: Sequelize.STRING,
   hardwareType: Sequelize.STRING,
-  usageTimeOptions: Sequelize.INTEGER,
-  usageCostOptions: Sequelize.INTEGER,
+  usageTimeOptions: Sequelize.ARRAY,
+  usageCostOptions: Sequelize.ARRAY,
   totalTimeSpent: Sequelize.INTEGER,
   totalCostSpent: Sequelize.INTEGER,
 }, { freezeTableName: true });
-
-Device.hasOne(House);
-Device.belongsTo(DeviceCategory);
 
 module.exports = Device;
 

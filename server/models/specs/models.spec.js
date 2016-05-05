@@ -14,6 +14,7 @@ describe('The database', () => {
   const users = [
     { name: 'Jon Snow', defaultViewHost: 'true' },
     { name: 'Arya Stark', defaultViewHost: 'true' },
+    { name: 'Cersei Lannister', defaultViewHost: 'true' },
   ];
 
   // will drop and recreate all tables before running tests
@@ -49,6 +50,17 @@ describe('The database', () => {
       });
   });
 
-  // needs test for all models, for adding foreign keys, and for controllers
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
