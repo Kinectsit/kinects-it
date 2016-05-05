@@ -9,13 +9,15 @@ import { NavLink } from './NavLink';
 import '../assets/scss/app.scss';
 
 export const App = (props) => (
-  <div>
-    <ul role="navigation">
-      <li><NavLink to="/" onlyActiveOnIndex>Home</NavLink></li>
-      <li><a href="/#how-it-works">How it Works</a></li>
-      <li><NavLink to="/login">Login</NavLink></li>
-      <li><NavLink to="/signup">Signup</NavLink></li>
-    </ul>
+  <div className="top-bar">
+    <div className="top-bar-right">
+      <ul className="menu" role="navigation">
+        <li><NavLink to="/" onlyActiveOnIndex>Home</NavLink></li>
+        <li><a href="/#how-it-works">How it Works</a></li>
+        <li><NavLink to="/login">Login</NavLink></li>
+        <li><NavLink to="/signup">Signup</NavLink></li>
+      </ul>
+    </div>
     {props.children}
   </div>
 );
