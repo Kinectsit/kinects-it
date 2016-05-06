@@ -60,10 +60,11 @@
 
 From within the root directory:
 
+The following command will create the database and schema.  Prerequisite is that you have
+postgres installed.
+
 ```sh
-sudo npm install -g bower
-npm install
-bower install
+psql -U postgres -f ./schema.sql 
 ```
 
 ### Database

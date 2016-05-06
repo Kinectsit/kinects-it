@@ -1,66 +1,84 @@
 import { expect } from 'chai';
-const db = require('../../db');
+// import { client } from '../../db';
+const exec = require('child_process').exec;
+const pg = require('pg');
 
-// const UsersHouses = require('../usersHousesModel');
-// const House = require('../houseModel');
-// const Device = require('../deviceModel');
-// const DeviceCategory = require('../deviceCategoryModel');
-// const DeviceTransaction = require('../deviceTransactionModel');
-// const PayMethods = require('../payMethodsModel');
-// const UserPayAccount = require('../userPayAccountModel');
-const User = require('../userModel');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/testdb';
+
+const client = new pg.Client(connectionString);
 
 describe('The database', () => {
-  const users = [
-    { name: 'Jon Snow', defaultViewHost: 'true' },
-    { name: 'Arya Stark', defaultViewHost: 'true' },
-    { name: 'Cersei Lannister', defaultViewHost: 'true' },
-  ];
-
-  // will drop and recreate all tables before running tests
-  before((done) => {
-    db.sync({ force: true })
-      .then(() => { done(); })
-      .catch((err) => { console.log(err); });
+  
+  before(function(done){
+    prepare_db(function(err){
+      if (err) {
+        clean_db(function(err) {
+           console.log('Failed trying to clean up testdb');
+        });
+        expect(err).to.not.exist;
+      }
+      //do other setup stuff like launching you server etc
+      done();
+    });
   });
 
-  // will drop and recreate all tables after running tests
-  // after((done) => {
-  //   db.sync({ force: true })
-  //     .then(() => { done(); })
-  //     .catch((err) => { console.log(err); });
-  // });
+  after(function(done){
+    clean_db(function(err) {
+      expect(err).to.not.exist;
+    });
 
-  it('should receive a new user from the model', (done) => {
-    User.create(users[0])
-      .then((res) => {
-        expect(res.dataValues.name).to.equal(users[0].name);
-        done();
+    done();
+  });
+
+  describe('The database connections', () => {
+    it('should be able to connect', (done) => {
+      client.connect((err) => {
+        if (err) {
+          expect(err).to.not.exist;
+        }
+
+        client.query('SELECT NOW() AS "theTime"', (error, result) => {
+          if (error) {
+            expect(err).to.not.exist;
+          }
+          expect(result.rows[0].theTime).to.exist;
+          client.end();
+          done();
+        });
       });
+    });
   });
-
-  it('should find a user that was added to the database', (done) => {
-    User.create(users[1])
-      .then(() => {
-        User.findOne({ where: { name: 'Arya Stark' } })
-          .then((res) => {
-            expect(res.dataValues.name).to.equal(users[1].name);
-            done();
-          });
-      });
-  });
-
+  // needs test for all models, for adding foreign keys, and for controllers
 });
 
+/**
+ * Creates the testdb from test_schema.sql.
+ * @param next - the done callback for mocha
+*/
+function prepare_db(next){
+  exec('createdb testdb', function(err){
+    if (err !== null) {
+      expect(err).to.not.exist;
+    }
 
+    exec('psql -d testdb -f ./server/config/test_schema.sql', function(err){
+      if (err !== null) {
+        expect(err).to.not.exist;
+      }
+      next(err);
+    });
+  });
+}
 
-
-
-
-
-
-
-
-
-
-
+/**
+ * Drops the testdb from dropdb.sql.
+ * @param next - the done callback for mocha
+*/
+function clean_db(next){
+  exec('psql -d testdb -f ./server/config/dropdb.sql', function(err){
+    if (err !== null) {
+      expect(err).to.not.exist;
+    }
+    next();
+  });
+}

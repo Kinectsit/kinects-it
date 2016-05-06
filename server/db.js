@@ -1,8 +1,4 @@
-const Sequelize = require('sequelize');
+const pg = require('pg');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/kinectdb';
 
-const db = new Sequelize('kinectdb', 'postgres', null, {
-  dialect: 'postgres',
-});
-
-module.exports = db;
-
+exports.client = new pg.Client(connectionString);
