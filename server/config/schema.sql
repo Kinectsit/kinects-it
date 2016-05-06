@@ -1,7 +1,3 @@
-DROP DATABASE kinectdb;
-CREATE DATABASE kinectdb;
-\connect kinectdb
-
 DROP TABLE IF EXISTS users_houses CASCADE;
 
 CREATE TABLE users_houses (

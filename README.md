@@ -64,7 +64,8 @@ The following command will create the database and schema.  Prerequisite is that
 postgres installed.
 
 ```sh
-psql -U postgres -f ./schema.sql 
+createdb kinectdb -U postgres
+psql -U postgres -d kinectdb -f ./server/config/schema.sql
 ```
 
 ### Database

@@ -1,14 +1,10 @@
 import { expect } from 'chai';
-// import { client } from '../../db';
 const exec = require('child_process').exec;
 const pg = require('pg');
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/testdb';
 
-const client = new pg.Client(connectionString);
-
 describe('The database', () => {
-  
   before(function(done){
     prepare_db(function(err){
       if (err) {
@@ -31,6 +27,8 @@ describe('The database', () => {
   });
 
   describe('The database connections', () => {
+    const client = new pg.Client(connectionString);
+
     it('should be able to connect', (done) => {
       client.connect((err) => {
         if (err) {
@@ -56,12 +54,12 @@ describe('The database', () => {
  * @param next - the done callback for mocha
 */
 function prepare_db(next){
-  exec('createdb testdb', function(err){
+  exec('createdb testdb -U postgres', function(err){
     if (err !== null) {
       expect(err).to.not.exist;
     }
 
-    exec('psql -d testdb -f ./server/config/test_schema.sql', function(err){
+    exec('psql -d testdb -f ./server/config/schema.sql', function(err){
       if (err !== null) {
         expect(err).to.not.exist;
       }
@@ -75,7 +73,7 @@ function prepare_db(next){
  * @param next - the done callback for mocha
 */
 function clean_db(next){
-  exec('psql -d testdb -f ./server/config/dropdb.sql', function(err){
+  exec('psql -U postgres -f ./server/config/droptestdb.sql', function(err){
     if (err !== null) {
       expect(err).to.not.exist;
     }
