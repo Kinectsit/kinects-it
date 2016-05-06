@@ -1,6 +1,13 @@
 import React, { PropTypes } from 'react';
 
-import { NavLink } from './NavLink';
+import { TitleBar } from './TitleBar';
+
+// need these for foundation javascript functions like mobile slide menu
+import '../../node_modules/foundation-sites/js/foundation.core.js';
+import '../../node_modules/foundation-sites/js/foundation.offcanvas.js';
+import '../../node_modules/foundation-sites/js/foundation.util.mediaQuery.js';
+import '../../node_modules/foundation-sites/js/foundation.util.triggers.js';
+import '../../node_modules/foundation-sites/js/foundation.util.motion.js';
 
 /**
 * This is an import the global styles sheet.
@@ -9,16 +16,13 @@ import { NavLink } from './NavLink';
 import '../assets/scss/app.scss';
 
 export const App = (props) => (
-  <div className="top-bar">
-    <div className="top-bar-right">
-      <ul className="menu" role="navigation">
-        <li><NavLink to="/" onlyActiveOnIndex>Home</NavLink></li>
-        <li><a href="/#how-it-works">How it Works</a></li>
-        <li><NavLink to="/login">Login</NavLink></li>
-        <li><NavLink to="/signup">Signup</NavLink></li>
-      </ul>
+  <div className="app-container">
+    <TitleBar />
+    <div className="off-canvas-content" data-off-canvas-content>
+      <div className="row column">
+        {props.children}
+      </div>
     </div>
-    {props.children}
   </div>
 );
 
