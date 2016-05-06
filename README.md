@@ -60,10 +60,12 @@
 
 From within the root directory:
 
+The following command will create the database and schema.  Prerequisite is that you have
+postgres installed.
+
 ```sh
-sudo npm install -g bower
-npm install
-bower install
+createdb kinectdb -U postgres
+psql -U postgres -d kinectdb -f ./server/config/schema.sql
 ```
 
 ### Database
