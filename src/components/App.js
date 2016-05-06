@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 
 import { TitleBar } from './TitleBar';
-// import { NavLink } from './NavLink';
 
 // need these for foundation javascript functions like mobile slide menu
 import '../../node_modules/foundation-sites/js/foundation.core.js';
