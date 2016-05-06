@@ -4,7 +4,6 @@ import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import { NavMenu } from './NavMenu';
 
-
 export class TitleBar extends React.Component {
 
   constructor(props) {

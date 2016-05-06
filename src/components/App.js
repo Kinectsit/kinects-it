@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import { TitleBar } from './TitleBar';
+// import { NavLink } from './NavLink';
 
 // need these for foundation javascript functions like mobile slide menu
 import '../../node_modules/foundation-sites/js/foundation.core.js';
@@ -9,7 +10,6 @@ import '../../node_modules/foundation-sites/js/foundation.util.mediaQuery.js';
 import '../../node_modules/foundation-sites/js/foundation.util.triggers.js';
 import '../../node_modules/foundation-sites/js/foundation.util.motion.js';
 import '../../node_modules/foundation-sites/js/foundation.responsiveToggle.js';
-
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
