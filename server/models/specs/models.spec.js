@@ -2,7 +2,7 @@ import { expect } from 'chai';
 const exec = require('child_process').exec;
 const pg = require('pg');
 
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/testdb';
+const connectionString = 'postgres://localhost:5432/testdb';
 
 describe('The database', () => {
   before(function(done){
