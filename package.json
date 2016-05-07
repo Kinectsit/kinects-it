@@ -17,7 +17,7 @@
     "prebuild": "npm run clean-dist && npm run build:html && npm run lint",
     "build": "babel-node tools/build.js",
     "test": "mocha tools/testSetup.js src/**/*.spec.js server/**/*.spec.js",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Cory House",
   "license": "MIT",
