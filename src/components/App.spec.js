@@ -1,8 +1,9 @@
 import React from 'react';
-import { render } from 'enzyme';
+import { render, mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-// import sinon from 'sinon';
+import sinon from 'sinon';
 import { App } from './App';
+import { TitleBar } from './TitleBar';
 // import { Link } from 'react-router';
 
 describe('<App />', () => {
@@ -12,5 +13,17 @@ describe('<App />', () => {
     const expected = 'Kinects.It';
     expect(actual).to.contain(expected);
   });
-});
 
+  it('TitleBar exists', () => {
+    expect(shallow(<TitleBar />).find('.title-bar-container').length).to.equal(1);
+  });
+
+  // it('simulates click events', () => {
+  //   const onButtonClick = sinon.spy();
+  //   const wrapper = mount(
+  //     <TitleBar onButtonClick={onButtonClick} />
+  //   );
+  //   wrapper.find('button').simulate('click');
+  //   expect(onButtonClick.calledOnce).to.equal(true);
+  // });
+});
