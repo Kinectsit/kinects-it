@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
-// import {Link} from 'react-router';
 
-export const LandingPageView = () => (
+
+export const DeviceProfilePage = () => (
   <div>
-    <h2 id="how-it-works">Here's how it works</h2>
-    <RaisedButton label="Get Started" />
+    <h2>DeviceProfile page</h2>
   </div>
 );
 
-LandingPageView.propTypes = {
+DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -29,5 +27,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPageView);
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceProfilePage);
 

@@ -1,21 +1,16 @@
 import React, { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 
 
-export const HomePage = () => (
+export const LoginPage = () => (
   <div>
-    <h1>Welcome to Kinects.It!</h1>
-    <div>
-      <h2 id="how-it-works">Here's how it works</h2>
-      <RaisedButton label="Get Started" />
-    </div>
+    <h2>Login to your account</h2>
   </div>
 );
 
-HomePage.propTypes = {
+LoginPage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -32,5 +27,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 

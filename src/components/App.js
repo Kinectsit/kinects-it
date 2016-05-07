@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
-
 import { TitleBar } from './TitleBar';
-
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';

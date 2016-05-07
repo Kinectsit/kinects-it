@@ -5,17 +5,13 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 
 
-export const HomePage = () => (
+export const HomeUsagePage = () => (
   <div>
-    <h1>Welcome to Kinects.It!</h1>
-    <div>
-      <h2 id="how-it-works">Here's how it works</h2>
-      <RaisedButton label="Get Started" />
-    </div>
+    <h1>Home Usage Page</h1>
   </div>
 );
 
-HomePage.propTypes = {
+HomeUsagePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -32,5 +28,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeUsagePage);
 
