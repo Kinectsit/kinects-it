@@ -1,25 +1,57 @@
+/* eslint-disable no-unused-expressions, no-console */
 import { expect } from 'chai';
 const exec = require('child_process').exec;
 const pg = require('pg');
-
 const connectionString = 'postgres://localhost:5432/testdb';
 
+/**
+ * Creates the testdb from test_schema.sql.
+ * @param next - the done callback for mocha
+*/
+function prepareDb(next) {
+  exec('createdb testdb -U postgres', (err) => {
+    if (err !== null) {
+      expect(err).to.not.exist;
+    }
+
+    exec('psql -d testdb -f ./server/config/schema.sql', (error) => {
+      if (error !== null) {
+        expect(error).to.not.exist;
+      }
+      next(err);
+    });
+  });
+}
+
+/**
+ * Drops the testdb from dropdb.sql.
+ * @param next - the done callback for mocha
+*/
+function cleanDb(next) {
+  exec('psql -U postgres -f ./server/config/droptestdb.sql', (err) => {
+    if (err !== null) {
+      expect(err).to.not.exist;
+    }
+    next();
+  });
+}
+
 describe('The database', () => {
-  before(function(done){
-    prepare_db(function(err){
+  before((done) => {
+    prepareDb((err) => {
       if (err) {
-        clean_db(function(err) {
-           console.log('Failed trying to clean up testdb');
+        cleanDb((error) => {
+          console.log('Failed trying to clean up testdb', error);
         });
         expect(err).to.not.exist;
       }
-      //do other setup stuff like launching you server etc
+      // do other setup stuff like launching you server etc
       done();
     });
   });
 
-  after(function(done){
-    clean_db(function(err) {
+  after((done) => {
+    cleanDb((err) => {
       expect(err).to.not.exist;
     });
 
@@ -48,35 +80,3 @@ describe('The database', () => {
   });
   // needs test for all models, for adding foreign keys, and for controllers
 });
-
-/**
- * Creates the testdb from test_schema.sql.
- * @param next - the done callback for mocha
-*/
-function prepare_db(next){
-  exec('createdb testdb -U postgres', function(err){
-    if (err !== null) {
-      expect(err).to.not.exist;
-    }
-
-    exec('psql -d testdb -f ./server/config/schema.sql', function(err){
-      if (err !== null) {
-        expect(err).to.not.exist;
-      }
-      next(err);
-    });
-  });
-}
-
-/**
- * Drops the testdb from dropdb.sql.
- * @param next - the done callback for mocha
-*/
-function clean_db(next){
-  exec('psql -U postgres -f ./server/config/droptestdb.sql', function(err){
-    if (err !== null) {
-      expect(err).to.not.exist;
-    }
-    next();
-  });
-}
