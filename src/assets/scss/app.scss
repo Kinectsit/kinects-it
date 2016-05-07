@@ -3,13 +3,12 @@
 * Webpack is setting the default location (i.e. where foundation is getting imported from)
 * to the foundation-sites/scss directory in node_modules.
 */
-@import '/components/navigation.scss';
 /**
 * Settings is where a lot of default stylings provided by Foundation are
 * We can edit defaults in there directly. Or we can choose to manage these separately
 * in separate components for example
 */
-@import '/settings';
+// @import '/settings';
 @import 'foundation';
 
 

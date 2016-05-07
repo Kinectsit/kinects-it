@@ -7,7 +7,7 @@ export const LandingPageView = () => (
     <Row>
       <Column>
         <h2 id="how-it-works">Here's how it works</h2>
-        <RaisedButton label="Get Started" />
+          <RaisedButton label="Get Started" />
       </Column>
     </Row>
   </div>

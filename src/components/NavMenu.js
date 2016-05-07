@@ -21,5 +21,5 @@ export const NavMenu = (props) => (
 );
 
 NavMenu.propTypes = {
-  onClick: PropTypes.object,
+  onClick: PropTypes.function,
 };

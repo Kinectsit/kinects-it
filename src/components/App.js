@@ -26,7 +26,7 @@ export const App = (props) => (
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div className="app-container">
       <TitleBar />
-      <div className="off-canvas-content" data-off-canvas-content>
+      <div className="row medium-10 columns">
         {props.children}
       </div>
     </div>
