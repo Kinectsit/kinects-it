@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Column } from 'react-foundation';
 import RaisedButton from 'material-ui/RaisedButton';
-// import {Link} from 'react-router';
 
 export const LandingPageView = () => (
   <div>
