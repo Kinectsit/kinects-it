@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, mount, shallow } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import { expect } from 'chai';
-import sinon from 'sinon';
+// import sinon from 'sinon';
 import { App } from './App';
 import { TitleBar } from './TitleBar';
 // import { Link } from 'react-router';
