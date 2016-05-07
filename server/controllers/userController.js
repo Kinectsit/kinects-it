@@ -11,5 +11,6 @@ exports.login = (newUser) => {
 };
 
 exports.signUp = (req, res, next) => {
-
+  console.log('you are ready to signup!');
+  res.send(200);
 };
