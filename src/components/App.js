@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
 
-import { NavLink } from './NavLink';
+import { TitleBar } from './TitleBar';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 /**
 * This is an import the global styles sheet.
@@ -9,17 +13,14 @@ import { NavLink } from './NavLink';
 import '../assets/scss/app.scss';
 
 export const App = (props) => (
-  <div className="top-bar">
-    <div className="top-bar-right">
-      <ul className="menu" role="navigation">
-        <li><NavLink to="/" onlyActiveOnIndex>Home</NavLink></li>
-        <li><a href="/#how-it-works">How it Works</a></li>
-        <li><NavLink to="/login">Login</NavLink></li>
-        <li><NavLink to="/signup">Signup</NavLink></li>
-      </ul>
+  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+    <div className="app-container">
+      <TitleBar />
+      <div className="row medium-10 columns">
+        {props.children}
+      </div>
     </div>
-    {props.children}
-  </div>
+  </MuiThemeProvider>
 );
 
 App.propTypes = {
