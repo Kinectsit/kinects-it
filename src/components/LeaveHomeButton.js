@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-export const Home = () => (
+export const LeaveHomeButton = () => (
   <div>
-    <h1>Welcome to Kinects.It!</h1>
-    <div>
-      <h2 id="how-it-works">Here's how it works</h2>
-      <RaisedButton label="Get Started" />
-    </div>
+    <RaisedButton label="Leave Home" />
   </div>
 );
 
-Home.propTypes = {
+LeaveHomeButton.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
+
+// route to /joinRental on button click
 
