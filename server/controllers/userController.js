@@ -1,7 +1,8 @@
 const User = require('../models/userModel.js');
 const logger = require('../config/logger.js');
+const CoinbaseStrategy = require('passport-coinbase').Strategy;
 
-exports.signIn = (newUser) => {
+exports.login = (newUser) => {
   User.create(newUser)
     .then((res) => {
       logger.info(res.dataValues);
@@ -9,3 +10,6 @@ exports.signIn = (newUser) => {
     .catch((err) => console.log(err));
 };
 
+exports.signUp = (req, res, next) => {
+
+};

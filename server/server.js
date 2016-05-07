@@ -3,6 +3,7 @@ const app = module.exports = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const logger = require('./config/logger.js');
+const passport = require('passport');
 /*
   Set up routers for the different APIs
 */
@@ -17,14 +18,19 @@ app.use(require('morgan')('combined', { stream: logger.stream }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.session({ secret: 'kinectsit2016team3feb' }));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, srcPath)));
 
+// Authentication Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 /*
    Middleware to configure routes for each api
 */
-app.use('/api/users', userRouter);
+app.use('/api/v1/users', userRouter);
 
 // send all other requests to index.html so browserHistory in React Router works
 app.get('*', (req, res) => {
