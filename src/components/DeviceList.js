@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
 
-export const HomeUsage = () => (
+export const DeviceList = () => (
   <div>
-    <h1>Home Usage Page</h1>
+    <h1>Device List </h1>
   </div>
 );
 
-HomeUsage.propTypes = {
+DeviceList.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
+
+// map deviceRows to this!
 

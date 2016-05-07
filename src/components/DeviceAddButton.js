@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-export const Home = () => (
+export const DeviceAddButton = () => (
   <div>
-    <h1>Welcome to Kinects.It!</h1>
-    <div>
-      <h2 id="how-it-works">Here's how it works</h2>
-      <RaisedButton label="Get Started" />
-    </div>
+    <RaisedButton label="Add Device" />
   </div>
 );
 
-Home.propTypes = {
+DeviceAddButton.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
+
+// route to /setupDevicePage on button click (after successful API)
 

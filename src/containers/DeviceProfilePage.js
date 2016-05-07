@@ -10,6 +10,8 @@ export const DeviceProfilePage = () => (
   </div>
 );
 
+// pull in deviceUsage to the render
+
 DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,

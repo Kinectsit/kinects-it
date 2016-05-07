@@ -15,5 +15,4 @@ describe('<App />', () => {
   it('TitleBar exists', () => {
     expect(shallow(<TitleBar />).find('.title-bar-container').length).to.equal(1);
   });
-
 });

@@ -10,6 +10,8 @@ export const DashboardPage = () => (
   </div>
 );
 
+// if host, send to dashboardHost - or send to dashboardGuest
+
 DashboardPage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,

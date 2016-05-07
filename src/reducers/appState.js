@@ -1,4 +1,9 @@
-import { INCREMENT, DECREMENT } from '../constants/actionTypes';
+import {
+  SET_USER,
+  ADD_DEVICE,
+  ADD_RENTAL,
+} from '../actions/actionTypes';
+
 import objectAssign from 'object-assign';
 import initialState from './initialState';
 
@@ -10,14 +15,19 @@ import initialState from './initialState';
 
 export const appState = (state = initialState, action) => {
   switch (action.type) {
-    case INCREMENT: {
+    case SET_USER: {
       const newState = objectAssign({}, state);
-      newState.count += 1;
+      // add function to modify the new state here
       return newState;
     }
-    case DECREMENT: {
+    case ADD_DEVICE: {
       const newState = objectAssign({}, state);
-      newState.count -= 1;
+      // add function to modify the new state here
+      return newState;
+    }
+    case ADD_RENTAL: {
+      const newState = objectAssign({}, state);
+      // add function to modify the new state here
       return newState;
     }
     default:

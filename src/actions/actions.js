@@ -1,9 +1,13 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../actions/actionTypes';
 
-export function increment(number) {
-  return { type: types.INCREMENT, number };
+export function setUser(user) {
+  return { type: types.SET_USER, user };
 }
 
-export function decrement(number) {
-  return { type: types.DECREMENT, number };
+export function addDevice(device) {
+  return { type: types.ADD_DEVICE, device };
+}
+
+export function addRental(rental) {
+  return { type: types.ADD_RENTAL, rental };
 }

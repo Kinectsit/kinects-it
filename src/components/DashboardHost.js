@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react';
 
-export const HomeUsage = () => (
+export const DashboardHost = () => (
   <div>
-    <h1>Home Usage Page</h1>
+    <h1>DashboardHost</h1>
   </div>
 );
 
-HomeUsage.propTypes = {
+DashboardHost.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
-

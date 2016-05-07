@@ -19,8 +19,8 @@
     "test": "mocha tools/testSetup.js src/**/*.spec.js server/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "Krista Moroder, Buck Perley, Bryan Newby",
-  "license": "",
+  "author": "Cory House",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "1.15.0",
     "exec": "0.2.1",
