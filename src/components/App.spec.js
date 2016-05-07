@@ -8,8 +8,8 @@ import { App } from './App';
 describe('<App />', () => {
   it('should have a navbar', () => {
     const wrapper = render(<App />);
-    const actual = wrapper.find('ul').text();
-    const expected = 'Home';
+    const actual = wrapper.find('.title-bar-container h1').text();
+    const expected = 'Kinects.It';
     expect(actual).to.contain(expected);
   });
 });

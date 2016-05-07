@@ -24,7 +24,7 @@ export class TitleBar extends React.Component {
       <div className="title-bar-container">
         <AppBar
           title="Kinects.It"
-          onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
+          onLeftIconButtonTouchTap={() => this.handleToggle()}
         />
 
         <Drawer
@@ -33,7 +33,7 @@ export class TitleBar extends React.Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}
         >
-          <NavMenu onClick={this.handleClose.bind(this)} />
+          <NavMenu onClick={() => this.handleClose()} />
         </Drawer>
 
       </div>
