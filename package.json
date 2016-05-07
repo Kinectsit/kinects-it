@@ -22,6 +22,7 @@
   "author": "Cory House",
   "license": "MIT",
   "dependencies": {
+    "autoprefixer": "6.3.6",
     "body-parser": "1.15.0",
     "exec": "0.2.1",
     "express": "4.13.4",
