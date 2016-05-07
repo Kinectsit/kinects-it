@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,7 +11,6 @@ export const LandingPageView = () => (
     <RaisedButton label="Get Started" />
   </div>
 );
-
 
 LandingPageView.propTypes = {
   actions: PropTypes.object.isRequired,
