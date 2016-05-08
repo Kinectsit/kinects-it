@@ -27,6 +27,8 @@
     "exec": "0.2.1",
     "express": "4.13.4",
     "express-session": "1.13.0",
+    "formsy-material-ui": "0.4.2",
+    "formsy-react": "^0.18.0",
     "foundation-sites": "6.2.1",
     "http-proxy": "1.13.2",
     "ink-docstrap": "1.1.4",
