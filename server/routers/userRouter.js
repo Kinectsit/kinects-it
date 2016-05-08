@@ -8,6 +8,7 @@ const userController = require('../controllers/userController.js');
 */
 userRouter.route('/login').get(userController.login);
 userRouter.route('/signup').get(userController.signUp);
+userRouter.route('/callback').get(userController.callback);
 
 module.exports = userRouter;
 
