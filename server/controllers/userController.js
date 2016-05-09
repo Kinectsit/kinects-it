@@ -1,7 +1,13 @@
 const User = require('../models/userModel.js');
 const logger = require('../config/logger.js');
 // const passport = require('passport');
-import { client } from '../db.js';
+const connectionString = require('../db.js');
+
+const promise = require('bluebird'); // or any other Promise/A+ compatible library;
+const options = {
+  promiseLib: promise, // overriding the default (ES6 Promise);
+};
+const pgp = require('pg-promise')(options);
 
 exports.login = (newUser) => {
   User.create(newUser)
@@ -14,24 +20,38 @@ exports.login = (newUser) => {
 exports.signUp = (req, res, next) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
   // passport.authenticate('coinbase');
-  client.connect((err, done) => {
-    if (err) {
-      done();
-      res.status(500).json({ success: false, data: err });
-    } else {
-      console.log('we got your request:', req.body);
-      res.send(JSON.stringify(req.body));
-      client.end();
-    }
+  const db = pgp(connectionString);
+  console.log('call to signup made with this data:', req.body);
+  db.any("select * from users").then((result) => {
+        // success;
+    console.log('the search was successful!');
+    res.send(result);
+  })
+  .catch((error) => {
+     // error;
+    console.log('there was an error in the search:', error);
+    res.send(error);
   });
+  // db.one("INSERT INTO users(name, email) VALUES(${name}, ${email})", req.body)
+  //     .then((data) => {
+  //       res.send(data.id); // print new user id;
+  //     })
+  //     .catch((error) => {
+  //       console.log('got an error:', error);
+  //       res.send(error); // print error;
+  //     })
+  //     .finally(() => {
+  //       // If we do not close the connection pool when exiting the application,
+  //       // it may take 30 seconds (poolIdleTimeout) before the process terminates,
+  //       // waiting for the connection to expire in the pool.
 
-    // client.query('SELECT NOW() AS "theTime"', (err, result) => {
-    //   if(err) {
-    //     return console.error('error running query', err);
-    //   }
-    //   console.log(result.rows[0].theTime);
-    //   //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-    //   client.end();
+  //       // But if you normally just kill the process, then it doesn't matter.
+
+  //       pgp.end(); // for immediate app exit, closing the connection pool.
+  //       next();
+  //       // See also:
+  //       // https://github.com/vitaly-t/pg-promise#library-de-initialization
+  //     });
 };
 
 exports.callback = (req, res, next) => {

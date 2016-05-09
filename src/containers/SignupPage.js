@@ -181,8 +181,8 @@ export class SignupForm extends React.Component {
 }
 
 SignupPage.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // appState: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  appState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

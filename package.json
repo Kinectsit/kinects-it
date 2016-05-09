@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "6.3.6",
+    "bluebird": "3.3.5",
     "body-parser": "1.15.0",
     "exec": "0.2.1",
     "express": "4.13.4",
@@ -41,6 +42,7 @@
     "passport-coinbase": "0.1.2",
     "path": "0.12.7",
     "pg": "4.5.5",
+    "pg-promise": "4.0.10",
     "proxy-middleware": "0.15.0",
     "react": "15.0.1",
     "react-dom": "15.0.1",
