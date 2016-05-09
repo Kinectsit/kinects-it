@@ -8,4 +8,3 @@ describe('<Home />', () => {
     expect(shallow(<Home />).find('h2').length).to.equal(1);
   });
 });
-

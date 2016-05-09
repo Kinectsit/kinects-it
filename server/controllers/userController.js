@@ -4,10 +4,10 @@ const logger = require('../config/logger.js');
 // const passport = require('passport');
 const db = require('../db.js');
 
-exports.login = (req, res, next) => {
-  res.send('you logged in!');
-  next();
-};
+// exports.login = (req, res, next) => {
+//   res.send('you logged in!');
+//   next()
+// };
 
 exports.signUp = (req, res, next) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
