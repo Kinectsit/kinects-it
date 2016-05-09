@@ -37,3 +37,6 @@ dist
 
 # Mac files
 .DS_Store
+
+#Configuration and Private Keys
+config.js
