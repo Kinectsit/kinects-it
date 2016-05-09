@@ -1,4 +1,4 @@
-import * as types from '../actions/actionTypes';
+import * as types from '../constants/actionTypes';
 
 export function setUser(user) {
   return { type: types.SET_USER, user };

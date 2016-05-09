@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export default {
   isAuthenticated: false,
   userName: '',
@@ -5,7 +7,7 @@ export default {
   hasHouse: false,
   hasDevice: false,
   houseName: '',
-  devices: '',
+  device: '',
   featuredDevice: {
     name: '',
     isActive: '',
