@@ -21,9 +21,9 @@ export default function appState(state = initialState, action) {
       return newState;
     }
     case ADD_DEVICE: {
-      return {
-        device: action.device,
-      };
+      const newState = objectAssign({}, state);
+      newState.device = action.device;
+      return newState;
     }
     case ADD_RENTAL: {
       const newState = objectAssign({}, state);

@@ -13,15 +13,13 @@ export class AddDevicePage extends React.Component {
   }
 
   captureFormChange(event) {
-    console.log(event.target.value);
     this.setState({
       device: event.target.value,
     });
   }
 
   addDevice() {
-    console.log('device is ', this.state.device);
-    this.props.actions.addDevice(this.props.appState, this.state.device);
+    this.props.actions.addDevice(this.state.device);
   }
 
   render() {
@@ -49,14 +47,12 @@ AddDevicePage.propTypes = {
 
 
 function mapStateToProps(state) {
-  console.log('state in map state is', state);
   return {
     appState: state.appState,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  console.log('dispatch is ', dispatch);
   return {
     actions: bindActionCreators(actions, dispatch),
   };
