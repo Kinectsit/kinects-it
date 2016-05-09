@@ -1,13 +1,17 @@
+/* eslint-disable no-param-reassign */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import FontIcon from 'material-ui/FontIcon';
+import Checkbox from 'material-ui/Checkbox';
+import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';
-import { FormsyText } from 'formsy-material-ui/lib';
+import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
+import $ from 'jquery';
 
 const styles = {
   errorStyle: {
@@ -59,6 +63,8 @@ export class SignupForm extends React.Component {
     this.errorMessages = {
       emailerror: 'Please provide a valid email',
       passwordError: 'Please enter a password of at least 5 characters',
+      nameError: 'Please enter a user name',
+      mismatchPassword: 'Your passwords don\'t match',
     };
     this.state = {
       canSubmit: false,
@@ -77,13 +83,34 @@ export class SignupForm extends React.Component {
     });
   }
 
-  // submitForm(data) {
-  //   alert(JSON.stringify(data, null, 4));
-  // }
+  submitForm(data) {
+    // need to do this because checkbox components won't fire. Radio buttons work
+    // but need to send a boolean to the server
+    if (data.host === 'host') {
+      data.host = true;
+    } else {
+      data.host = false;
+    }
 
-  // notifyFormError(data) {
-  //   console.error('Form error:', data);
-  // }
+    $.ajax({
+      url: 'http://localhost:3001/api/v1/users/signup',
+      dataType: 'json',
+      crossDomain: true,
+      method: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(data),
+      success: (response) => {
+        console.log('this was the message back from the server', response);
+      },
+      error: (xhr, status, err) => {
+        console.error('there was an error', status, err.toString());
+      },
+    });
+  }
+
+  notifyFormError(data) {
+    console.error('Form error:', data);
+  }
 
   render() {
     return (
@@ -91,16 +118,24 @@ export class SignupForm extends React.Component {
         <Formsy.Form
           onValid={() => this.enableButton()}
           onInvalid={() => this.disableButton()}
-          onValidSubmit={() => this.submitForm()}
+          onValidSubmit={(data) => this.submitForm(data)}
           onInvalidSubmit={() => this.notifyFormError()}
+          onSuccess={(data) => console.log('request received by the server!', data)}
         >
+          <FormsyText
+            name="name"
+            validations="isExisty"
+            validationError={this.errorMessages.nameError}
+            required
+            style={styles.fieldStyles}
+            floatingLabelText="User Name"
+          />
           <FormsyText
             name="email"
             validations="isEmail"
-            validationError={this.errorMessages.emailerror}
+            validationError={this.errorMessages.emailError}
             required
             style={styles.fieldStyles}
-            hintText="myname@google.com"
             floatingLabelText="E-mail"
           />
           <FormsyText
@@ -111,8 +146,29 @@ export class SignupForm extends React.Component {
             type="password"
             style={styles.fieldStyles}
             hintText="Minimum 5 characters"
-            floatingLabelText="password"
+            floatingLabelText="Password"
           />
+          <FormsyText
+            name="repeated_password"
+            validations="equalsField:password"
+            validationError={this.errorMessages.mismatchPassword}
+            required
+            type="password"
+            style={styles.fieldStyles}
+            hintText="Must be same as above"
+            floatingLabelText="Re-type password"
+          />
+          <Subheader>Will you be a Host or a Guest</Subheader>
+          <FormsyRadioGroup name="host" defaultSelected="host">
+            <FormsyRadio
+              value="host"
+              label="I'm a host"
+            />
+            <FormsyRadio
+              value="guest"
+              label="I'm a guest"
+            />
+          </FormsyRadioGroup>
           <FlatButton
             style={styles.submitStyle}
             type="submit"

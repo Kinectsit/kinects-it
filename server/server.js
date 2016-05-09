@@ -19,6 +19,13 @@ const srcPath = process.env.NODE_ENV === 'development' ? '/../src/' : '/../dist'
 
 app.use(require('morgan')('combined', { stream: logger.stream }));
 
+// Allow cross origin requests (need for requests from client because on different port)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 // Use the CoinbaseStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken and refreshToken),
