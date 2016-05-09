@@ -35,6 +35,7 @@ export class AddDevicePage extends React.Component {
           />
           <button type="button" onClick={() => this.addDevice()}>ADD DEVICE</button>
         </form>
+        <h1>Device is: {this.props.appState.device}</h1>
       </div>
     );
   }
