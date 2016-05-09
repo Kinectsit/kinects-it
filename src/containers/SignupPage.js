@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import FontIcon from 'material-ui/FontIcon';
-import Checkbox from 'material-ui/Checkbox';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
@@ -182,8 +181,8 @@ export class SignupForm extends React.Component {
 }
 
 SignupPage.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // appState: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  appState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
