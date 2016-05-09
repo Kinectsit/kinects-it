@@ -1,13 +1,7 @@
 const User = require('../models/userModel.js');
 const logger = require('../config/logger.js');
 // const passport = require('passport');
-const connectionString = require('../db.js');
-
-const promise = require('bluebird'); // or any other Promise/A+ compatible library;
-const options = {
-  promiseLib: promise, // overriding the default (ES6 Promise);
-};
-const pgp = require('pg-promise')(options);
+const db = require('../db.js');
 
 exports.login = (newUser) => {
   User.create(newUser)
@@ -20,11 +14,11 @@ exports.login = (newUser) => {
 exports.signUp = (req, res, next) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
   // passport.authenticate('coinbase');
-  const db = pgp(connectionString);
   console.log('call to signup made with this data:', req.body);
-  db.any("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'").then((result) => {
+  db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', req.body)
+  .then((result) => {
         // success;
-    console.log('the search was successful!');
+    console.log('the search was successful! Results:', result);
     res.send(result);
   })
   .catch((error) => {
@@ -33,9 +27,9 @@ exports.signUp = (req, res, next) => {
     res.send(error);
   })
   .finally(() => {
-    pgp.end();
     next();
   });
+  // db.end();
   // db.one("INSERT INTO users(name, email) VALUES(${name}, ${email})", req.body)
   //     .then((data) => {
   //       res.send(data.id); // print new user id;

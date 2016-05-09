@@ -1,7 +1,10 @@
-// const pg = require('pg');
-// const pgp = require('pg-promise')();
+const promise = require('bluebird'); // or any other Promise/A+ compatible library;
+const options = {
+  promiseLib: promise, // overriding the default (ES6 Promise);
+};
+const pgp = require('pg-promise')(options);
 
-exports.connectionString = 'postgres://postgres:localhost:5432/kinectdb';
+module.exports = pgp('postgres://postgres@localhost:5432/kinectdb');
 
 // export const db = pgp(connectionString);
 // exports.client = new pg.Client(connectionString);
