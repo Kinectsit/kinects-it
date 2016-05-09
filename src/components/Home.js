@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 export const Home = () => (
@@ -10,9 +10,4 @@ export const Home = () => (
     </div>
   </div>
 );
-
-Home.propTypes = {
-  actions: PropTypes.object.isRequired,
-  appState: PropTypes.object.isRequired,
-};
 

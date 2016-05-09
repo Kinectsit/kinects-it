@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, shallow } from 'enzyme';
+import { shallow, render } from 'enzyme';
 import { expect } from 'chai';
 import { App } from './App';
 import { TitleBar } from './TitleBar';
