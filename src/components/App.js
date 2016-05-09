@@ -10,7 +10,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 */
 import '../assets/scss/app.scss';
 
-const App = (props) => (
+export const App = (props) => (
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div className="app-container">
       <TitleBar />
@@ -25,6 +25,4 @@ App.propTypes = {
   children: PropTypes.element,
   route: PropTypes.object,
 };
-
-export default App;
 
