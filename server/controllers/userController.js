@@ -22,7 +22,7 @@ exports.signUp = (req, res, next) => {
   // passport.authenticate('coinbase');
   const db = pgp(connectionString);
   console.log('call to signup made with this data:', req.body);
-  db.any("select * from users").then((result) => {
+  db.any("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'").then((result) => {
         // success;
     console.log('the search was successful!');
     res.send(result);
@@ -31,6 +31,10 @@ exports.signUp = (req, res, next) => {
      // error;
     console.log('there was an error in the search:', error);
     res.send(error);
+  })
+  .finally(() => {
+    pgp.end();
+    next();
   });
   // db.one("INSERT INTO users(name, email) VALUES(${name}, ${email})", req.body)
   //     .then((data) => {
