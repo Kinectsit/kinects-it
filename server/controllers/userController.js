@@ -1,58 +1,37 @@
-const User = require('../models/userModel.js');
+/* eslint max-len: ["error", 150] */
+// const User = require('../models/userModel.js');
 const logger = require('../config/logger.js');
 // const passport = require('passport');
 const db = require('../db.js');
 
-exports.login = (newUser) => {
-  User.create(newUser)
-    .then((res) => {
-      logger.info(res.dataValues);
-    })
-    .catch((err) => console.log(err));
+exports.login = (req, res, next) => {
+  res.send('you logged in!');
+  next();
 };
 
 exports.signUp = (req, res, next) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
   // passport.authenticate('coinbase');
-  console.log('call to signup made with this data:', req.body);
+  // console.log('call to signup made with this data:', req.body);
   db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', req.body)
   .then((result) => {
         // success;
-    console.log('the search was successful! Results:', result);
+    // console.log('the search was successful! Results:', result);
+    logger.info(result);
     res.send(result);
   })
   .catch((error) => {
      // error;
-    console.log('there was an error in the search:', error);
+    // console.log('there was an error in the search:', error);
+    logger.info(error);
     res.send(error);
   })
   .finally(() => {
     next();
   });
-  // db.end();
-  // db.one("INSERT INTO users(name, email) VALUES(${name}, ${email})", req.body)
-  //     .then((data) => {
-  //       res.send(data.id); // print new user id;
-  //     })
-  //     .catch((error) => {
-  //       console.log('got an error:', error);
-  //       res.send(error); // print error;
-  //     })
-  //     .finally(() => {
-  //       // If we do not close the connection pool when exiting the application,
-  //       // it may take 30 seconds (poolIdleTimeout) before the process terminates,
-  //       // waiting for the connection to expire in the pool.
-
-  //       // But if you normally just kill the process, then it doesn't matter.
-
-  //       pgp.end(); // for immediate app exit, closing the connection pool.
-  //       next();
-  //       // See also:
-  //       // https://github.com/vitaly-t/pg-promise#library-de-initialization
-  //     });
 };
 
-exports.callback = (req, res, next) => {
-  console.log('you did it!');
-  res.send(200);
-};
+// exports.callback = (req, res, next) => {
+//   console.log('you did it!');
+//   res.send(200);
+// };
