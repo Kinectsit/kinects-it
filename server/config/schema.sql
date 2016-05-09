@@ -76,7 +76,9 @@ DROP TABLE IF EXISTS users CASCADE;
     
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  name INTEGER,
+  name VARCHAR,
+  email VARCHAR,
+  password VARCHAR,
   defaultViewHost BOOLEAN
 );
 
