@@ -21,7 +21,7 @@ export const Home = () => (
     <div style={{ textAlign: 'center' }}>
       <h2 id="how-it-works">Here's how it works</h2>
       <div>
-        <i className="material-icons">graphic_eq</i>  
+        <i className="material-icons">graphic_eq</i>
       </div>
       <div>
         Attach a device to your home.
