@@ -3,10 +3,10 @@ const app = module.exports = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const logger = require('./config/logger.js');
-const passport = require('passport');
+// const passport = require('passport');
 // const session = require('express-session');
-const apiKeys = require('../config.js');
-const CoinbaseStrategy = require('passport-coinbase').Strategy;
+// const apiKeys = require('../config.js');
+// const CoinbaseStrategy = require('passport-coinbase').Strategy;
 /*
   Set up routers for the different APIs
 */
@@ -38,26 +38,26 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, srcPath)));
 
-// Authentication Middleware
-app.use(passport.initialize());
+// // Authentication Middleware
+// app.use(passport.initialize());
 
-passport.use('coinbase', new CoinbaseStrategy({
-  clientID: apiKeys.COINBASE_CLIENT_ID,
-  clientSecret: apiKeys.COINBASE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3000/api/v1/users/callback',
-  scope: ['user'],
-},
-  (accessToken, refreshToken, profile, done) => {
-    // asynchronous verification, for effect...
-    process.nextTick(() =>
-      // To keep the example simple, the user's Coinbase profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Coinbase account with a user record in your database,
-      // and return that user instead.
-      done(null, profile)
-    );
-  }
-));
+// passport.use('coinbase', new CoinbaseStrategy({
+//   clientID: apiKeys.COINBASE_CLIENT_ID,
+//   clientSecret: apiKeys.COINBASE_CLIENT_SECRET,
+//   callbackURL: 'http://localhost:3000/api/v1/users/callback',
+//   scope: ['user'],
+// },
+//   (accessToken, refreshToken, profile, done) => {
+//     // asynchronous verification, for effect...
+//     process.nextTick(() =>
+//       // To keep the example simple, the user's Coinbase profile is returned to
+//       // represent the logged-in user.  In a typical application, you would want
+//       // to associate the Coinbase account with a user record in your database,
+//       // and return that user instead.
+//       done(null, profile)
+//     );
+//   }
+// ));
 
 /*
    Middleware to configure routes for each api

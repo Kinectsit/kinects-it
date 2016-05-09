@@ -25,3 +25,4 @@ App.propTypes = {
   children: PropTypes.element,
   route: PropTypes.object,
 };
+

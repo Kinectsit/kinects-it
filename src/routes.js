@@ -3,15 +3,15 @@ import { Route, IndexRoute } from 'react-router';
 
 import { App } from './components/App';
 import { Home } from './components/Home';
-import { LoginPage } from './containers/LoginPage';
-import { SignupPage } from './containers/SignupPage';
-import { DashboardPage } from './containers/DashboardPage';
-import { AddDevicePage } from './containers/AddDevicePage';
-import { SetupDevicePage } from './containers/SetupDevicePage';
-import { DeviceProfilePage } from './containers/DeviceProfilePage';
-import { HomeUsage } from './components/HomeUsage';
-import { JoinRentalPage } from './containers/JoinRentalPage';
-import { DevicePage } from './containers/DevicePage';
+import LoginPage from './containers/LoginPage';
+import SignupPage from './containers/SignupPage';
+import DashboardPage from './containers/DashboardPage';
+import AddDevicePage from './containers/AddDevicePage';
+import SetupDevicePage from './containers/SetupDevicePage';
+import DeviceProfilePage from './containers/DeviceProfilePage';
+import HomeUsage from './components/HomeUsage';
+import JoinRentalPage from './containers/JoinRentalPage';
+import DevicePage from './containers/DevicePage';
 
 export default (
   <Route path="/" component={App}>
@@ -27,3 +27,4 @@ export default (
     <Route path="/device" component={DevicePage} />
   </Route>
 );
+

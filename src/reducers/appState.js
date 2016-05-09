@@ -1,9 +1,10 @@
+/* eslint-disable */
+
 import {
   SET_USER,
   ADD_DEVICE,
   ADD_RENTAL,
-} from '../actions/actionTypes';
-
+} from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
 
@@ -12,8 +13,7 @@ import initialState from './initialState';
 // create a copy of the state passed and set new values on the copy.
 // Note that I'm using Object.assign to create a copy of current state
 // and update values on the copy.
-
-export const appState = (state = initialState, action) => {
+export default function appState(state = initialState, action) {
   switch (action.type) {
     case SET_USER: {
       const newState = objectAssign({}, state);
@@ -22,7 +22,7 @@ export const appState = (state = initialState, action) => {
     }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
-      // add function to modify the new state here
+      newState.device = action.device;
       return newState;
     }
     case ADD_RENTAL: {
@@ -33,5 +33,5 @@ export const appState = (state = initialState, action) => {
     default:
       return state;
   }
-};
+}
 
