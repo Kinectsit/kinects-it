@@ -1,4 +1,3 @@
-/* eslint max-len: ["error", 150] */
 const logger = require('../config/logger.js');
 const db = require('../db.js');
 
