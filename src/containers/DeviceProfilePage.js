@@ -7,7 +7,7 @@ import * as actions from '../actions/actions';
 export const DeviceProfilePage = (props) => (
   <div>
     <h2>DeviceProfile page</h2>
-    Featured device is: {props.appState.featured.name}
+    The featured device is: {props.appState.featured.name}
   </div>
 );
 
