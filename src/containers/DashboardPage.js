@@ -14,7 +14,7 @@ export class DashboardPage extends React.Component {
   render() {
     if (this.props.appState.defaultViewHost) {
       return (
-        <DashboardHost appState={this.props.appState} />
+        <DashboardHost appState={this.props.appState} actions={this.props.actions} />
       );
     }
     return (
