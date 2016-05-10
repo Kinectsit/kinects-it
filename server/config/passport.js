@@ -40,34 +40,33 @@ module.exports = (passport) => {
     passReqToCallback: true, // allows us to pass back the entire request to the callback
   },
     (req, email, password, done) => {
-      // find a user whose email is the same as the forms email
-      // we are checking to see if the user trying to login already exists
-      db.none('SELECT * from users where email=$1', email)
-        .then(() => {
-          // if there is no user with that email
-          // create the user
-          const newUser = Object.assign({}, req.body);
-          newUser.password = User.generateHash(req.body.password);
-          return db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
+      // asynchronous
+      // User.findOne wont fire unless data is sent back
+      process.nextTick(() => {
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        db.any('SELECT * from users where email=$1 OR name=$2', [req.body.email, req.body.name])
           .then((result) => {
-            // user was successfully added to the database
-            logger.info(result);
-            return done(null, JSON.stringify(result));
-          });
-        })
-        .catch((error) => {
-          // there was an error or there was a user found
-          // if (user) {
-          //   // the user email already exists in the database
-          //   done(null, false, req.flash('signupMessage', 'That email already has an account.'));
-          // } else {
-          if (error.received >= 1) {
+            // if user exists then return message that it already exists
+            if (result.length) {
+              return done(null, false, { login: false, message: 'That user already exists in the database' });
+            }
+            // if there is no user with that email
+            // create the user
+            const newUser = Object.assign({}, req.body);
+            newUser.password = User.generateHash(req.body.password);
+            return db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
+            .then((user) => {
+              // user was successfully added to the database
+              logger.info('user created');
+              return done(null, user, { login: true, message: 'user has been created!' });
+            });
+          })
+          .catch((error) => {
             logger.info(error);
-            return done(null, false, JSON.stringify({ message: 'That email already has an account.' }));
-          }
-          logger.info(error);
-          return done(error);
-        });
+            return done(error, null, { login: false, message: 'error adding to the database' });
+          });
+      });
     })
   );
 
