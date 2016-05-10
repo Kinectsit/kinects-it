@@ -6,7 +6,7 @@ import * as actions from '../actions/actions';
 import FontIcon from 'material-ui/FontIcon';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
+// import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';

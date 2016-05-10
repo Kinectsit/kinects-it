@@ -8,6 +8,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 // const userRouter = require('./routers/userRouter');
+const homeRouter = require('./routers/homeRouter.js');
 const apiRouter = require('./routers/routes');
 
 // configuration ===============================================================
