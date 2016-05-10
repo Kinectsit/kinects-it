@@ -11,8 +11,8 @@ export default {
   hasDevice: false,
   houseName: '',
   featured: {},
-  enabledDevice: {
-    enabled: false,
+  configuredDevice: {
+    configured: false,
     id: '',
     accessToken: '',
   },

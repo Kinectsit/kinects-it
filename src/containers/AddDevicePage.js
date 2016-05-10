@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
 export class AddDevicePage extends React.Component {
@@ -47,13 +47,13 @@ export class AddDevicePage extends React.Component {
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
 
     $.post(apiPath, (/* data */) => {
-      const enabledDevice = {
-        enabled: true,
+      const configuredDevice = {
+        configured: true,
         id: device.deviceId,
         accessToken: device.deviceAccessToken,
       };
 
-      this.props.actions.addDevice(enabledDevice);
+      this.props.actions.addDevice(configuredDevice);
 
       // send user to setupDevice page if successful response
       browserHistory.push('/setupDevice');

@@ -1,5 +1,4 @@
 import * as types from '../constants/actionTypes';
-import $ from 'jquery';
 
 export function setUser(user) {
   return { type: types.SET_USER, user };
