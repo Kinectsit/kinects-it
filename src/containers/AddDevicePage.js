@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper';
 import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
+import { browserHistory } from 'react-router'
 import $ from 'jquery';
 
 export class AddDevicePage extends React.Component {
@@ -19,32 +20,9 @@ export class AddDevicePage extends React.Component {
     };
 
     this.state = {
-      device: '',
+      error: '',
       canSubmit: false,
     };
-
-    this.disableButton();
-  }
-
-  componentDidMount() {
-    console.log('Add device is being mounted');
-
-    /*
-    this.serverRequest = $.get('http://localhost:3000/api/v1/homes/1/devices', (devices) => {
-      console.log('devices = ', devices);
-
-      // this.setState({
-      //   username: lastGist.owner.login,
-      //   lastGistUrl: lastGist.html_url,
-      // });
-    })
-    .done(() => {
-      console.log('INSIDE DONE OF devices');
-    })
-    .fail(() => {
-      console.log('ERROR in devices.');
-    });
-    */
   }
 
   /**
@@ -63,26 +41,30 @@ export class AddDevicePage extends React.Component {
     Called on submit of the form to dispatch action
   */
   addDevice(device) {
+    const context = this;
      // POST request to see if can connect to device
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device);
+     // TODO: need to replace the home ID with the real one once it is in appState
+    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
 
-    $.post(apiPath, (data) => {
-      console.log('Successful call to add a device: ', data);
-    })
-    .done((data) => {
-      console.log('May not be needed: ', data);
+    $.post(apiPath, (/* data */) => {
+      const enabledDevice = {
+        enabled: true,
+        id: device.deviceId,
+      };
+
+      this.props.actions.addDevice(enabledDevice);
+      browserHistory.push('/setupDevice');
     })
     .fail((error) => {
-      console.log('Error posting device add: ', error);
+      // set local state to display error
+      context.setState({
+        error: 'ADD_DEVICE',
+        details: error,
+      });
     })
     .always(() => {
       console.log('Finished device add');
     });
-
-    // if error, create local state to show it
-    // if success, update state
-    console.log('add device: ', device);
-    this.props.actions.addDevice(device);
   }
 
   /**
@@ -100,11 +82,18 @@ export class AddDevicePage extends React.Component {
   }
 
   render() {
+    let errorMsg = '';
+    if (this.state.error === 'ADD_DEVICE') {
+      errorMsg = <div style={styles.error}>Failed to connect to device, please try again.</div>;
+    }
+
     return (
       <div>
         <div style={styles.center}>
           <h2>Add Device</h2>
         </div>
+
+        {errorMsg}
 
         <div>
           Enter a device ID to begin setting up a new device.
@@ -116,7 +105,6 @@ export class AddDevicePage extends React.Component {
             onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.addDevice(data)}
             onInvalidSubmit={() => this.notifyFormError()}
-            onSuccess={(data) => console.log('request received by the server!', data)}
           >
             <FormsyText
               name="deviceId"

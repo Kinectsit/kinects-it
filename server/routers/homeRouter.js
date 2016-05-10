@@ -7,5 +7,6 @@ const homeController = require('../controllers/homeController.js');
  The path '/api/v1/homes' is already prepended to all routes based on app.use statement in server.js
 */
 homeRouter.route('/:id/devices').get(homeController.getDevices);
+homeRouter.route('/:id/devices/:id').post(homeController.addDevice);
 
 module.exports = homeRouter;

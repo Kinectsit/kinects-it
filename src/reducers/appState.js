@@ -23,15 +23,14 @@ export default function appState(state = initialState, action) {
       return newState;
     }
     case SETUP_DEVICE: {
-
-      // need a new state object for enabled device
       const newState = objectAssign({}, state);
-      //newState.device = action.device;
+      newState.device = action.device;
       return newState;
     }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
-      newState.device.push(action.device);
+      console.log('action: ', action.enabledDevice);
+      newState.enabledDevice = action.enabledDevice;
       return newState;
     }
     case SET_FEATURED: {

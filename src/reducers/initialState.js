@@ -11,6 +11,10 @@ export default {
   hasDevice: false,
   houseName: '',
   featured: {},
+  enabledDevice: {
+    enabled: false,
+    id: '',
+  },
   devices: [
     {id: 0, name: 'Vaccuum', isActive: true},
     {id: 1, name: 'Washing Machine', isActive: false},

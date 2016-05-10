@@ -23,3 +23,18 @@ exports.getDevices = (req, res, next) => {
     next();
   });
 };
+
+exports.addDevice = (req, res) => {
+  const homeId = req.params.homeId;
+  const deviceId = req.params.deviceId;
+  logger.info('homeId in addDevice: ', homeId);
+  logger.info('deviceId in addDevice: ', deviceId);
+
+  // perform API call to LilBits to enable Device
+  return res.json({ success: true, deviceKey: '12345' });
+  // Error testing:
+  // return res.error({ failed: true });
+};
+
+
+

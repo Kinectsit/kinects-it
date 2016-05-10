@@ -27,5 +27,8 @@ export default {
   },
   center: {
     textAlign: 'center',
+  },
+  error: {
+    color: 'red',
   }
 };
