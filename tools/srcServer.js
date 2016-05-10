@@ -14,6 +14,7 @@ import url from 'url';
 import proxy from 'proxy-middleware';
 
 const bundler = webpack(config);
+process.env.NODE_ENV = 'development';
 
 // Create proxy to be used for API server for any URL paths starting with /api
 const proxyOptions = url.parse('http://localhost:3000/api');

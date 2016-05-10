@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, srcPath)));
 
-// // Authentication Middleware
+// Authentication Middleware
 // app.use(passport.initialize());
 
 // passport.use('coinbase', new CoinbaseStrategy({
