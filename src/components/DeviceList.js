@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
-import { DeviceRow } from './DeviceRow';
+import { DeviceRow } from '../containers/DeviceRow';
 
 export const DeviceList = (props) => (
   <div>
     <h1>Device List </h1>
     <ul>
       {props.appState.devices.map(device =>
-        <DeviceRow device={device} />
+        <div key={device.id}>
+          <DeviceRow device={device} appState={props.appState} actions={props.actions} />
+        </div>
       )}
     </ul>
   </div>
@@ -14,5 +16,6 @@ export const DeviceList = (props) => (
 
 DeviceList.propTypes = {
   appState: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
 };
 

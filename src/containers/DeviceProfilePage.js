@@ -4,13 +4,12 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 
 
-export const DeviceProfilePage = () => (
+export const DeviceProfilePage = (props) => (
   <div>
-    <h2>DeviceProfile page</h2>
+    <h2>Host Device Dashboard</h2>
+    The featured device is: {props.appState.featured.name}
   </div>
 );
-
-// pull in deviceUsage to the render
 
 DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,

@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 
 
-export const DevicePage = () => (
+export const DevicePage = (props) => (
   <div>
-    <h2>Device page</h2>
+    <h2>GUEST  Device Dashboard</h2>
+    The featured device is: {props.appState.featured.name}
   </div>
 );
 
