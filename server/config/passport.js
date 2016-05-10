@@ -1,5 +1,5 @@
 // config/passport.js
-/* eslint max-len: ["error", 150] */
+/* eslint max-len: ["error", 200] */
 
 // load all the things we need
 const LocalStrategy = require('passport-local').Strategy;
@@ -17,19 +17,14 @@ module.exports = (passport) => {
 
     // used to serialize the user for the session
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
   });
 
   // used to deserialize the user
-  passport.deserializeUser((id, done) => {
-    db.one('SELECT * from users where id=$1', id)
-    .then((data) => {
-      done(null, data);
-    })
-    .catch((error) => {
-      // error;
-      done(error);
-    });
+  passport.deserializeUser((user, done) => {
+    db.one('SELECT * from users where username=$1', user)
+    .then((data) => done(null, data))
+    .catch((error) => done(error));
   });
 
   // =========================================================================
@@ -53,11 +48,11 @@ module.exports = (passport) => {
           // create the user
           const newUser = Object.assign({}, req.body);
           newUser.password = User.generateHash(req.body.password);
-          db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
+          return db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
           .then((result) => {
             // user was successfully added to the database
             logger.info(result);
-            return done(null, result);
+            return done(null, JSON.stringify(result));
           });
         })
         .catch((error) => {
@@ -67,10 +62,11 @@ module.exports = (passport) => {
           //   done(null, false, req.flash('signupMessage', 'That email already has an account.'));
           // } else {
           if (error.received >= 1) {
-            return done(null, false, req.flash('signupMessage', 'That email already has an account.'));
+            logger.info(error);
+            return done(null, false, JSON.stringify({ message: 'That email already has an account.' }));
           }
           logger.info(error);
-          return error;
+          return done(error);
         });
     })
   );
