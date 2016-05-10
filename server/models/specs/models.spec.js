@@ -28,7 +28,7 @@ function prepareDb(next) {
  * @param next - the done callback for mocha
 */
 function cleanDb(next) {
-  exec('psql -U postgres -f ./server/config/droptestdb.sql', (err) => {
+  exec('psql -f ./server/config/droptestdb.sql', (err) => {
     if (err !== null) {
       expect(err).to.not.exist;
     }

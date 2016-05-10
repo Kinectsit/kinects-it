@@ -11,6 +11,11 @@ export default {
   hasDevice: false,
   houseName: '',
   featured: {},
+  configuredDevice: {
+    configured: false,
+    id: '',
+    accessToken: '',
+  },
   devices: [
     {id: 0, name: 'Vaccuum', isActive: true},
     {id: 1, name: 'Washing Machine', isActive: false},

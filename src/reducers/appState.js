@@ -4,6 +4,7 @@ import {
   SET_USER,
   ADD_DEVICE,
   SET_FEATURED,
+  SETUP_DEVICE,
   ADD_RENTAL,
 } from '../constants/actionTypes';
 import objectAssign from 'object-assign';
@@ -21,9 +22,14 @@ export default function appState(state = initialState, action) {
       // add function to modify the new state here
       return newState;
     }
+    case SETUP_DEVICE: {
+      const newState = objectAssign({}, state);
+      newState.device = action.device;
+      return newState;
+    }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
-      newState.device.push(action.device);
+      newState.enabledDevice = action.enabledDevice;
       return newState;
     }
     case SET_FEATURED: {

@@ -11,6 +11,7 @@ const logger = require('./config/logger.js');
   Set up routers for the different APIs
 */
 const userRouter = require('./routers/userRouter.js');
+const homeRouter = require('./routers/homeRouter.js');
 
 // configuration variables
 const port = process.env.PORT || 3000;
@@ -63,6 +64,7 @@ app.use(express.static(path.join(__dirname, srcPath)));
    Middleware to configure routes for each api
 */
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/homes', homeRouter);
 
 // send all other requests to index.html so browserHistory in React Router works
 app.get('*', (req, res) => {
