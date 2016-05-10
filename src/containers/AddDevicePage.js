@@ -15,7 +15,7 @@ export class AddDevicePage extends React.Component {
     super(props);
 
     this.errorMessages = {
-      deviceIdError: 'Please provide a valid email',
+      deviceIdError: 'Please provide a valid device ID',
     };
 
     this.state = {
@@ -47,25 +47,30 @@ export class AddDevicePage extends React.Component {
     */
   }
 
-  onTextChange() {
-    console.log('HELLO!!!');
+  /**
+    Called by onBlur and onChange of form to determine if submit button
+    should be enabled or not
+  */
+  onTextChange(event) {
+    if (event.target.value.length > 0) {
+      this.enableButton();
+    } else {
+      this.disableButton();
+    }
   }
 
-  captureFormChange(event) {
-    console.log("FORM CHANGE!!: ", event.target.value);
-    // this.setState({
-    //   device: event.target.value,
-    // });
-  }
-
+  /**
+    Called on submit of the form to dispatch action
+  */
   addDevice(device) {
+     // POST request to see if can connect to device
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device);
 
     $.post(apiPath, (data) => {
-      console.log('Successful call to add a device:, ', data);
+      console.log('Successful call to add a device: ', data);
     })
     .done((data) => {
-      console.log('May not be needed', data);
+      console.log('May not be needed: ', data);
     })
     .fail((error) => {
       console.log('Error posting device add: ', error);
@@ -74,32 +79,24 @@ export class AddDevicePage extends React.Component {
       console.log('Finished device add');
     });
 
+    // if error, create local state to show it
+    // if success, update state
+    console.log('add device: ', device);
     this.props.actions.addDevice(device);
   }
 
+  /**
+    Called by onTextChange to enable submit button
+  */
   enableButton() {
     this.setState({ canSubmit: true });
   }
 
+  /**
+    Called by onTextChange to disable submit button
+  */
   disableButton() {
     this.setState({ canSubmit: false });
-  }
-
-  submitForm(data) {
-    console.log('data = ', data);
-
-    $.post('http://localhost:3001/api/v1/devices/signup', () => {
-      console.log('success');
-    })
-    .done(() => {
-      console.log('second success');
-    })
-    .fail(() => {
-      console.log('error');
-    })
-    .always(() => {
-      console.log('finished');
-    });
   }
 
   render() {
@@ -128,8 +125,8 @@ export class AddDevicePage extends React.Component {
               required
               style={styles.fieldStyles}
               floatingLabelText="Enter Device ID"
-              onChange={this.onTextChange}
-              onBlur={this.onTextChange}
+              onChange={(event) => this.onTextChange(event)}
+              onBlur={(event) => this.onTextChange(event)}
             />
             <div style={styles.center}>
               <FlatButton
@@ -151,7 +148,6 @@ AddDevicePage.propTypes = {
   appState: PropTypes.object.isRequired,
 };
 
-
 function mapStateToProps(state) {
   return {
     appState: state.appState,
@@ -168,6 +164,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(AddDevicePage);
-
-// onChange={(event) => this.captureFormChange(event)}
-
