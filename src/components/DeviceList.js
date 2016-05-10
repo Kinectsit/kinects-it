@@ -6,7 +6,9 @@ export const DeviceList = (props) => (
     <h1>Device List </h1>
     <ul>
       {props.appState.devices.map(device =>
-        <DeviceRow device={device} actions={props.actions} />
+        <div key={device.id}>
+          <DeviceRow device={device} appState={props.appState} actions={props.actions} />
+        </div>
       )}
     </ul>
   </div>
@@ -14,6 +16,6 @@ export const DeviceList = (props) => (
 
 DeviceList.propTypes = {
   appState: PropTypes.object.isRequired,
-  actions: PropTypes.object.isrequired,
+  actions: PropTypes.object.isRequired,
 };
 

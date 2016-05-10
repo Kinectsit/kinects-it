@@ -6,15 +6,14 @@ export default {
     name: '',
     email: '',
   },
-  defaultViewHost: true,
-  hasHouse: false,
-  houseName: '',
+  defaultViewHost: false,
+  houseName: null,
   hasDevice: false,
   houseName: '',
   featured: {},
   devices: [
-    {name: 'Vaccuum', isActive: true},
-    {name: 'Washing Machine', isActive: false},
+    {id: 0, name: 'Vaccuum', isActive: true},
+    {id: 1, name: 'Washing Machine', isActive: false},
   ],
 };
 

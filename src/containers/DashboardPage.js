@@ -18,7 +18,7 @@ export class DashboardPage extends React.Component {
       );
     }
     return (
-      <DashboardGuest appState={this.props.appState} />
+      <DashboardGuest appState={this.props.appState} actions={this.props.actions} />
     );
   }
 }

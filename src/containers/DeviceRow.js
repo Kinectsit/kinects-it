@@ -18,12 +18,24 @@ export class DeviceRow extends React.Component {
     } else {
       active = 'Not Active';
     }
+
+    if (this.props.appState.defaultViewHost) {
+      return (
+        <div>
+          <li>Name: {this.props.device.name}</li>
+          <li>Is Active: {active}</li>
+          <NavLink to="/deviceProfile">
+            <RaisedButton label="View Host Device Dashboard" onClick={() => this.setFeatured()} />
+          </NavLink>
+        </div>
+      );
+    }
     return (
-      <div>
+      <div key={this.props.device.id}>
         <li>Name: {this.props.device.name}</li>
         <li>Is Active: {active}</li>
-        <NavLink to="/deviceProfile">
-          <RaisedButton label="View Device Dashboard" onClick={() => this.setFeatured()} />
+        <NavLink to="/device">
+          <RaisedButton label="View Guest Device Dashboard" onClick={() => this.setFeatured()} />
         </NavLink>
       </div>
     );
@@ -32,6 +44,7 @@ export class DeviceRow extends React.Component {
 
 DeviceRow.propTypes = {
   device: PropTypes.object.isRequired,
+  appState: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };
 
