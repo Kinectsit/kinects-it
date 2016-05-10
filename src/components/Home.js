@@ -11,7 +11,7 @@ export const Home = () => (
           <div>
             <CardTitle title="Bringing the Internet of Things into your home." />
             <CardActions>
-              <FlatButton label="Get Started" linkButton="true" href="/login" />
+              <FlatButton label="Get Started" href="/login" />
             </CardActions></div>}
       >
         <img src="/../assets/tech.jpg" role="presentation" />
@@ -53,7 +53,7 @@ export const Home = () => (
       <div>
         That's it!
       </div>
-      <RaisedButton label="Get Started" primary="true" linkButton="true" href="/login" />
+      <RaisedButton label="Get Started" href="/login" />
     </div>
   </div>
 );
