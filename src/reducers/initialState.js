@@ -2,15 +2,18 @@
 
 export default {
   isAuthenticated: false,
-  userName: '',
-  defaultView: '',
+  users: {
+    name: '',
+    email: '',
+  },
+  defaultViewHost: true,
   hasHouse: false,
+  houseName: '',
   hasDevice: false,
   houseName: '',
-  device: '',
-  featuredDevice: {
-    name: '',
-    isActive: '',
-    hardwareKey: '',
-  },
+  devices: [
+    {name: 'Vaccuum', isActive: true},
+    {name: 'Washing Machine', isActive: false},
+  ],
 };
+
