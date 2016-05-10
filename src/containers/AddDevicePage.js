@@ -50,9 +50,12 @@ export class AddDevicePage extends React.Component {
       const enabledDevice = {
         enabled: true,
         id: device.deviceId,
+        accessToken: device.deviceAccessToken,
       };
 
       this.props.actions.addDevice(enabledDevice);
+
+      // send user to setupDevice page if successful response
       browserHistory.push('/setupDevice');
     })
     .fail((error) => {
@@ -61,9 +64,6 @@ export class AddDevicePage extends React.Component {
         error: 'ADD_DEVICE',
         details: error,
       });
-    })
-    .always(() => {
-      console.log('Finished device add');
     });
   }
 
@@ -113,6 +113,16 @@ export class AddDevicePage extends React.Component {
               required
               style={styles.fieldStyles}
               floatingLabelText="Enter Device ID"
+              onChange={(event) => this.onTextChange(event)}
+              onBlur={(event) => this.onTextChange(event)}
+            />
+            <FormsyText
+              name="deviceAccessToken"
+              validations="isExisty"
+              validationError={this.errorMessages.deviceAccessTokenError}
+              required
+              style={styles.fieldStyles}
+              floatingLabelText="Enter Device Access Token"
               onChange={(event) => this.onTextChange(event)}
               onBlur={(event) => this.onTextChange(event)}
             />

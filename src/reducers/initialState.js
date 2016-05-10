@@ -14,6 +14,7 @@ export default {
   enabledDevice: {
     enabled: false,
     id: '',
+    accessToken: '',
   },
   devices: [
     {id: 0, name: 'Vaccuum', isActive: true},

@@ -29,7 +29,6 @@ export default function appState(state = initialState, action) {
     }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
-      console.log('action: ', action.enabledDevice);
       newState.enabledDevice = action.enabledDevice;
       return newState;
     }
