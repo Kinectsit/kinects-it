@@ -1,13 +1,8 @@
-const userRoutes = require('./userRouter');
-const express = require('express');
-const path = require('path');
-const srcPath = process.env.NODE_ENV === 'development' ? '/../src/' : '/../dist';
+/* eslint new-cap: ["error", { "capIsNewExceptions": "Router" }] */
+const router = require('express').Router();
+const userController = require('../controllers/userController.js');
 
 module.exports = (app, passport) => {
-  app.use(express.static(path.join(__dirname, srcPath)));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, srcPath, '/index.html'));
-  });
-
-  app.use('/api/v1/users', userRoutes)(app, passport);
+  app.route('/api/v1/users').post(userController.signUp);
+  // going to add passport call here
 };
