@@ -9,7 +9,7 @@ const db = require('../db.js');
 //   next()
 // };
 
-exports.signUp = (req, res, next) => {
+module.exports.signUp = (req, res, next) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
   // passport.authenticate('coinbase');
   // console.log('call to signup made with this data:', req.body);

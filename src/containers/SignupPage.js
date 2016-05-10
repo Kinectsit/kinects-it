@@ -6,6 +6,7 @@ import * as actions from '../actions/actions';
 import FontIcon from 'material-ui/FontIcon';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
+// import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';
@@ -92,13 +93,16 @@ export class SignupForm extends React.Component {
     }
 
     $.ajax({
-      url: 'http://localhost:3001/api/v1/users/signup',
+      url: 'http://localhost:3001/api/v1/users/',
       dataType: 'json',
       crossDomain: true,
       method: 'POST',
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        if (!response.login) {
+          // server could not add user to the database
+        }
         console.log('this was the message back from the server', response);
       },
       error: (xhr, status, err) => {

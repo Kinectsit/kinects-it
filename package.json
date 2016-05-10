@@ -5,7 +5,7 @@
   "scripts": {
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm-run-all --parallel start-message remove-dist",
-    "start": " NODE_ENV=development npm-run-all --parallel start:api-server open:src lint:watch",
+    "start": "NODE_ENV=development npm-run-all --parallel start:api-server open:src lint:watch",
     "start:api-server": "nodemon server/server.js",
     "open:src": "babel-node tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
@@ -23,8 +23,11 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "6.3.6",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "3.3.5",
     "body-parser": "1.15.0",
+    "connect-flash": "0.1.1",
+    "cookie-parser": "1.4.1",
     "exec": "0.2.1",
     "express": "4.13.4",
     "express-session": "1.13.0",
