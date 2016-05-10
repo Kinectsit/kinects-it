@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS houses CASCADE;
     
 CREATE TABLE houses (
   id SERIAL PRIMARY KEY,
+  houseName VARCHAR,
   inviteCode VARCHAR
 );
 
@@ -65,7 +66,7 @@ DROP TABLE IF EXISTS user_pay_accounts CASCADE;
     
 CREATE TABLE user_pay_accounts (
   id SERIAL PRIMARY KEY,
-  nickname INTEGER,
+  nickname VARCHAR,
   accountId INTEGER,
   apiAccess VARCHAR,
   payMethodId INTEGER,

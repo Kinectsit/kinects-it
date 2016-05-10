@@ -7,6 +7,5 @@ export const DashboardGuest = () => (
 );
 
 DashboardGuest.propTypes = {
-  actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };

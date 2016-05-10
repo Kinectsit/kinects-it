@@ -1,16 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import { NavLink } from './NavLink';
 
 export const DeviceAddButton = () => (
   <div>
-    <RaisedButton label="Add Device" />
+    <NavLink to="/addDevice">
+      <RaisedButton label="Add Device" />
+    </NavLink>
   </div>
 );
-
-DeviceAddButton.propTypes = {
-  actions: PropTypes.object.isRequired,
-  appState: PropTypes.object.isRequired,
-};
-
-// route to /setupDevicePage on button click (after successful API)
 
