@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "6.3.6",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "3.3.5",
     "body-parser": "1.15.0",
     "connect-flash": "0.1.1",

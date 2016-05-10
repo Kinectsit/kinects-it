@@ -7,11 +7,11 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const userRouter = require('./routers/userRouter');
+// const userRouter = require('./routers/userRouter');
 const apiRouter = require('./routers/routes');
 
 // configuration ===============================================================
-// require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport); // pass passport for configuration
 
 // configuration variables
 const port = process.env.PORT || 3000;
@@ -43,6 +43,7 @@ app.use(flash());
 app.use('/api/v1/homes', homeRouter);
 // app.use('/api/v1/users', userRouter);
 apiRouter(app, passport);
+// app.use('/api/v1/users', userRouter);
 
 // send all other requests to index.html so browserHistory in React Router works
 app.get('*', (req, res) => {
