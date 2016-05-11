@@ -5,7 +5,7 @@ exports.getDevices = (req, res, next) => {
   const homeId = req.params.id;
   logger.info('HomeId in getDevices: ', homeId);
 
-  db.query('SELECT ${column~} FROM ${table~} where houseId={home}', {
+  db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
     column: '*',
     table: 'devices',
     home: homeId,
