@@ -19,7 +19,7 @@ export class DeviceRow extends React.Component {
       active = 'Not Active';
     }
 
-    if (this.props.appState.defaultViewHost) {
+    if (this.props.appState.userTypeHost) {
       return (
         <div>
           <li>Name: {this.props.device.name}</li>

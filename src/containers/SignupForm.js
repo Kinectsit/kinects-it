@@ -3,61 +3,16 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
-import FontIcon from 'material-ui/FontIcon';
-import Subheader from 'material-ui/Subheader';
-import FlatButton from 'material-ui/FlatButton';
-import Paper from 'material-ui/Paper';
-import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import $ from 'jquery';
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
+import Subheader from 'material-ui/Subheader';
+import Paper from 'material-ui/Paper';
+import styles from '../assets/formStyles';
+import FlatButton from 'material-ui/FlatButton';
 
-const styles = {
-  errorStyle: {
-    color: orange500,
-  },
-  underlineStyle: {
-    borderColor: orange500,
-  },
-  floatingLabelStyle: {
-    color: orange500,
-  },
-  floatingLabelFocusStyle: {
-    color: blue500,
-  },
-  fieldStyles: {
-    width: '100%',
-  },
-  paperStyle: {
-    width: '50%',
-    margin: 'auto',
-    padding: 20,
-  },
-  submitStyle: {
-    marginTop: 32,
-  },
-};
-
-export const SignupPage = () => (
-  <div>
-    <h2>Create an Account with Kinects.It!</h2>
-    <FlatButton
-      label="Sign Up With Coinbase"
-      backgroundColor="#2b71b1"
-      hoverColor="#18355C"
-      linkButton
-      disabled
-      href="/api/v1/users/signup"
-      style={{ color: 'white' }}
-      secondary
-      icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
-    />
-    <SignupForm />
-  </div>
-);
-
-export class SignupForm extends React.Component {
+class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
@@ -107,8 +62,12 @@ export class SignupForm extends React.Component {
       success: (response) => {
         if (!response.login) {
           // server could not add user to the database
+          this.testDialogue();
+        } else {
+          // if the response.login is true
+          // then we can reroute to the Dashboard
+          this.props.actions.setUserTypeHost(true);
         }
-        console.log('this was the message back from the server', response);
       },
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
@@ -185,20 +144,16 @@ export class SignupForm extends React.Component {
           />
         </Formsy.Form>
         <FormMessageDialogue ref="formDialogue" title="User Already Exists" failure>
-          <p>Your email or username already exists.
-          Please choose another username or try and login with your email</p>
+          <p>This email or username already exists.
+          Please choose another username or if you already have an account
+          you can try and login</p>
         </FormMessageDialogue>
-        <FlatButton
-          primary
-          label="Test Dialogue"
-          onTouchTap={() => this.testDialogue()}
-        />
       </Paper>
     );
   }
 }
 
-SignupPage.propTypes = {
+SignupForm.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -215,5 +170,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);
 

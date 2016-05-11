@@ -7,6 +7,7 @@ import {
   TOGGLE_DEVICE,
   SETUP_DEVICE_OPTIONS,
   ADD_RENTAL,
+  SET_USER_HOST,
 } from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -46,6 +47,11 @@ export default function appState(state = initialState, action) {
     case ADD_RENTAL: {
       const newState = objectAssign({}, state);
       newState.houseName = action.rental;
+      return newState;
+    }
+    case SET_USER_HOST: {
+      const newState = objectAssign({}, state);
+      newState.userTypeHost = action.setUserTypeHost;
       return newState;
     }
     default:
