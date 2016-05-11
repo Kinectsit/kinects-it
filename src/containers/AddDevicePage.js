@@ -45,7 +45,7 @@ export class AddDevicePage extends React.Component {
     const context = this;
     const isActiveState = { isActive: true };
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
+    const apiPath = 'http://localhost:3000/api/v1/homes/1/devices/'.concat(device.deviceId);
 
     $.post(apiPath, isActiveState, (req) => {
       const configuredDevice = {
