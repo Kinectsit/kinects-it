@@ -4,6 +4,7 @@ import {
   SET_USER,
   ADD_DEVICE,
   SET_FEATURED,
+  TOGGLE_DEVICE,
   SETUP_DEVICE_OPTIONS,
   ADD_RENTAL,
 } from '../constants/actionTypes';
@@ -30,6 +31,11 @@ export default function appState(state = initialState, action) {
     case SET_FEATURED: {
       const newState = objectAssign({}, state);
       newState.featured = action.device;
+      return newState;
+    }
+    case TOGGLE_DEVICE: {
+      const newState = objectAssign({}, state);
+      newState.featured.isActive = action.isActive;
       return newState;
     }
     case SETUP_DEVICE_OPTIONS: {

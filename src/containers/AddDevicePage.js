@@ -50,6 +50,7 @@ export class AddDevicePage extends React.Component {
       const configuredDevice = {
         configured: true,
         id: device.deviceId,
+        isActive: true,
       };
 
       if (!req.success === true) {

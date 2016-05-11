@@ -16,6 +16,10 @@ export function setupDeviceOptions(device) {
   return { type: types.SETUP_DEVICE_OPTIONS, device };
 }
 
+export function toggleDevice(isActive) {
+  return { type: types.TOGGLE_DEVICE, isActive };
+}
+
 export function addRental(rental) {
   return { type: types.ADD_RENTAL, rental };
 }

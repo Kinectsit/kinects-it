@@ -41,6 +41,7 @@ export class SetupDevicePage extends React.Component {
   submitForm(data) {
     const device = data;
     device.id = this.props.appState.configuredDevice.id;
+    device.isActive = this.props.appState.configuredDevice.isActive;
 
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/add/'.concat(device.id);
 
@@ -98,6 +99,10 @@ export class SetupDevicePage extends React.Component {
             />
             <Subheader>Pricing Options</Subheader>
             <FormsyRadioGroup name="price" defaultSelected="15">
+              <FormsyRadio
+                value="1"
+                label="1 minute"
+              />
               <FormsyRadio
                 value="15"
                 label="15 minutes"

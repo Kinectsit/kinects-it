@@ -21,6 +21,9 @@ export default {
     margin: 'auto',
     padding: 20,
   },
+  switchStyle: {
+    marginBottom: 16,
+  },
   submitStyle: {
     marginTop: 32,
     textAlign: 'center',
