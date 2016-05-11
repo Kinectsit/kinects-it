@@ -55,6 +55,7 @@ export class AddDevicePage extends React.Component {
       if (!req.success === true) {
         context.setState({
           error: 'ADD_DEVICE',
+          details: req.message,
         });
       } else {
         this.props.actions.addDevice(configuredDevice);
@@ -66,7 +67,7 @@ export class AddDevicePage extends React.Component {
       // set local state to display error
       context.setState({
         error: 'ADD_DEVICE',
-        details: error,
+        details: 'Failed to connect to device, try again.',
       });
     });
   }
@@ -88,7 +89,7 @@ export class AddDevicePage extends React.Component {
   render() {
     let errorMsg = '';
     if (this.state.error === 'ADD_DEVICE') {
-      errorMsg = <div style={styles.error}>Failed to connect to device, please try again.</div>;
+      errorMsg = <div style={styles.error}>{this.state.details}</div>;
     }
 
     return (
