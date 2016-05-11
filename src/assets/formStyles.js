@@ -17,7 +17,7 @@ export default {
     width: '100%',
   },
   paperStyle: {
-    width: '100%',
+    width: '50%',
     margin: 'auto',
     padding: 20,
   },

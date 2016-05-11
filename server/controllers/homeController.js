@@ -26,7 +26,7 @@ exports.getDevices = (req, res, next) => {
 };
 
 
-exports.addDevice = (req, res) => {
+exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
 
   const options = { method: 'POST',
@@ -48,3 +48,7 @@ exports.addDevice = (req, res) => {
   });
 };
 
+exports.addDevice = (req, res) => {
+  console.log('req.body is ', req.body);
+  res.send('will add to db once query is written');
+};

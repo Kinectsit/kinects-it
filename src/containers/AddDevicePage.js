@@ -41,7 +41,7 @@ export class AddDevicePage extends React.Component {
   /**
     Called on after submit form to check hardware
   */
-  addDevice(device) {
+  toggleDevice(device) {
     const context = this;
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
@@ -95,19 +95,17 @@ export class AddDevicePage extends React.Component {
       <div>
         <div style={styles.center}>
           <h2>Add Device</h2>
-        </div>
-
-        {errorMsg}
-
-        <div>
-          Enter a device ID to begin setting up a new device.
+          {errorMsg}
+          <div>
+            Enter a device ID to begin setting up a new device.
+          </div>
         </div>
 
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
             onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.addDevice(data)}
+            onValidSubmit={(data) => this.toggleDevice(data)}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
           >
