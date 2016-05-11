@@ -58,18 +58,23 @@ export class LoginForm extends React.Component {
   }
 
   login(data) {
-    const success = (user) => {
-      console.log('I have logged in: ', user);
-    };
-
-    $.post('http://localhost:3000/api/v1/session',
-       JSON.stringify(data),
-       success,
-       'json'
-      )
-      .fail((error) => {
-        console.log('I failed to login: ', error);
-      });
+    $.ajax({
+      url: 'http://localhost:3001/api/v1/session/',
+      dataType: 'json',
+      crossDomain: true,
+      method: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(data),
+      success: (response) => {
+        if (!response.login) {
+          // server could not add user to the database
+        }
+        console.log('this was the message back from the server', response);
+      },
+      error: (xhr, status, err) => {
+        console.error('there was an error', status, err.toString());
+      },
+    });
   }
 
   formErrorMessage(error) {

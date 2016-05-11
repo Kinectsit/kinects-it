@@ -28,6 +28,46 @@ module.exports = (passport) => {
   });
 
   // =========================================================================
+  // LOCAL LOGIN =============================================================
+  // =========================================================================
+  // we are using named strategies since we have one for login and one for signup
+  // by default, if there was no name, it would just be called 'local'
+  passport.use('local-login', new LocalStrategy({
+    // by default, local strategy uses username and password, we will override with email
+    usernameField: 'name',
+    passwordField: 'password',
+    passReqToCallback: true, // allows us to pass back the entire request to the callback
+  },
+  (req, user, password, done) => { // callback with email and password from our form
+    // we are checking to see if the user trying to login exists
+
+    console.log('*****LOCAL-LOGIN******');
+
+    db.any('SELECT * from users where name=$1', [req.body.name])
+      .then((loggedInUser) => {
+        // if no user is found, return the message
+        if (!loggedInUser) {
+          console.log('inside passport authenticate, no user found');
+          return done(null, false);
+        }
+
+        /* need to validate the password somehow
+        if (!loggedInUser.validPassword(password)) {
+          console.log('inside passport authenticate, user found, invalid password: ', loggedInUser);
+
+          // create the loginMessage and save it to session as flashdata
+          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+        }
+        */
+        console.log('valid login for user: ', loggedInUser);
+        return done(null, loggedInUser);
+      })
+      .catch((error) => {
+        done(error);
+      });
+  }));
+
+  // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
@@ -40,6 +80,8 @@ module.exports = (passport) => {
     passReqToCallback: true, // allows us to pass back the entire request to the callback
   },
     (req, email, password, done) => {
+      console.log('*****LOCAL-SIGNUP******');
+
       // asynchronous
       // User.findOne wont fire unless data is sent back
       process.nextTick(() => {
@@ -69,39 +111,6 @@ module.exports = (passport) => {
       });
     })
   );
-
-  // =========================================================================
-  // LOCAL LOGIN =============================================================
-  // =========================================================================
-  // we are using named strategies since we have one for login and one for signup
-  // by default, if there was no name, it would just be called 'local'
-
-  passport.use('local-login', new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true, // allows us to pass back the entire request to the callback
-  },
-  (req, email, password, done) => { // callback with email and password from our form
-    // we are checking to see if the user trying to login exists
-    db.any('SELECT * from users where name=$1', [req.body.name])
-      .then((user) => {
-        // if no user is found, return the message
-        if (!user) {
-          return done(null, false);
-        }
-
-        if (!user.validPassword(password)) {
-          // create the loginMessage and save it to session as flashdata
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-        }
-
-        return done(null, user);
-      })
-      .catch((error) => {
-        done(error);
-      });
-  }));
 };
 
     // User.findOne({ 'local.email': email }, (err, user) => {
