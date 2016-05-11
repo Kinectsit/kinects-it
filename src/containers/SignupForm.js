@@ -114,7 +114,7 @@ class SignupForm extends React.Component {
           />
           <FormsyText
             name="password"
-            validations="isLength:5"
+            validations="minLength:5"
             validationError={this.errorMessages.passwordError}
             required
             type="password"
