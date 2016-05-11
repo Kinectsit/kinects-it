@@ -17,11 +17,12 @@ export class DeviceProfilePage extends React.Component {
 
   toggleDevice() {
     const deviceId = this.props.appState.featured.id;
+    const isActiveState = { isActive: !this.props.appState.featured.isActive };
     const context = this;
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(deviceId);
 
-    $.post(apiPath, (req) => {
+    $.post(apiPath, isActiveState, (req) => {
       if (!req.success === true) {
         context.setState({
           error: req.message,
@@ -49,6 +50,7 @@ export class DeviceProfilePage extends React.Component {
       <div>
         <h2>{this.props.appState.featured.name}</h2>
         {errorMsg}
+        <h3>{this.props.appState.featured.description}</h3>
         <Toggle
           onToggle={() => this.toggleDevice()}
           defaultToggled={this.props.appState.featured.isActive}

@@ -11,11 +11,11 @@ export default {
   hasDevice: false,
   houseName: '',
   featured: {
-    description: "It plays music",
-    id: "00e04c038343",
-    isActive: true,
-    name: "Radio",
-    price: "15",
+    // description: "It plays music",
+    // id: "00e04c038343",
+    // isActive: true,
+    // name: "Radio",
+    // price: "15",
   },
   configuredDevice: {
     configured: false,

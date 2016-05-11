@@ -28,6 +28,8 @@ exports.getDevices = (req, res, next) => {
 
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
+  const isActiveState = req.body;
+  console.log('req.body is ', isActiveState);
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -43,6 +45,7 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
+      // change active state in database!!!
       console.log(body);
       return res.json(body);
     }
@@ -51,5 +54,6 @@ exports.toggleDevice = (req, res) => {
 
 exports.addDevice = (req, res) => {
   console.log('req.body is ', req.body);
+  // add to database
   res.send('will add to db once query is written');
 };
