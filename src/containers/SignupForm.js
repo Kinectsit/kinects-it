@@ -11,6 +11,7 @@ import Subheader from 'material-ui/Subheader';
 import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import FlatButton from 'material-ui/FlatButton';
+import { browserHistory } from 'react-router';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -64,9 +65,15 @@ class SignupForm extends React.Component {
           // server could not add user to the database
           this.testDialogue();
         } else {
-          // if the response.login is true
-          // then we can reroute to the Dashboard
-          this.props.actions.setUserTypeHost(true);
+          // if the response.login is true then user was added
+          // first execute action to set user type to host
+          if (data.host === true) {
+            this.props.actions.setUserAsHost(true);
+          } else {
+            this.props.actions.setUserAsHost(false);
+          }
+          // next reroute to User Dashboard
+          browserHistory.push('/dashboard');
         }
       },
       error: (xhr, status, err) => {

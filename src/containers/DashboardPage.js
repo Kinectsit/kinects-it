@@ -12,7 +12,7 @@ export class DashboardPage extends React.Component {
   }
 
   render() {
-    if (this.props.appState.userTypeHost) {
+    if (this.props.appState.isHost) {
       return (
         <DashboardHost appState={this.props.appState} actions={this.props.actions} />
       );

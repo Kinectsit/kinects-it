@@ -18,7 +18,6 @@ export class FormMessageDialogue extends React.Component {
   }
 
   render() {
-    console.log(this.state.open);
     const actions = [
       <FlatButton
         label="close"

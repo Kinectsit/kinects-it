@@ -24,6 +24,6 @@ export function addRental(rental) {
   return { type: types.ADD_RENTAL, rental };
 }
 
-export function setUserTypeHost(setUserHost) {
-  return { type: types.SET_USER_HOST, setUserHost };
+export function setUserAsHost(isHost) {
+  return { type: types.SET_USER_AS_HOST, isHost };
 }

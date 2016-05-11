@@ -1,13 +1,10 @@
 /* eslint-disable no-param-reassign */
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '../actions/actions';
+import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import SignupForm from '../containers/SignupForm';
 
-export const SignUpPage = () => (
+export const SignupPage = () => (
   <div>
     <h2>Create an Account with Kinects.It!</h2>
     <FlatButton
@@ -24,23 +21,3 @@ export const SignUpPage = () => (
     <SignupForm />
   </div>
 );
-
-SignUpPage.propTypes = {
-  actions: PropTypes.object.isRequired,
-  appState: PropTypes.object.isRequired,
-};
-
-function mapStateToProps(state) {
-  return {
-    appState: state.appState,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
-

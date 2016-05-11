@@ -6,7 +6,7 @@ export default {
     name: '',
     email: '',
   },
-  userTypeHost: false,
+  isHost: false,
   houseName: null,
   hasDevice: false,
   houseName: '',
