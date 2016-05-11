@@ -9,7 +9,7 @@ import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
-import hardware from '../../config.js';
+// import hardware from '../../config.js';
 
 export class AddDevicePage extends React.Component {
 
@@ -39,50 +39,7 @@ export class AddDevicePage extends React.Component {
   }
 
   /**
-    Called on submit of the form to check hardware
-  */
-  checkHardware(device) {
-    const context = this;
-    $.ajax({
-      url: `https://api-http.littlebitscloud.cc/devices/${device.deviceId}/output`,
-      headers: {
-        'Authorization': `Bearer ${hardware.ACCESS_TOKEN}`,
-        'Accept': 'application/vnd.littlebits.v2+json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      data: '{\"duration_ms\":6000}',
-      success: (data) => {
-        console.log(`success: ${data}`);
-        this.addDevice(device);
-      },
-      error: (err) => {
-        console.log(`error: ${err}`);
-        context.setState({
-          error: 'ADD_DEVICE',
-          details: err,
-        });
-      },
-    });
-  }
-
-
-// var settings = {
-//   "async": true,
-//   "crossDomain": true,
-//   "url": "https://api-http.littlebitscloud.cc/devices/00e04c038343/output",
-//   "method": "POST",
-//   "headers": {
-//     "authorization": "Bearer c585ac4524b44283515b3c11f860a8bd0e7283154f683b2e1ab1702888be4bc7",
-//     "accept": "application/vnd.littlebits.v2+json",
-//     "content-type": "application/json",
-//   },
-//   "processData": false,
-//   "data": "{\"duration_ms\":100}"
-// }
-
-  /**
-    Called on after successful hardware request to dispatch action
+    Called on after submit form to check hardware
   */
   addDevice(device) {
     const context = this;
@@ -145,7 +102,7 @@ export class AddDevicePage extends React.Component {
           <Formsy.Form
             onValid={() => this.enableButton()}
             onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.checkHardware(data)}
+            onValidSubmit={(data) => this.addDevice(data)}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
           >

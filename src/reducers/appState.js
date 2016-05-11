@@ -22,11 +22,6 @@ export default function appState(state = initialState, action) {
       // add function to modify the new state here
       return newState;
     }
-    case SETUP_DEVICE_OPTIONS: {
-      const newState = objectAssign({}, state);
-      newState.device = action.device;
-      return newState;
-    }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
       newState.configuredDevice = action.configuredDevice;
@@ -35,6 +30,11 @@ export default function appState(state = initialState, action) {
     case SET_FEATURED: {
       const newState = objectAssign({}, state);
       newState.featured = action.device;
+      return newState;
+    }
+    case SETUP_DEVICE_OPTIONS: {
+      const newState = objectAssign({}, state);
+      newState.device = action.device;
       return newState;
     }
     case ADD_RENTAL: {
