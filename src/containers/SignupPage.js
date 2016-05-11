@@ -6,12 +6,12 @@ import * as actions from '../actions/actions';
 import FontIcon from 'material-ui/FontIcon';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
-// import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import $ from 'jquery';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 
 const styles = {
   errorStyle: {
@@ -68,6 +68,7 @@ export class SignupForm extends React.Component {
     };
     this.state = {
       canSubmit: false,
+      dialogueOpen: false,
     };
   }
 
@@ -81,6 +82,10 @@ export class SignupForm extends React.Component {
     this.setState({
       canSubmit: false,
     });
+  }
+
+  testDialogue() {
+    this.refs.formDialogue.handleOpen();
   }
 
   submitForm(data) {
@@ -179,6 +184,15 @@ export class SignupForm extends React.Component {
             disabled={!this.state.canSubmit}
           />
         </Formsy.Form>
+        <FormMessageDialogue ref="formDialogue" title="User Already Exists" failure>
+          <p>Your email or username already exists.
+          Please choose another username or try and login with your email</p>
+        </FormMessageDialogue>
+        <FlatButton
+          primary
+          label="Test Dialogue"
+          onTouchTap={() => this.testDialogue()}
+        />
       </Paper>
     );
   }
