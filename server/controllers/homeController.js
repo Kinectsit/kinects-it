@@ -36,13 +36,14 @@ exports.toggleDevice = (req, res) => {
       'content-type': 'application/json',
       accept: 'application/vnd.littlebits.v2+json',
     },
-    body: { duration_ms: -1 },
+    body: { duration_ms: 100 },
     json: true };
 
   request(options, (error, response, body) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
+      console.log(body);
       return res.json(body);
     }
   });

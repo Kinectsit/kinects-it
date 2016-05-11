@@ -40,8 +40,7 @@ export class SetupDevicePage extends React.Component {
 
   submitForm(data) {
     const device = data;
-    device.id = this.props.appState.configuredDevice;
-    console.log('device is ', device);
+    device.id = this.props.appState.configuredDevice.id;
 
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/add/'.concat(device.id);
 

@@ -63,7 +63,7 @@ export class AddDevicePage extends React.Component {
         browserHistory.push('/setupDevice');
       }
     })
-    .fail((error) => {
+    .fail(() => {
       // set local state to display error
       context.setState({
         error: 'ADD_DEVICE',
