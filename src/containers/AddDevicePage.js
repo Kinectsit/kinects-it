@@ -46,16 +46,21 @@ export class AddDevicePage extends React.Component {
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
 
-    $.post(apiPath, (/* data */) => {
+    $.post(apiPath, (req, res) => {
       const configuredDevice = {
         configured: true,
         id: device.deviceId,
       };
 
-      this.props.actions.addDevice(configuredDevice);
-
-      // send user to setupDevice page if successful response
-      browserHistory.push('/setupDevice');
+      if (!req.success === true) {
+        context.setState({
+          error: 'ADD_DEVICE',
+        });
+      } else {
+        this.props.actions.addDevice(configuredDevice);
+        // send user to setupDevice page if successful response
+        browserHistory.push('/setupDevice');
+      }
     })
     .fail((error) => {
       // set local state to display error

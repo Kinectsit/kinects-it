@@ -36,13 +36,15 @@ exports.addDevice = (req, res) => {
       'content-type': 'application/json',
       accept: 'application/vnd.littlebits.v2+json',
     },
-    body: { duration_ms: 100 },
+    body: { duration_ms: 4000 },
     json: true };
 
-  request(options, (error) => {
-    if (error) throw new Error(error);
+  request(options, (error, response, body) => {
+    if (error) {
+      throw new Error('error!!! ', error);
+    } else {
+      return res.json(body);
+    }
   });
-
-  return res.json({ success: true });
 };
 
