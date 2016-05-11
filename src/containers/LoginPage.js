@@ -23,7 +23,7 @@ export class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
-      passwordError: 'Please enter a password of at least 5 characters',
+      passwordError: 'Please enter a password of at least 5 characters dummy',
       nameError: 'Please enter a user name',
       submitError: 'Please resolve invalid input and try again',
     };
@@ -62,7 +62,7 @@ export class LoginForm extends React.Component {
       console.log('I have logged in: ', user);
     };
 
-    $.post('http://localhost:3000/api/session',
+    $.post('http://localhost:3000/api/v1/session',
        JSON.stringify(data),
        success,
        'json'
@@ -108,7 +108,7 @@ export class LoginForm extends React.Component {
           />
           <FormsyText
             name="password"
-            validations="isLength:5"
+            validations="minLength:5"
             validationError={this.errorMessages.passwordError}
             required
             type="password"
