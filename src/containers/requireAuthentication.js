@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import { bindActionCreators } from 'redux';
+import * as actions from '../actions/actions';
 
 export function requireAuthentication(Component) {
   class AuthenticatedComponent extends React.Component {
@@ -21,14 +23,21 @@ export function requireAuthentication(Component) {
         // check with server if current session is authenticated
         $.get('/api/v1/authentication')
           .done((response) => {
-            console.log('response from server when trying to authenticate:', response);
+            if (response) {
+              this.props.actions.setAsAuthenticated(true, response.sessionId);
+              this.props.actions.setUser(response.user);
+              if (response.host) {
+                this.props.actions.setUserAsHost(true);
+              } else {
+                this.props.actions.setUserAsHost(false);
+              }
+            } else {
+              browserHistory.push('/login');
+            }
           })
           .fail((error) => {
             console.log('there was an error:', error);
           });
-          // if authenticated then continue to route
-          // else redirect to the login page
-        // browserHistory.push('/login');
       }
     }
 
@@ -45,6 +54,7 @@ export function requireAuthentication(Component) {
   }
 
   AuthenticatedComponent.propTypes = {
+    actions: PropTypes.object.isRequired,
     authState: PropTypes.object.isRequired,
   };
 
@@ -54,11 +64,10 @@ export function requireAuthentication(Component) {
     };
   }
 
-  // const mapStateToProps = (state) => ({
-  //   token: state.auth.token,
-  //   userName: state.auth.userName,
-  //   isAuthenticated: state.auth.isAuthenticated,
-  // });
-
-  return connect(mapStateToProps)(AuthenticatedComponent);
+  function mapDispatchToProps(dispatch) {
+    return {
+      actions: bindActionCreators(actions, dispatch),
+    };
+  }
+  return connect(mapStateToProps, mapDispatchToProps)(AuthenticatedComponent);
 }
