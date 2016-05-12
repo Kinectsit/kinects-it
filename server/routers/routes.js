@@ -3,6 +3,22 @@ const router = require('express').Router();
 const userController = require('../controllers/userController.js');
 
 module.exports = (app, passport) => {
+  app.get('/api/v1/authentication', (req, res) => {
+    if (req.isAuthenticated()) {
+      const message = {
+        user: {
+          name:req.session.passport.user.name,
+          email: req.session.passport.user.email,
+          id: req.session.passport.user.id,
+        },
+        sessionId: req.session.id,
+        host: req.user.defaultviewhost,
+      }
+      return res.json(message);
+    } else {
+      return res.json(false);
+    }
+  })
   app.route('/api/v1/users').post((req, res, next) => {
     passport.authenticate('local-signup', (err, user, info) => {
       if (err) {

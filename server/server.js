@@ -5,7 +5,7 @@ const path = require('path');
 const logger = require('./config/logger.js');
 const passport = require('passport');
 const session = require('express-session');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 // const flash = require('connect-flash');
 // const userRouter = require('./routers/userRouter');
 const homeRouter = require('./routers/homeRouter.js');
@@ -26,15 +26,15 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(passport.initialize());
 app.use(session({
   secret: 'kinectsit2016team3feb',
   resave: false,
   saveUninitialized: true,
 }));
+app.use(passport.initialize());
 app.use(passport.session());
 // app.use(flash());
 

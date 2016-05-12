@@ -61,7 +61,6 @@ class SignupForm extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log(response);
         if (!response.login) {
           // server could not add user to the database
           this.openErrorMessage();

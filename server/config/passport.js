@@ -18,7 +18,7 @@ module.exports = (passport) => {
 
   // used to deserialize the user
   passport.deserializeUser((user, done) => {
-    db.one('SELECT * from users where username=$1', user)
+    db.one('SELECT * from users where name=${name}', user)
     .then((data) => done(null, data))
     .catch((error) => done(error));
   });
