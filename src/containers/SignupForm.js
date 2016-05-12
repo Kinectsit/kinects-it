@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, no-return-assign */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -40,8 +40,8 @@ class SignupForm extends React.Component {
     });
   }
 
-  testDialogue() {
-    this.refs.formDialogue.handleOpen();
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   submitForm(data) {
@@ -64,7 +64,7 @@ class SignupForm extends React.Component {
         console.log(response);
         if (!response.login) {
           // server could not add user to the database
-          this.testDialogue();
+          this.openErrorMessage();
         } else {
           // if the response.login is true then user was added
           // first execute action to set user type to host
@@ -155,7 +155,11 @@ class SignupForm extends React.Component {
             disabled={!this.state.canSubmit}
           />
         </Formsy.Form>
-        <FormMessageDialogue ref="formDialogue" title="User Already Exists" failure>
+        <FormMessageDialogue
+          ref={(node) => this.messageDialogue = node}
+          title="User Already Exists"
+          failure
+        >
           <p>This email or username already exists.
           Please choose another username or if you already have an account
           you can try and login</p>
