@@ -40,7 +40,7 @@ export class FormMessageDialogue extends React.Component {
 }
 
 FormMessageDialogue.propTypes = {
-  open: PropTypes.bool.isRequired,
+  open: PropTypes.bool,
   children: PropTypes.element,
   title: PropTypes.string.isRequired,
 };

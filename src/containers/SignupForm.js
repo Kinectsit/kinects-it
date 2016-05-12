@@ -61,6 +61,7 @@ class SignupForm extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        console.log(response);
         if (!response.login) {
           // server could not add user to the database
           this.testDialogue();
@@ -72,6 +73,10 @@ class SignupForm extends React.Component {
           } else {
             this.props.actions.setUserAsHost(false);
           }
+          console.log('this is the response back-end:', response);
+          // Next set authentication
+          this.props.actions.setAsAuthenticated(true, response.sessionId);
+          this.props.actions.setUser(response.user);
           // next reroute to User Dashboard
           browserHistory.push('/dashboard');
         }
