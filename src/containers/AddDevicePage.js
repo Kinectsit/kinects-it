@@ -9,6 +9,7 @@ import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+// import hardware from '../../config.js';
 
 export class AddDevicePage extends React.Component {
 
@@ -38,31 +39,37 @@ export class AddDevicePage extends React.Component {
   }
 
   /**
-    Called on submit of the form to dispatch action
+    Called on after submit form to check hardware
   */
-  addDevice(device) {
+  toggleDevice(device) {
     const context = this;
-     // POST request to see if can connect to device
+    const isActiveState = { isActive: true };
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(device.deviceId);
 
-    $.post(apiPath, (/* data */) => {
+    $.post(apiPath, isActiveState, (req) => {
       const configuredDevice = {
         configured: true,
         id: device.deviceId,
-        accessToken: device.deviceAccessToken,
+        isActive: true,
       };
 
-      this.props.actions.addDevice(configuredDevice);
-
-      // send user to setupDevice page if successful response
-      browserHistory.push('/setupDevice');
+      if (!req.success === true) {
+        context.setState({
+          error: 'ADD_DEVICE',
+          details: req.message,
+        });
+      } else {
+        this.props.actions.addDevice(configuredDevice);
+        // send user to setupDevice page if successful response
+        browserHistory.push('/setupDevice');
+      }
     })
-    .fail((error) => {
+    .fail(() => {
       // set local state to display error
       context.setState({
         error: 'ADD_DEVICE',
-        details: error,
+        details: 'Failed to connect to device, try again.',
       });
     });
   }
@@ -84,27 +91,26 @@ export class AddDevicePage extends React.Component {
   render() {
     let errorMsg = '';
     if (this.state.error === 'ADD_DEVICE') {
-      errorMsg = <div style={styles.error}>Failed to connect to device, please try again.</div>;
+      errorMsg = <div style={styles.error}>{this.state.details}</div>;
     }
 
     return (
       <div>
         <div style={styles.center}>
           <h2>Add Device</h2>
-        </div>
-
-        {errorMsg}
-
-        <div>
-          Enter a device ID to begin setting up a new device.
+          {errorMsg}
+          <div>
+            Enter a device ID to begin setting up a new device.
+          </div>
         </div>
 
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
             onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.addDevice(data)}
+            onValidSubmit={(data) => this.toggleDevice(data)}
             onInvalidSubmit={() => this.notifyFormError()}
+            autoComplete="off"
           >
             <FormsyText
               name="deviceId"
@@ -113,16 +119,6 @@ export class AddDevicePage extends React.Component {
               required
               style={styles.fieldStyles}
               floatingLabelText="Enter Device ID"
-              onChange={(event) => this.onTextChange(event)}
-              onBlur={(event) => this.onTextChange(event)}
-            />
-            <FormsyText
-              name="deviceAccessToken"
-              validations="isExisty"
-              validationError={this.errorMessages.deviceAccessTokenError}
-              required
-              style={styles.fieldStyles}
-              floatingLabelText="Enter Device Access Token"
               onChange={(event) => this.onTextChange(event)}
               onBlur={(event) => this.onTextChange(event)}
             />

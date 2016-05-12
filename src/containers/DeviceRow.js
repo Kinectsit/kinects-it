@@ -24,7 +24,7 @@ export class DeviceRow extends React.Component {
         <div>
           <li>Name: {this.props.device.name}</li>
           <li>Is Active: {active}</li>
-          <NavLink to="/deviceProfile">
+          <NavLink to="/device-profile">
             <RaisedButton label="View Host Device Dashboard" onClick={() => this.setFeatured()} />
           </NavLink>
         </div>
