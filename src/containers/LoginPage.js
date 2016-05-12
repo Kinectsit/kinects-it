@@ -10,15 +10,6 @@ import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
-
-export const Login = () => (
-  <div>
-    <h2>Login to your account</h2>
-
-    <LoginForm />
-  </div>
-);
-
 export class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -70,9 +61,6 @@ export class LoginPage extends React.Component {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
-          console.log('this = ', this);
-          console.log('this.props = ', this.props.actions);
-
           this.props.actions.setAsAuthenticated(true, response.sessionId);
           this.props.actions.setUser(response.user);
           if (response.host) {
