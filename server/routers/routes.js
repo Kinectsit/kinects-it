@@ -3,6 +3,11 @@ const router = require('express').Router();
 const userController = require('../controllers/userController.js');
 
 module.exports = (app, passport) => {
+  app.get('/api/v1/authentication', (req, res) => {
+    console.log('get call to authentication route reached');
+    console.log('here is the authentication state:', req.isAuthenticated());
+    console.log('if authenticated, this is the session_id: ', req.session.id)
+  })
   app.route('/api/v1/users').post((req, res, next) => {
     passport.authenticate('local-signup', (err, user, info) => {
       if (err) {

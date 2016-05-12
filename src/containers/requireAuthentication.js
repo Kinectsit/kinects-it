@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-// import {pushState} from 'redux-router';
+import $ from 'jquery';
 
 export function requireAuthentication(Component) {
   class AuthenticatedComponent extends React.Component {
@@ -10,16 +10,25 @@ export function requireAuthentication(Component) {
       this.checkAuth();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps() {
       this.checkAuth();
     }
 
     checkAuth() {
       console.log('this is the current authState:', this.props.authState);
       if (!this.props.authState.isAuthenticated) {
-        browserHistory.push('/login');
-        // let redirectAfterLogin = this.props.location.pathname;
-        // this.props.dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
+        // current local state not authenticated
+        // check with server if current session is authenticated
+        $.get('/api/v1/authentication')
+          .done((response) => {
+            console.log('response from server when trying to authenticate:', response);
+          })
+          .fail((error) => {
+            console.log('there was an error:', error);
+          });
+          // if authenticated then continue to route
+          // else redirect to the login page
+        // browserHistory.push('/login');
       }
     }
 
