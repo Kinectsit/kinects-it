@@ -30,6 +30,7 @@ module.exports = (app, passport) => {
         req.login(user, function(err) {
             if (err) return next(err);
             // creating a message to send to the client for session information
+
             const userInfo = {
               name:req.session.passport.user.name,
               email: req.session.passport.user.email,
@@ -45,7 +46,7 @@ module.exports = (app, passport) => {
         });
       };
       if (!user) {
-        return res.json(info)
+        return res.json(info);
       }
 
     })(req, res, next);
@@ -60,8 +61,25 @@ module.exports = (app, passport) => {
         // user was validated 
         // Manually establish the session...
         req.login(user, function(err) {
-            if (err) return next(err);
-            return res.json(info)
+            if (err) {
+              return next(err);
+            }
+
+            // creating a message to send to the client for session information
+            const userInfo = {
+              name:req.session.passport.user.name,
+              email: req.session.passport.user.email,
+              id: req.session.passport.user.id,
+              host: req.session.passport.user.defaultviewhost,
+            }
+            const message = {
+              user: userInfo,
+              sessionId: req.session.id,
+              login: info.login,
+              message: info.message,
+            };
+
+            return res.json(message);
         });
       };
       if (!user) {

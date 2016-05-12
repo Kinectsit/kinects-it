@@ -71,7 +71,7 @@ export class LoginForm extends React.Component {
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
           // this.props.actions.;
-          // send user to setupDevice page if successful response
+          // send user to dashboard page if successful response
           browserHistory.push('/dashboard');
         }
       },

@@ -39,16 +39,13 @@ module.exports = (passport) => {
       .then((loggedInUser) => {
         // if no user is found, return the message
         if (!loggedInUser) {
-          console.log('inside passport authenticate, no user found');
-          return done(null, false, { login: false, message: 'User failed logged in.' });
+          return done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
         }
         /* validate the password  */
         const matches = User.comparePasswords(password, loggedInUser.password);
         if (!matches) {
-          console.log('inside passport authenticate, user found, invalid password: ', loggedInUser);
           return done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
         }
-        console.log('valid login for user: ', loggedInUser);
         return done(null, loggedInUser, { login: true, message: 'User successfully logged in.' });
       })
       .catch((error) => {
