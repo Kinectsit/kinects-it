@@ -70,7 +70,6 @@ module.exports = (passport) => {
   },
     (req, email, password, done) => {
       // asynchronous
-      // User.findOne wont fire unless data is sent back
       process.nextTick(() => {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists

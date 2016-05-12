@@ -23,3 +23,11 @@ export function toggleDevice(isActive) {
 export function addRental(rental) {
   return { type: types.ADD_RENTAL, rental };
 }
+
+export function setUserAsHost(isHost) {
+  return { type: types.SET_USER_AS_HOST, isHost };
+}
+
+export function setAsAuthenticated(isAuthenticated, sessionId) {
+  return { type: types.LOGIN_SUCCESS, isAuthenticated, sessionId };
+}

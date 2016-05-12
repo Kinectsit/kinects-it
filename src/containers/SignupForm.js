@@ -1,63 +1,19 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, no-return-assign */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
-import FontIcon from 'material-ui/FontIcon';
-import Subheader from 'material-ui/Subheader';
-import FlatButton from 'material-ui/FlatButton';
-// import Dialog from 'material-ui/Dialog';
-import Paper from 'material-ui/Paper';
-import { orange500, blue500 } from 'material-ui/styles/colors';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import $ from 'jquery';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
+import Subheader from 'material-ui/Subheader';
+import Paper from 'material-ui/Paper';
+import styles from '../assets/formStyles';
+import FlatButton from 'material-ui/FlatButton';
+import { browserHistory } from 'react-router';
 
-const styles = {
-  errorStyle: {
-    color: orange500,
-  },
-  underlineStyle: {
-    borderColor: orange500,
-  },
-  floatingLabelStyle: {
-    color: orange500,
-  },
-  floatingLabelFocusStyle: {
-    color: blue500,
-  },
-  fieldStyles: {
-    width: '100%',
-  },
-  paperStyle: {
-    width: '50%',
-    margin: 'auto',
-    padding: 20,
-  },
-  submitStyle: {
-    marginTop: 32,
-  },
-};
-
-export const SignupPage = () => (
-  <div>
-    <h2>Create an Account with Kinects.It!</h2>
-    <FlatButton
-      label="Sign Up With Coinbase"
-      backgroundColor="#2b71b1"
-      hoverColor="#18355C"
-      linkButton
-      disabled
-      href="/api/v1/users/signup"
-      style={{ color: 'white' }}
-      secondary
-      icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
-    />
-    <SignupForm />
-  </div>
-);
-
-export class SignupForm extends React.Component {
+class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
@@ -68,6 +24,7 @@ export class SignupForm extends React.Component {
     };
     this.state = {
       canSubmit: false,
+      dialogueOpen: false,
     };
   }
 
@@ -81,6 +38,10 @@ export class SignupForm extends React.Component {
     this.setState({
       canSubmit: false,
     });
+  }
+
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   submitForm(data) {
@@ -100,10 +61,24 @@ export class SignupForm extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        console.log(response);
         if (!response.login) {
           // server could not add user to the database
+          this.openErrorMessage();
+        } else {
+          // if the response.login is true then user was added
+          // first execute action to set user type to host
+          if (data.host === true) {
+            this.props.actions.setUserAsHost(true);
+          } else {
+            this.props.actions.setUserAsHost(false);
+          }
+          // Next set authentication
+          this.props.actions.setAsAuthenticated(true, response.sessionId);
+          this.props.actions.setUser(response.user);
+          // next reroute to User Dashboard
+          browserHistory.push('/dashboard');
         }
-        console.log('this was the message back from the server', response);
       },
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
@@ -143,7 +118,7 @@ export class SignupForm extends React.Component {
           />
           <FormsyText
             name="password"
-            validations="isLength:5"
+            validations="minLength:5"
             validationError={this.errorMessages.passwordError}
             required
             type="password"
@@ -179,12 +154,21 @@ export class SignupForm extends React.Component {
             disabled={!this.state.canSubmit}
           />
         </Formsy.Form>
+        <FormMessageDialogue
+          ref={(node) => this.messageDialogue = node}
+          title="User Already Exists"
+          failure
+        >
+          <p>This email or username already exists.
+          Please choose another username or if you already have an account
+          you can try and login</p>
+        </FormMessageDialogue>
       </Paper>
     );
   }
 }
 
-SignupPage.propTypes = {
+SignupForm.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -201,5 +185,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);
 

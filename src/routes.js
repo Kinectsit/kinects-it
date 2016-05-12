@@ -4,7 +4,7 @@ import { Route, IndexRoute } from 'react-router';
 import { App } from './components/App';
 import { Home } from './components/Home';
 import LoginPage from './containers/LoginPage';
-import SignupPage from './containers/SignupPage';
+import { SignupPage } from './components/SignupPage';
 import DashboardPage from './containers/DashboardPage';
 import AddDevicePage from './containers/AddDevicePage';
 import SetupDevicePage from './containers/SetupDevicePage';
