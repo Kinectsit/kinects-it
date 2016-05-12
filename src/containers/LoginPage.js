@@ -11,7 +11,7 @@ import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
 
-export const LoginPage = () => (
+export const Login = () => (
   <div>
     <h2>Login to your account</h2>
 
@@ -19,7 +19,7 @@ export const LoginPage = () => (
   </div>
 );
 
-export class LoginForm extends React.Component {
+export class LoginPage extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
@@ -70,7 +70,16 @@ export class LoginForm extends React.Component {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
-          // this.props.actions.;
+          console.log('this = ', this);
+          console.log('this.props = ', this.props.actions);
+
+          this.props.actions.setAsAuthenticated(true, response.sessionId);
+          this.props.actions.setUser(response.user);
+          if (response.host) {
+            this.props.actions.setUserAsHost(true);
+          } else {
+            this.props.actions.setUserAsHost(false);
+          }
           // send user to dashboard page if successful response
           browserHistory.push('/dashboard');
         }
@@ -99,56 +108,58 @@ export class LoginForm extends React.Component {
     }
 
     return (
-      <Paper style={styles.paperStyle}>
-        {errorMsg}
-
-        <Formsy.Form
-          onValid={() => this.enableButton()}
-          onInvalid={() => this.disableButton()}
-          onValidSubmit={(data) => this.login(data)}
-          onInvalidSubmit={this.errorMessages.submitError}
-          autoComplete="off"
-        >
-          <FormsyText
-            name="name"
-            validations="isExisty"
-            validationError={this.errorMessages.nameError}
-            required
-            style={styles.fieldStyles}
-            floatingLabelText="User Name"
-          />
-          <FormsyText
-            name="password"
-            validations="minLength:5"
-            validationError={this.errorMessages.passwordError}
-            required
-            type="password"
-            style={styles.fieldStyles}
-            hintText="Minimum 5 characters"
-            floatingLabelText="Password"
-          />
-          <div style={styles.center}>
-            <FlatButton
-              style={styles.submitStyle}
-              type="submit"
-              label="Login"
-              disabled={!this.state.canSubmit}
+      <div>
+        <h2>Login to your account</h2>
+        <Paper style={styles.paperStyle}>
+          {errorMsg}
+          <Formsy.Form
+            onValid={() => this.enableButton()}
+            onInvalid={() => this.disableButton()}
+            onValidSubmit={(data) => this.login(data)}
+            onInvalidSubmit={this.errorMessages.submitError}
+            autoComplete="off"
+          >
+            <FormsyText
+              name="name"
+              validations="isExisty"
+              validationError={this.errorMessages.nameError}
+              required
+              style={styles.fieldStyles}
+              floatingLabelText="User Name"
             />
-          </div>
-        </Formsy.Form>
-      </Paper>
+            <FormsyText
+              name="password"
+              validations="minLength:5"
+              validationError={this.errorMessages.passwordError}
+              required
+              type="password"
+              style={styles.fieldStyles}
+              hintText="Minimum 5 characters"
+              floatingLabelText="Password"
+            />
+            <div style={styles.center}>
+              <FlatButton
+                style={styles.submitStyle}
+                type="submit"
+                label="Login"
+                disabled={!this.state.canSubmit}
+              />
+            </div>
+          </Formsy.Form>
+        </Paper>
+      </div>
     );
   }
 }
 
 LoginPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    appState: state.appState,
+    authState: state.authState,
   };
 }
 
@@ -158,5 +169,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginPage);
 

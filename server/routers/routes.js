@@ -66,18 +66,17 @@ module.exports = (app, passport) => {
             }
 
             // creating a message to send to the client for session information
-            const userInfo = {
-              name:req.session.passport.user.name,
-              email: req.session.passport.user.email,
-              id: req.session.passport.user.id,
-              host: req.session.passport.user.defaultviewhost,
-            }
             const message = {
-              user: userInfo,
+              user: {
+                name: req.session.passport.user.name,
+                email: req.session.passport.user.email,
+                id: req.session.passport.user.id,
+              },
               sessionId: req.session.id,
+              host: req.session.passport.user.defaultviewhost,
               login: info.login,
               message: info.message,
-            };
+            }
 
             return res.json(message);
         });
