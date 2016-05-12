@@ -36,36 +36,85 @@ module.exports = (passport) => {
     // by default, local strategy uses username and password, we will override with email
     usernameField: 'name',
     passwordField: 'password',
-    passReqToCallback: true, // allows us to pass back the entire request to the callback
+    passReqToCallback: true, 
   },
-  (req, user, password, done) => { // callback with email and password from our form
-    // we are checking to see if the user trying to login exists
-
-    console.log('*****LOCAL-LOGIN******');
-
-    db.any('SELECT * from users where name=$1', [req.body.name])
+  (req, user, password, done) => {
+    db.one('SELECT * from users where name=$1', [req.body.name])
       .then((loggedInUser) => {
         // if no user is found, return the message
         if (!loggedInUser) {
           console.log('inside passport authenticate, no user found');
-          return done(null, false);
+          return done(null, false, { login: false, message: 'User failed logged in.' });
         }
 
-        /* need to validate the password somehow
-        if (!loggedInUser.validPassword(password)) {
+        /* validate the password  */
+        const matches = User.comparePasswords(password, loggedInUser.password);
+        if (!matches) {
           console.log('inside passport authenticate, user found, invalid password: ', loggedInUser);
-
-          // create the loginMessage and save it to session as flashdata
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+          return done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
         }
-        */
         console.log('valid login for user: ', loggedInUser);
-        return done(null, loggedInUser);
+        return done(null, loggedInUser, { login: true, message: 'User successfully logged in.' });
       })
       .catch((error) => {
-        done(error);
+        logger.info(error);
+        done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
       });
   }));
+
+/*
+
+FROM shortly-express sprint:
+
+  UserSchema.pre('save', function (next) {
+  var user = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) {
+    return next();
+  }
+
+  // generate a salt
+  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    if (err) {
+      return next(err);
+    }
+
+    // hash the password along with our new salt
+    bcrypt.hash(user.password, salt, null, function (err, hash) {
+      if (err) {
+        return next(err);
+      }
+
+      // override the cleartext password with the hashed one
+      user.password = hash;
+      user.salt = salt;
+      next();
+    });
+  });
+});
+
+UserSchema.methods.comparePasswords = function (candidatePassword) {
+  var savedPassword = this.password;
+  return Q.Promise(function (resolve, reject) {
+    bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(isMatch);
+      }
+    });
+  });
+};
+
+*/
+
+  //  retrieve user record by user name
+  //  if no record, return error
+  //  else
+  //   compare the password with the one passed in
+  //   must take the salt that is stored and use it with the passed in password
+  //   and see if it matches the hash that is stored
 
   // =========================================================================
     // LOCAL SIGNUP ============================================================
@@ -112,23 +161,3 @@ module.exports = (passport) => {
     })
   );
 };
-
-    // User.findOne({ 'local.email': email }, (err, user) => {
-      // if there are any errors, return the error before anything else
-      // if (err) {
-      //   return done(err);
-      // }
-
-      // if no user is found, return the message
-      // if (!user) {
-      //   return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-      // }
-
-      // if the user is found but the password is wrong
-      // if (!user.validPassword(password)) {
-      //   // create the loginMessage and save it to session as flashdata
-      //   return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-      // }
-
-          // all is well, return successful user
-          // return done(null, user);

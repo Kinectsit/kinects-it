@@ -24,8 +24,6 @@ module.exports = (app, passport) => {
   });
 
   app.route('/api/v1/session').post((req, res, next) => {
-    console.log('***INSIDE session POST, about to call authenticate***');
-
     passport.authenticate('local-login', (err, user, info) => {
       if (err) {
         console.log('error in session post: ', err)
