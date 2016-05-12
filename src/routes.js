@@ -12,6 +12,7 @@ import DeviceProfilePage from './containers/DeviceProfilePage';
 import HomeUsage from './components/HomeUsage';
 import JoinRentalPage from './containers/JoinRentalPage';
 import DevicePage from './containers/DevicePage';
+import { requireAuthentication } from './containers/RequireAuthentication';
 
 export default (
   <Route path="/" component={App}>
@@ -20,7 +21,7 @@ export default (
     <Route path="/signup" component={SignupPage} />
     <Route path="/dashboard" component={DashboardPage} />
     <Route path="/add-device" component={AddDevicePage} />
-    <Route path="/setup-device" component={SetupDevicePage} />
+    <Route path="/setup-device" component={requireAuthentication(SetupDevicePage)} />
     <Route path="/device-profile" component={DeviceProfilePage} />
     <Route path="/home-usage" component={HomeUsage} />
     <Route path="/join-rental" component={JoinRentalPage} />
