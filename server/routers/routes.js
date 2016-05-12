@@ -22,4 +22,24 @@ module.exports = (app, passport) => {
 
     })(req, res, next);
   });
+
+  app.route('/api/v1/session').post((req, res, next) => {
+    passport.authenticate('local-login', (err, user, info) => {
+      if (err) {
+        return next(err)
+      };
+      if (user) {
+        // user was validated 
+        // Manually establish the session...
+        req.login(user, function(err) {
+            if (err) return next(err);
+            return res.json(info)
+        });
+      };
+      if (!user) {
+        return res.json(info)
+      }
+
+    })(req, res, next);
+  });
 };
