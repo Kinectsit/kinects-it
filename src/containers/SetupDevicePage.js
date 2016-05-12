@@ -16,7 +16,6 @@ export class SetupDevicePage extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
-      configError: 'Your device was not configured correctly. Please go back to previous page.',
       nameError: 'Please provide a valid name',
       descriptionError: 'Please enter a valid description',
       priceError: 'Please enter time and price options',
@@ -63,7 +62,7 @@ export class SetupDevicePage extends React.Component {
       return (
         <div style={styles.center}>
           <h2>Uh oh!</h2>
-          {this.errorMessages.configError}
+          There was an error. Click <a href="/add-device">here</a> to re-add your device.
         </div>
       );
     }
@@ -98,7 +97,7 @@ export class SetupDevicePage extends React.Component {
               floatingLabelText="Device Description"
             />
             <Subheader>Pricing Options</Subheader>
-            <FormsyRadioGroup name="price" defaultSelected="15">
+            <FormsyRadioGroup name="time" defaultSelected="15">
               <FormsyRadio
                 value="1"
                 label="1 minute"

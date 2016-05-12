@@ -45,7 +45,14 @@ export class DeviceProfilePage extends React.Component {
 
   render() {
     let errorMsg = <div style={styles.error}>{this.state.details}</div>;
-
+    if (this.props.appState.featured.id === '') {
+      return (
+        <div style={styles.center}>
+          <h2>Uh oh!</h2>
+          Click <a href="/dashboard">here</a> to return to your dashboard.
+        </div>
+      );
+    }
     return (
       <div>
         <h2>{this.props.appState.featured.name}</h2>

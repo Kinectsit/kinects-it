@@ -19,11 +19,11 @@ export default (
     <Route path="/login" component={LoginPage} />
     <Route path="/signup" component={SignupPage} />
     <Route path="/dashboard" component={DashboardPage} />
-    <Route path="/addDevice" component={AddDevicePage} />
-    <Route path="/setupDevice" component={SetupDevicePage} />
-    <Route path="/deviceProfile" component={DeviceProfilePage} />
-    <Route path="/homeUsage" component={HomeUsage} />
-    <Route path="/joinRental" component={JoinRentalPage} />
+    <Route path="/add-device" component={AddDevicePage} />
+    <Route path="/setup-device" component={SetupDevicePage} />
+    <Route path="/device-profile" component={DeviceProfilePage} />
+    <Route path="/home-usage" component={HomeUsage} />
+    <Route path="/join-rental" component={JoinRentalPage} />
     <Route path="/device" component={DevicePage} />
   </Route>
 );

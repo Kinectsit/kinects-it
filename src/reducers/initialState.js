@@ -15,7 +15,12 @@ export default {
     // id: "00e04c038343",
     // isActive: true,
     // name: "Radio",
-    // price: "15",
+    // time: "15",
+    description: '',
+    id: '',
+    isActive: false,
+    name: '',
+    time: '',
   },
   configuredDevice: {
     configured: false,
