@@ -5,8 +5,8 @@ export const DeviceList = (props) => (
   <div>
     <h1>Device List </h1>
     <ul>
-      {props.appState.devices.map(device =>
-        <div key={device.id}>
+      {props.appState.devices.map((device, index) =>
+        <div key={index}>
           <DeviceRow device={device} appState={props.appState} actions={props.actions} />
         </div>
       )}

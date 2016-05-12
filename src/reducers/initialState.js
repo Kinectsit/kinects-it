@@ -31,14 +31,14 @@ export default {
     {
       description: "It plays music",
       id: "00e04c038343",
-      isActive: true,
+      isActive: false,
       name: "Radio",
       price: "15",
     },
     {
       description: "It washes clothes",
       id: "00e04c038343",
-      isActive: true,
+      isActive: false,
       name: "Washing Machine",
       price: "60",
     },
