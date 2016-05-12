@@ -1,7 +1,4 @@
-// config/passport.js
 /* eslint max-len: ["error", 200] */
-
-// load all the things we need
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../db.js');
 const User = require('../models/userModel');
@@ -10,12 +7,11 @@ const logger = require('../config/logger.js');
 // expose this function to our app using module.exports
 module.exports = (passport) => {
   // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and unserialize users out of session
-
-    // used to serialize the user for the session
+  // passport session setup ==================================================
+  // =========================================================================
+  // required for persistent login sessions
+  // passport needs ability to serialize and unserialize users out of session
+  // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user);
   });
@@ -36,7 +32,7 @@ module.exports = (passport) => {
     // by default, local strategy uses username and password, we will override with email
     usernameField: 'name',
     passwordField: 'password',
-    passReqToCallback: true, 
+    passReqToCallback: true,
   },
   (req, user, password, done) => {
     db.one('SELECT * from users where name=$1', [req.body.name])
@@ -46,7 +42,6 @@ module.exports = (passport) => {
           console.log('inside passport authenticate, no user found');
           return done(null, false, { login: false, message: 'User failed logged in.' });
         }
-
         /* validate the password  */
         const matches = User.comparePasswords(password, loggedInUser.password);
         if (!matches) {
@@ -62,66 +57,11 @@ module.exports = (passport) => {
       });
   }));
 
-/*
-
-FROM shortly-express sprint:
-
-  UserSchema.pre('save', function (next) {
-  var user = this;
-
-  // only hash the password if it has been modified (or is new)
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-    if (err) {
-      return next(err);
-    }
-
-    // hash the password along with our new salt
-    bcrypt.hash(user.password, salt, null, function (err, hash) {
-      if (err) {
-        return next(err);
-      }
-
-      // override the cleartext password with the hashed one
-      user.password = hash;
-      user.salt = salt;
-      next();
-    });
-  });
-});
-
-UserSchema.methods.comparePasswords = function (candidatePassword) {
-  var savedPassword = this.password;
-  return Q.Promise(function (resolve, reject) {
-    bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(isMatch);
-      }
-    });
-  });
-};
-
-*/
-
-  //  retrieve user record by user name
-  //  if no record, return error
-  //  else
-  //   compare the password with the one passed in
-  //   must take the salt that is stored and use it with the passed in password
-  //   and see if it matches the hash that is stored
-
   // =========================================================================
-    // LOCAL SIGNUP ============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
+  // LOCAL SIGNUP ============================================================
+  // =========================================================================
+  // we are using named strategies since we have one for login and one for signup
   // by default, if there was no name, it would just be called 'local'
-
   passport.use('local-signup', new LocalStrategy({
       // by default, local strategy uses username and password, we will override with email
     usernameField: 'email',
@@ -129,8 +69,6 @@ UserSchema.methods.comparePasswords = function (candidatePassword) {
     passReqToCallback: true, // allows us to pass back the entire request to the callback
   },
     (req, email, password, done) => {
-      console.log('*****LOCAL-SIGNUP******');
-
       // asynchronous
       // User.findOne wont fire unless data is sent back
       process.nextTick(() => {

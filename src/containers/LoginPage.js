@@ -67,12 +67,16 @@ export class LoginForm extends React.Component {
       data: JSON.stringify(data),
       success: (response) => {
         if (!response.login) {
-          // server could not add user to the database
+          // server could not log user in, show error
+          this.setState({ error: 'INVALID_LOGIN' });
+        } else {
+          this.props.actions.addDevice(configuredDevice);
+          // send user to setupDevice page if successful response
+          browserHistory.push('/setupDevice');
         }
-        console.log('this was the message back from the server', response);
       },
-      error: (xhr, status, err) => {
-        console.error('there was an error', status, err.toString());
+      error: (/* xhr, status, err */) => {
+        this.setState({ error: 'INVALID_LOGIN' });
       },
     });
   }
@@ -81,6 +85,8 @@ export class LoginForm extends React.Component {
     let msg = null;
     if (error === 'INVALID_SUBMIT') {
       msg = 'Please resolve invalid input and try again.';
+    } else if (error === 'INVALID_LOGIN') {
+      msg = 'Login attempt failed, please try again';
     }
 
     return msg;
