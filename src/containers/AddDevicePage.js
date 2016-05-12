@@ -62,7 +62,7 @@ export class AddDevicePage extends React.Component {
       } else {
         this.props.actions.addDevice(configuredDevice);
         // send user to setupDevice page if successful response
-        browserHistory.push('/setupDevice');
+        browserHistory.push('/setup-device');
       }
     })
     .fail(() => {

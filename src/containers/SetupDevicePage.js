@@ -46,7 +46,7 @@ export class SetupDevicePage extends React.Component {
 
     $.post(apiPath, device, () => {
       this.props.actions.setFeatured(device);
-      browserHistory.push('/deviceProfile');
+      browserHistory.push('/device-profile');
     })
     .fail((error) => {
       console.log(error);
