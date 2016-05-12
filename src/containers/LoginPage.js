@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
-// import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
 
@@ -70,9 +70,9 @@ export class LoginForm extends React.Component {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
-          this.props.actions.addDevice(configuredDevice);
+          // this.props.actions.;
           // send user to setupDevice page if successful response
-          browserHistory.push('/setupDevice');
+          browserHistory.push('/dashboard');
         }
       },
       error: (/* xhr, status, err */) => {
