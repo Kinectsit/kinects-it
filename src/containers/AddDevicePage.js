@@ -100,7 +100,8 @@ export class AddDevicePage extends React.Component {
           <h2>Add Device</h2>
           {errorMsg}
           <div>
-            Enter a device ID to begin setting up a new device.
+            <p>Your device should be OFF before starting this process.</p>
+            <p>Enter a device ID to begin setting up a new device.</p>
           </div>
         </div>
 

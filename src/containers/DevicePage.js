@@ -49,7 +49,8 @@ export class DevicePage extends React.Component {
       return (
         <div style={styles.center}>
           <h2>Uh oh!</h2>
-          Click <a href="/dashboard">here</a> to return to your dashboard.
+          <p>You need to choose a device to display.</p>
+          <p>Click <a href="/dashboard">here</a> to return to your dashboard.</p>
         </div>
       );
     }
