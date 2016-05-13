@@ -39,11 +39,3 @@ NavMenu.propTypes = {
   onClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 };
-
-// <Route path="/dashboard" component={DashboardPage} />
-// <Route path="/add-device" component={AddDevicePage} />
-// <Route path="/setup-device" component={requireAuthentication(SetupDevicePage)} />
-// <Route path="/device-profile" component={DeviceProfilePage} />
-// <Route path="/home-usage" component={HomeUsage} />
-// <Route path="/join-rental" component={JoinRentalPage} />
-// <Route path="/device" component={DevicePage} />

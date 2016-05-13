@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '../actions/actions';
+// import { bindActionCreators } from 'redux';
+// import * as actions from '../actions/actions';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import { NavMenu } from './NavMenu';
@@ -52,12 +52,6 @@ TitleBar.propTypes = {
 function mapStateToProps(state) {
   return {
     isAuth: state.authState.isAuthenticated,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch),
   };
 }
 

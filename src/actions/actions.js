@@ -36,6 +36,6 @@ export function setUserAsHost(isHost) {
   return { type: types.SET_USER_AS_HOST, isHost };
 }
 
-export function setAsAuthenticated(isAuthenticated, sessionId) {
-  return { type: types.LOGIN_SUCCESS, isAuthenticated, sessionId };
+export function setAuthentication(isAuthenticated, sessionId) {
+  return { type: types.SET_AUTHENTICATION, isAuthenticated, sessionId };
 }

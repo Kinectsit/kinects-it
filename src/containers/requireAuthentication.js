@@ -23,7 +23,7 @@ export function requireAuthentication(Component) {
         $.get('/api/v1/authentication')
           .done((response) => {
             if (response) {
-              this.props.actions.setAsAuthenticated(true, response.sessionId);
+              this.props.actions.setAuthentication(true, response.sessionId);
               this.props.actions.setUser(response.user);
               if (response.host) {
                 this.props.actions.setUserAsHost(true);
