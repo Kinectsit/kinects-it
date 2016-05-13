@@ -17,6 +17,9 @@ export const NavMenu = (props) => (
     <NavLink to="/signup">
       <MenuItem>Signup</MenuItem>
     </NavLink>
+    <NavLink to="/logout">
+      <MenuItem>Logout</MenuItem>
+    </NavLink>
   </Menu>
 );
 

@@ -17,7 +17,6 @@ export function requireAuthentication(Component) {
     }
 
     checkAuth() {
-      console.log('this is the current authState:', this.props.authState);
       if (!this.props.authState.isAuthenticated) {
         // current local state not authenticated
         // check with server if current session is authenticated

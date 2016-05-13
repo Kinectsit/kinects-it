@@ -1,10 +1,12 @@
-/* eslint max-len: ["error", 150] */
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../actions/actions';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import { NavMenu } from './NavMenu';
 
-export class TitleBar extends React.Component {
+class TitleBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -20,6 +22,7 @@ export class TitleBar extends React.Component {
   }
 
   render() {
+    console.log('my props:', this.props);
     return (
       <div className="title-bar-container">
         <AppBar
@@ -40,3 +43,22 @@ export class TitleBar extends React.Component {
     );
   }
 }
+
+TitleBar.propTypes = {
+  actions: PropTypes.object.isRequired,
+  appState: PropTypes.object.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    appState: state.appState,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TitleBar);
