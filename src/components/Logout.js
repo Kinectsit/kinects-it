@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { connect } from 'react-redux';

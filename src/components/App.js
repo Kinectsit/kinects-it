@@ -13,8 +13,8 @@ import '../assets/scss/app.scss';
 export const App = (props) => (
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div className="app-container">
-      <TitleBar />
-      <div className="row medium-10 columns">\
+      <TitleBar store={props.store} />
+      <div className="row medium-10 columns">
         <div className="page">
           {props.children}
         </div>
@@ -26,5 +26,6 @@ export const App = (props) => (
 App.propTypes = {
   children: PropTypes.element,
   route: PropTypes.object,
+  store: PropTypes.object,
 };
 

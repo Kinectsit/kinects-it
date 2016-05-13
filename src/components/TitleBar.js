@@ -22,7 +22,6 @@ class TitleBar extends React.Component {
   }
 
   render() {
-    console.log('my props:', this.props);
     return (
       <div className="title-bar-container">
         <AppBar
