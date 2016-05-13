@@ -3,6 +3,7 @@ node_js:
   - "stable"
 services:
   - postgresql
+  - redis-server
 env:
   - NODE_ENV=development
 before_script:

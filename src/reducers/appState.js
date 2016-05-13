@@ -5,6 +5,7 @@ import {
   ADD_DEVICE,
   SET_FEATURED,
   TOGGLE_DEVICE,
+  PAID_USAGE,
   SETUP_DEVICE_OPTIONS,
   ADD_RENTAL,
   SET_USER_AS_HOST,
@@ -32,6 +33,11 @@ export default function appState(state = initialState, action) {
     case TOGGLE_DEVICE: {
       const newState = objectAssign({}, state);
       newState.featured.isActive = action.isActive;
+      return newState;
+    }
+    case PAID_USAGE: {
+      const newState = objectAssign({}, state);
+      newState.featured.hasPaid = action.hasPaid;
       return newState;
     }
     case SETUP_DEVICE_OPTIONS: {

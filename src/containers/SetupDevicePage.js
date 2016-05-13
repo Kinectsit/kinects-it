@@ -41,6 +41,8 @@ export class SetupDevicePage extends React.Component {
     const device = data;
     device.id = this.props.appState.configuredDevice.id;
     device.isActive = this.props.appState.configuredDevice.isActive;
+    device.paidUsage = false;
+    device.time = '';
 
     const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/add/'.concat(device.id);
 

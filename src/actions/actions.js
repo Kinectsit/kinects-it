@@ -20,6 +20,10 @@ export function toggleDevice(isActive) {
   return { type: types.TOGGLE_DEVICE, isActive };
 }
 
+export function paidUsage(hasPaid) {
+  return { type: types.PAID_USAGE, hasPaid };
+}
+
 export function addRental(rental) {
   return { type: types.ADD_RENTAL, rental };
 }
