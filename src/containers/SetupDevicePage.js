@@ -55,10 +55,11 @@ export class SetupDevicePage extends React.Component {
 
   submitForm(data) {
     const device = data;
-    const house = this.props.appState.house.id || 1; // take out 1 once home is passed down
+    const house = this.props.appState.house.id || 1;
     device.id = this.props.appState.configuredDevice.id;
     device.isActive = this.props.appState.configuredDevice.isActive;
     device.paidUsage = false;
+    console.log('====', device);
 
     const apiPath = `http://localhost:3001/api/v1/homes/${house}/devices/add/`.concat(device.id);
 

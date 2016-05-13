@@ -9,7 +9,7 @@ const db = require('../db.js');
 //   next()
 // };
 
-module.exports.signUp = (req, res, next) => {
+module.exports.signUp = (req, res) => {
   // console.log('passport: ', passport.authenticate('coinbase'));
   // passport.authenticate('coinbase');
   // console.log('call to signup made with this data:', req.body);
@@ -25,9 +25,6 @@ module.exports.signUp = (req, res, next) => {
     // console.log('there was an error in the search:', error);
     logger.info(error);
     res.send(error);
-  })
-  .finally(() => {
-    next();
   });
 };
 
