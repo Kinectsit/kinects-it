@@ -5,6 +5,3 @@ const options = {
 const pgp = require('pg-promise')(options);
 
 module.exports = pgp('postgres://postgres@localhost:5432/kinectdb');
-
-// export const db = pgp(connectionString);
-// exports.client = new pg.Client(connectionString);

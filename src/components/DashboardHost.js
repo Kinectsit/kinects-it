@@ -5,6 +5,7 @@ import { DeviceList } from './DeviceList';
 export const DashboardHost = (props) => (
   <div>
     <h1>Dashboard Host</h1>
+    <p>Host Code: {props.appState.house.code}</p>
     <DeviceAddButton />
     <DeviceList appState={props.appState} actions={props.actions} />
   </div>

@@ -30,7 +30,7 @@ module.exports = (app, passport) => {
         req.login(user, function(err) {
             if (err) return next(err);
             // creating a message to send to the client for session information
-
+            
             const userInfo = {
               name:req.session.passport.user.name,
               email: req.session.passport.user.email,
@@ -41,6 +41,10 @@ module.exports = (app, passport) => {
               sessionId: req.session.id,
               login: info.login,
               message: info.message,
+              house: {
+                id: req.session.passport.user.house.id,
+                code: req.session.passport.user.house.hostCode,
+              },
             };
             return res.json(message)
         });

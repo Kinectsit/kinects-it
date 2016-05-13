@@ -1,6 +1,9 @@
 export default {
   isHost: false,
-  houseName: null,
+  house: {
+    id: '',
+    code: '',
+  },
   hasDevice: false,
   featured: {
     // description: "It plays music",
