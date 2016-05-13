@@ -67,6 +67,11 @@ postgres installed.
 createdb kinectdb -U postgres
 psql -U postgres -d kinectdb -f ./server/config/schema.sql
 ```
+For Device management, a redis database is also required. Prerequisite is that you have redis installed. Then run the following command:
+
+```sh
+redis-server /usr/local/etc/redis.conf --port 6379
+```
 
 ### Database
 
