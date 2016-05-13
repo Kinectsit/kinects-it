@@ -68,13 +68,6 @@ createdb kinectdb -U postgres
 psql -U postgres -d kinectdb -f ./server/config/schema.sql
 ```
 
-The following command will create the non-persistent database.  Prerequisite is that you have
-redis installed.
-
-```sh
-redis-server /usr/local/etc/redis.conf --port 6379
-```
-
 ### Database
 
 From within postgres terminal:
