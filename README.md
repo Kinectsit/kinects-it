@@ -60,12 +60,19 @@
 
 From within the root directory:
 
-The following command will create the database and schema.  Prerequisite is that you have
+The following command will create the persistent database and schema.  Prerequisite is that you have
 postgres installed.
 
 ```sh
 createdb kinectdb -U postgres
 psql -U postgres -d kinectdb -f ./server/config/schema.sql
+```
+
+The following command will create the non-persistent database.  Prerequisite is that you have
+redis installed.
+
+```sh
+redis-server /usr/local/etc/redis.conf --port 6379
 ```
 
 ### Database
