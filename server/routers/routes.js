@@ -41,9 +41,9 @@ module.exports = (app, passport) => {
               sessionId: req.session.id,
               login: info.login,
               message: info.message,
-              home: {
-                id: req.session.passport.user.home.id,
-                code: req.session.passport.user.home.hostCode,
+              house: {
+                id: req.session.passport.user.house.id,
+                code: req.session.passport.user.house.hostCode,
               },
             };
             return res.json(message)

@@ -39,7 +39,7 @@ User.create = (newUser) => {
                 email: userData.email,
                 id: userData.id,
                 defaultViewHost: userData.defaultviewhost,
-                home: {
+                house: {
                   hostCode: houseData.invitecode,
                   id: houseData.id,
                 },

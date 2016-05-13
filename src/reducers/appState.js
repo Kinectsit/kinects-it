@@ -12,6 +12,8 @@ import {
 } from '../constants/actionTypes';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
+import CONSTANTS from '../constants/actionTypes';
+
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -48,6 +50,12 @@ export default function appState(state = initialState, action) {
     case ADD_RENTAL: {
       const newState = objectAssign({}, state);
       newState.houseName = action.rental;
+      return newState;
+    }
+    case CONSTANTS.ADD_HOUSE: {
+      const newState = objectAssign({}, state);
+      newState.house.id = action.house.id;
+      newState.house.code = action.house.code;
       return newState;
     }
     case SET_USER_AS_HOST: {

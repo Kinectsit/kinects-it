@@ -28,6 +28,10 @@ export function addRental(rental) {
   return { type: types.ADD_RENTAL, rental };
 }
 
+export function addHouse(house) {
+  return { type: types.ADD_HOUSE, house };
+}
+
 export function setUserAsHost(isHost) {
   return { type: types.SET_USER_AS_HOST, isHost };
 }

@@ -1,6 +1,4 @@
-
-
-/* eslint-disable consistent-return */
+/* eslint-disable consistent-return, strict */
 /**
 * @file Server side helper functions
 */
@@ -22,8 +20,11 @@ module.exports = {
     res.redirect('/login');
   },
 
+  /**
+  * @function: Helper function to generate a random string used for host codes
+  */
   randomString: (length) => {
-    var text = '';
+    let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
