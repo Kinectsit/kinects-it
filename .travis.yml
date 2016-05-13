@@ -3,7 +3,8 @@ node_js:
   - "stable"
 services:
   - postgresql
+  - redis-server
 env:
   - NODE_ENV=development
 before_script:
-  - npm run build && psql -c 'create database kinectdb;' -U postgres && redis-server /usr/local/etc/redis.conf --port 6380
+  - npm run build && psql -c 'create database kinectdb;' -U postgres
