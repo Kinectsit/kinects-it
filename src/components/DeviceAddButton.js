@@ -4,7 +4,7 @@ import { NavLink } from './NavLink';
 
 export const DeviceAddButton = () => (
   <div>
-    <NavLink to="/addDevice">
+    <NavLink to="/add-device">
       <RaisedButton label="Add Device" />
     </NavLink>
   </div>

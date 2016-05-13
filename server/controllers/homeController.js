@@ -104,7 +104,9 @@ exports.toggleDevice = (req, res) => {
 };
 
 exports.addDevice = (req, res) => {
-  console.log('req.body is ', req.body);
+  const homeId = req.params.homeId;
+  const deviceId = req.params.deviceId;
+  console.log('req.body is ', req.body, 'device id is', deviceId, 'homeId is ', homeId);
   // add to database
   res.send('will add to db once query is written');
 };
