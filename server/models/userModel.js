@@ -18,6 +18,15 @@ User.create = (newUser) => {
   return db.tx(t => (
     t.one('INSERT INTO users(name, email, password, defaultviewhost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING id, name, email, defaultviewhost', newUser)
       .then(userData => {
+        if (!userData.defaultviewhost) {
+          return {
+            name: userData.name,
+            email: userData.email,
+            id: userData.id,
+            defaultViewHost: userData.defaultviewhost,
+          };
+        }
+
         const hostCode = utils.randomString(6);
 
         return t.one('INSERT INTO houses(invitecode) VALUES($1) RETURNING id', hostCode)
