@@ -1,10 +1,9 @@
 /* eslint max-len: ["error", 200] */
+/* eslint-disable arrow-body-style */
 const bcrypt = require('bcrypt-nodejs');
 const User = {};
-const logger = require('../config/logger.js');
 const db = require('../db.js');
 const utils = require('../utils/helpers.js');
-// const Promise = require('bluebird');
 
 User.generateHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -33,7 +32,6 @@ User.create = (newUser) => {
           .then((houseData) => {
             return t.one('INSERT INTO users_houses(userid, houseid) VALUES($1, $2) RETURNING userid, houseid', [userData.id, houseData.id])
             .then((/* userHouseData */) => {
-              // sucess in inner most query, now what?
               return {
                 name: userData.name,
                 email: userData.email,

@@ -40,6 +40,7 @@
     "jsdoc": "3.4.0",
     "material-ui": "0.15.0",
     "morgan": "1.7.0",
+    "node-crontab": "0.0.8",
     "object-assign": "4.0.1",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
