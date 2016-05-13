@@ -20,6 +20,7 @@ CREATE TABLE devices (
   id SERIAL PRIMARY KEY,
   houseId INTEGER,
   name VARCHAR,
+  description VARCHAR,
   isActive BOOLEAN DEFAULT FALSE,
   hardwareKey VARCHAR,
   hardwareType VARCHAR,

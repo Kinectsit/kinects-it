@@ -1,4 +1,6 @@
 /* eslint-disable strict */
+/* eslint-disable max-len */
+
 'use strict';
 const logger = require('../config/logger.js');
 const db = require('../db.js');
@@ -104,10 +106,23 @@ exports.toggleDevice = (req, res) => {
 };
 
 exports.addDevice = (req, res) => {
-  const homeId = req.params.homeId;
-  const deviceId = req.params.deviceId;
-  console.log('req.body is ', req.body, 'device id is', deviceId, 'homeId is ', homeId);
-  // add to database
-  res.send('will add to db once query is written');
-};
+  const newDevice = {
+    houseId: req.params.homeId,
+    name: req.body.name,
+    description: req.body.description,
+    isActive: req.body.isActive,
+    hardwareKey: req.params.deviceId,
+    usageCostOptions: req.body.cost,
+  };
+  console.log('====', newDevice);
 
+  db.one('INSERT INTO devices(houseId, name, description, isActive, hardwareKey, usageCostOptions) VALUES(${houseId}, ${name}, ${description}, ${isActive}, ${hardwareKey}, ${usageCostOptions}) RETURNING *', newDevice)
+  .then((result) => {
+    logger.info(result);
+    res.send(result);
+  })
+  .catch((error) => {
+    logger.info(error);
+    res.send(error);
+  });
+};
