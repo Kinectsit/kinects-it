@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt-nodejs');
 const User = {};
 // const logger = require('../config/logger.js');
 const db = require('../db.js');
+const utils = require('../utils/helpers.js');
 // const Promise = require('bluebird');
 
 User.generateHash = (password) =>
@@ -14,40 +15,34 @@ User.comparePasswords = (providedPassword, userPassword) => {
 };
 
 User.create = (newUser) => {
-// return db.one('INSERT INTO users(name, email, password, defaultViewHost)
-// VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
-
   console.log('inside create for user: ', newUser);
-
-  //  db.tx( t => { // automatic BEGIN
-  //     return t.one('INSERT_1 VALUES(...) RETURNING id', paramValues)
-  //         .then(data=> {
-  //             var q = t.none('INSERT_2 VALUES(...)', data.id);
-  //             if (req.body.value != null) {
-  //                 return q.then(()=> t.none('INSERT_3 VALUES(...)', data.id));
-  //             }
-  //             return q;
-  //         });
-  // })
-  // .then((data)=> {
-  //     res.send("Everything's fine!"); // automatic COMMIT was executed
-  // })
-  // .catch(error=> {
-  //     res.send("Something is wrong!"); // automatic ROLLBACK was executed
-  // });
 
   db.tx(t => ( // automatic BEGIN
     t.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING id', newUser)
-      .then(data => {
-        console.log('In inner then of transaction, data = ', data);
+      .then(userData => {
+        console.log('In inner then of transaction, data = ', userData);
 
-        /*
-        const q = t.none('INSERT_2 VALUES(...)', data.id);
-        if (req.body.value != null) {
-          return q.then(()=> t.none('INSERT_3 VALUES(...)', data.id));
-        }
-        return q;
-        */
+        const hostCode = utils.randomString(6);
+        console.log('hostcode = ', hostCode);
+
+        return t.one('INSERT INTO houses(invitecode) VALUES($1) RETURNING id', hostCode)
+          .then((houseData) => {
+            console.log('successful house creation: ', houseData);
+
+            return t.one('INSERT INTO users_houses(userid, houseid) VALUES($1, $2) RETURNING userid, houseid', [userData.id, houseData.id])
+            .then((userHouseData) => {
+              console.log('successful insert into userHouseData: ', userHouseData);
+              throw new Error();
+            })
+            .catch((error) => {
+              console.log('error inside userHouseData: ', error);
+              throw new Error();
+            }); 
+          })
+          .catch((error) => {
+            console.log('inside error: ', error);
+            throw new Error();
+          });
       })
   ))
   .then((data) => {
