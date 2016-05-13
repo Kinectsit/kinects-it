@@ -82,14 +82,10 @@ module.exports = (passport) => {
             newUser.password = User.generateHash(req.body.password);
 
             // create a new User this should be a promise
-            User.create(newUser)
+            return User.create(newUser)
             .then((data) => {
               logger.info('Succesfully created user = ', data);
               return done(null, data, { login: true, message: 'user has been created!' });
-            })
-            .catch(error => {
-              logger.error('outermost ERROR in User.create: ', error);
-              throw new Error();
             });
           })
           .catch((error) => {

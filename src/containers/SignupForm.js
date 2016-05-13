@@ -72,6 +72,10 @@ class SignupForm extends React.Component {
           } else {
             this.props.actions.setUserAsHost(false);
           }
+
+          // TODO: add user -> home object (id and hostCode properties) to state
+          // so that the host code can be displayed in the dashboard page
+
           // Next set authentication
           this.props.actions.setAsAuthenticated(true, response.sessionId);
           this.props.actions.setUser(response.user);

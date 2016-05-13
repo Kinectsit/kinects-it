@@ -29,37 +29,25 @@ User.create = (newUser) => {
 
         const hostCode = utils.randomString(6);
 
-        return t.one('INSERT INTO houses(invitecode) VALUES($1) RETURNING id', hostCode)
+        return t.one('INSERT INTO houses(invitecode) VALUES($1) RETURNING id, invitecode', hostCode)
           .then((houseData) => {
             return t.one('INSERT INTO users_houses(userid, houseid) VALUES($1, $2) RETURNING userid, houseid', [userData.id, houseData.id])
-            .then((userHouseData) => {
+            .then((/* userHouseData */) => {
               // sucess in inner most query, now what?
               return {
                 name: userData.name,
                 email: userData.email,
                 id: userData.id,
                 defaultViewHost: userData.defaultviewhost,
+                home: {
+                  hostCode: houseData.invitecode,
+                  id: houseData.id,
+                },
               };
-            })
-            .catch((error) => {
-              logger.error('ERROR in User.create for userHouseData: ', error);
-              throw new Error();
             });
-          })
-          .catch((error) => {
-            logger.error('ERROR in User.create for houses: ', error);
-            throw new Error();
           });
       })
   ));
-  // .then((data) => {
-  //   console.log('inside outer then of transaction, data = ', data);
-  //   // res.send('Everything\'s fine!'); // automatic COMMIT was executed
-  // })
-  // .catch(error => {
-  //   logger.error('outermost ERROR in User.create: ', error);
-  //   // res.send('Something is wrong!'); // automatic ROLLBACK was executed
-  // });
 };
 
 
