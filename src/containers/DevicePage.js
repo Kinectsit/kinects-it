@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
+import Subheader from 'material-ui/Subheader';
 import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
@@ -22,7 +23,36 @@ export class DevicePage extends React.Component {
     this.state = {
       canSubmit: false,
       error: '',
+      totalCost: 0,
+      time: 0,
+      units: 0,
     };
+  }
+
+  totalCost(time, units) {
+    const costPerMs = this.props.appState.featured.cost / 86400000;
+    return (units * time * costPerMs).toFixed(2);
+  }
+
+
+  handleTime(e) {
+    const time = parseInt(e.target.value, 10);
+    const totalCost = this.totalCost(time, this.state.units);
+
+    this.setState({
+      time,
+      totalCost,
+    });
+  }
+
+  handleUnits(e) {
+    const units = parseInt(e.target.value, 10);
+    const totalCost = this.totalCost(this.state.time, units);
+
+    this.setState({
+      units,
+      totalCost,
+    });
   }
 
   enableButton() {
@@ -106,7 +136,7 @@ export class DevicePage extends React.Component {
             onInvalidSubmit={() => this.notifyFormError()}
             onSuccess={(data) => console.log('request received by the server!', data)}
           >
-            <FormsyRadioGroup name="time" defaultSelected="1">
+            <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
               <FormsyRadio
                 value="20000"
                 label="20 seconds"
@@ -130,6 +160,7 @@ export class DevicePage extends React.Component {
               validationError={this.errorMessages.descriptionError}
               required
               style={styles.fieldStyles}
+              onChange={(e) => this.handleUnits(e)}
               floatingLabelText="How many units do you want?"
             />
             <FlatButton
@@ -139,6 +170,9 @@ export class DevicePage extends React.Component {
               disabled={!this.state.canSubmit}
             />
           </Formsy.Form>
+          <Subheader>
+            <p>Total cost: {this.state.totalCost}</p>
+          </Subheader>
         </Paper>
       </div>
     );
