@@ -82,19 +82,15 @@ module.exports = (passport) => {
             newUser.password = User.generateHash(req.body.password);
 
             // create a new User this should be a promise
-            console.log('before createUser');
-            const user = User.create(newUser);
-            console.log('after createUser');
-            return done(null, user, { login: true, message: 'user has been created!' });
-
-            /*
-            return db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', newUser)
-            .then((user) => {
-              // user was successfully added to the database
-              logger.info('user created');
-              return done(null, user, { login: true, message: 'user has been created!' });
+            User.create(newUser)
+            .then((data) => {
+              logger.info('Succesfully created user = ', data);
+              return done(null, data, { login: true, message: 'user has been created!' });
+            })
+            .catch(error => {
+              logger.error('outermost ERROR in User.create: ', error);
+              throw new Error();
             });
-            */
           })
           .catch((error) => {
             logger.info(error);
