@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import TitleBar from './TitleBar';
+import { TitleBar } from './TitleBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -13,11 +13,9 @@ import '../assets/scss/app.scss';
 export const App = (props) => (
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div className="app-container">
-      <TitleBar store={props.store} />
+      <TitleBar />
       <div className="row medium-10 columns">
-        <div className="page">
-          {props.children}
-        </div>
+        {props.children}
       </div>
     </div>
   </MuiThemeProvider>
@@ -26,6 +24,5 @@ export const App = (props) => (
 App.propTypes = {
   children: PropTypes.element,
   route: PropTypes.object,
-  store: PropTypes.object,
 };
 

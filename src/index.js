@@ -1,21 +1,20 @@
+import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
-import routes from './routes';
+import { browserHistory } from 'react-router';
+// import { syncHistoryWithStore } from 'react-router-redux';
+import Root from './containers/Root';
 import configureStore from './store/configureStore';
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
 const store = configureStore();
+// example if you want to set up with react-router-redux:
+// https://github.com/acdlite/redux-router
+// const history = syncHistoryWithStore(browserHistory, store);
 
 render(
-  <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
-  </Provider>, document.getElementById('app')
+  <Root store={store} history={browserHistory} />,
+  document.getElementById('app')
 );
-

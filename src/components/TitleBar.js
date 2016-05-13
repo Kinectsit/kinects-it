@@ -1,10 +1,12 @@
-/* eslint max-len: ["error", 150] */
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import * as actions from '../actions/actions';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import { NavMenu } from './NavMenu';
 
-export class TitleBar extends React.Component {
+class TitleBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,6 +27,7 @@ export class TitleBar extends React.Component {
         <AppBar
           title="Kinects.It"
           onLeftIconButtonTouchTap={() => this.handleToggle()}
+          style={{ position: 'fixed' }}
         />
 
         <Drawer
@@ -33,10 +36,22 @@ export class TitleBar extends React.Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}
         >
-          <NavMenu onClick={() => this.handleClose()} />
+          <NavMenu onClick={() => this.handleClose()} isLoggedIn={this.props.isAuth} />
         </Drawer>
 
       </div>
     );
   }
 }
+
+TitleBar.propTypes = {
+  isAuth: PropTypes.bool.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    isAuth: state.authState.isAuthenticated,
+  };
+}
+
+export default connect(mapStateToProps)(TitleBar);

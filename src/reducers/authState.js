@@ -9,7 +9,7 @@ import initialAuthState from './initialAuthState';
 // and update values on the copy.
 export default function authState(state = initialAuthState, action) {
   switch (action.type) {
-    case CONSTANTS.LOGIN_SUCCESS: {
+    case CONSTANTS.SET_AUTHENTICATION: {
       const newState = objectAssign({}, state);
       newState.isAuthenticated = action.isAuthenticated;
       newState.sessionId = action.sessionId;

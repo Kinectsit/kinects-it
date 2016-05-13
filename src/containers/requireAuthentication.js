@@ -17,14 +17,13 @@ export function requireAuthentication(Component) {
     }
 
     checkAuth() {
-      console.log('this is the current authState:', this.props.authState);
       if (!this.props.authState.isAuthenticated) {
         // current local state not authenticated
         // check with server if current session is authenticated
         $.get('/api/v1/authentication')
           .done((response) => {
             if (response) {
-              this.props.actions.setAsAuthenticated(true, response.sessionId);
+              this.props.actions.setAuthentication(true, response.sessionId);
               this.props.actions.setUser(response.user);
               if (response.host) {
                 this.props.actions.setUserAsHost(true);

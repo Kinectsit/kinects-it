@@ -61,7 +61,7 @@ export class LoginPage extends React.Component {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
-          this.props.actions.setAsAuthenticated(true, response.sessionId);
+          this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
           if (response.host) {
             this.props.actions.setUserAsHost(true);

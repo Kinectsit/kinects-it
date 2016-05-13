@@ -78,7 +78,7 @@ class SignupForm extends React.Component {
           this.props.actions.addHouse(response.house);
 
           // Next set authentication
-          this.props.actions.setAsAuthenticated(true, response.sessionId);
+          this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
           // next reroute to User Dashboard
           browserHistory.push('/dashboard');
