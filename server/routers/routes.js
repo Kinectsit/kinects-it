@@ -3,6 +3,11 @@ const router = require('express').Router();
 const userController = require('../controllers/userController.js');
 
 module.exports = (app, passport) => {
+  app.get('/logout', (req, res) => {
+    console.log('user is trying to logout!!');
+    req.logout();
+    res.redirect('/login');
+  })
   app.get('/api/v1/authentication', (req, res) => {
     if (req.isAuthenticated()) {
       const message = {

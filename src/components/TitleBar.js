@@ -28,6 +28,7 @@ class TitleBar extends React.Component {
         <AppBar
           title="Kinects.It"
           onLeftIconButtonTouchTap={() => this.handleToggle()}
+          style={{ position: 'fixed' }}
         />
 
         <Drawer
@@ -36,7 +37,7 @@ class TitleBar extends React.Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}
         >
-          <NavMenu onClick={() => this.handleClose()} />
+          <NavMenu onClick={() => this.handleClose()} isLoggedIn={this.props.isAuth} />
         </Drawer>
 
       </div>
@@ -45,13 +46,12 @@ class TitleBar extends React.Component {
 }
 
 TitleBar.propTypes = {
-  actions: PropTypes.object.isRequired,
-  appState: PropTypes.object.isRequired,
+  isAuth: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    appState: state.appState,
+    isAuth: state.authState.isAuthenticated,
   };
 }
 
@@ -61,4 +61,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TitleBar);
+export default connect(mapStateToProps)(TitleBar);

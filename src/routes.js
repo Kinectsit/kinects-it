@@ -28,4 +28,3 @@ export default (
     <Route path="/device" component={requireAuthentication(DevicePage)} />
   </Route>
 );
-

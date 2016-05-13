@@ -10,7 +10,10 @@
 */
 // @import '/settings';
 @import 'foundation';
-
-
-
 @include foundation-everything;
+
+.app-container {
+  .page {
+    margin-top: 40px;
+  }
+}
