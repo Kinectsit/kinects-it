@@ -12,11 +12,18 @@ export class DeviceRow extends React.Component {
   }
 
   render() {
-    let active = '';
-    if (this.props.device.isactive) {
-      active = 'Active';
-    } else {
+    let active = 'Active';
+    let guestButton = (
+      <div>Device is currently on - come back later to access options.</div>
+    );
+
+    if (this.props.device.isactive === false) {
       active = 'Not Active';
+      guestButton = (
+        <NavLink to="/device">
+          <RaisedButton label="Purchase Usage" onClick={() => this.setFeatured()} />
+        </NavLink>
+      );
     }
 
     if (this.props.appState.isHost) {
@@ -25,7 +32,7 @@ export class DeviceRow extends React.Component {
           <li>Name: {this.props.device.name}</li>
           <li>Is Active: {active}</li>
           <NavLink to="/device-profile">
-            <RaisedButton label="View Host Device Dashboard" onClick={() => this.setFeatured()} />
+            <RaisedButton label="Device Options" onClick={() => this.setFeatured()} />
           </NavLink>
         </div>
       );
@@ -34,9 +41,7 @@ export class DeviceRow extends React.Component {
       <div key={this.props.device.id}>
         <li>Name: {this.props.device.name}</li>
         <li>Is Active: {active}</li>
-        <NavLink to="/device">
-          <RaisedButton label="View Guest Device Dashboard" onClick={() => this.setFeatured()} />
-        </NavLink>
+        {guestButton}
       </div>
     );
   }

@@ -20,12 +20,12 @@ export function setupDeviceOptions(device) {
   return { type: types.SETUP_DEVICE_OPTIONS, device };
 }
 
-export function toggleDevice(isActive) {
-  return { type: types.TOGGLE_DEVICE, isActive };
+export function toggleDevice(isactive) {
+  return { type: types.TOGGLE_DEVICE, isactive };
 }
 
-export function paidUsage(hasPaid) {
-  return { type: types.PAID_USAGE, hasPaid };
+export function paidUsage(paidusage) {
+  return { type: types.PAID_USAGE, paidusage };
 }
 
 export function addRental(rental) {

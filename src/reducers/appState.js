@@ -40,12 +40,12 @@ export default function appState(state = initialState, action) {
     }
     case TOGGLE_DEVICE: {
       const newState = objectAssign({}, state);
-      newState.featured.isActive = action.isActive;
+      newState.featured.isactive = action.isactive;
       return newState;
     }
     case PAID_USAGE: {
       const newState = objectAssign({}, state);
-      newState.featured.hasPaid = action.hasPaid;
+      newState.featured.paidusage = action.paidusage;
       return newState;
     }
     case SETUP_DEVICE_OPTIONS: {
