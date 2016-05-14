@@ -45,11 +45,15 @@ module.exports = (app, passport) => {
               sessionId: req.session.id,
               login: info.login,
               message: info.message,
-              house: {
+            };
+
+            if (user.house) {
+               message.house = {
                 id: req.session.passport.user.house.id,
                 code: req.session.passport.user.house.hostCode,
-              },
-            };
+               };
+            }
+
             return res.json(message)
         });
       };
@@ -72,27 +76,30 @@ module.exports = (app, passport) => {
             if (err) {
               return next(err);
             }
-
             // creating a message to send to the client for session information
             const message = {
               user: {
-                name: req.session.passport.user.name,
-                email: req.session.passport.user.email,
-                id: req.session.passport.user.id,
+                name: user.name,
+                email: user.email,
+                id: user.id,
               },
               sessionId: req.session.id,
-              host: req.session.passport.user.defaultviewhost,
+              host: user.defaultviewhost,
               login: info.login,
               message: info.message,
             }
-
+            if (user.house) {
+               message.house = {
+                id: user.house.id,
+                code: user.house.hostCode,
+              }
+            }
             return res.json(message);
         });
       };
       if (!user) {
         return res.json(info)
       }
-
     })(req, res, next);
   });
 };

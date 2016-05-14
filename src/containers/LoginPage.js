@@ -65,6 +65,7 @@ export class LoginPage extends React.Component {
           this.props.actions.setUser(response.user);
           if (response.host) {
             this.props.actions.setUserAsHost(true);
+            this.props.actions.addHouse(response.house);
           } else {
             this.props.actions.setUserAsHost(false);
           }

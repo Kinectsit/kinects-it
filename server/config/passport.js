@@ -35,22 +35,44 @@ module.exports = (passport) => {
     passReqToCallback: true,
   },
   (req, user, password, done) => {
+    var loggedInUser = {};
+    var err = null;
+    var info = null;
+
     db.one('SELECT * from users where name=$1', [req.body.name])
-      .then((loggedInUser) => {
+      .then((userData) => {
         // if no user is found, return the message
-        if (!loggedInUser) {
-          return done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
+        if (!userData) {
+          loggedInUser = false;
+          info = { login: false, message: 'Invalid login attempt, please try again.' };
+        } else {
+          const matches = User.comparePasswords(password, userData.password);
+          if (!matches) {
+            info = { login: false, message: 'Invalid login attempt, please try again.' };
+            loggedInUser = false;
+          } else {
+            loggedInUser = userData;
+            info = { login: true, message: 'User successfully logged in.' };
+            // if user is a host, add home information to object going back to client
+            if (loggedInUser.defaultviewhost) {
+              return db.one('SELECT id, inviteCode FROM houses WHERE id = ( SELECT houseid FROM users_houses WHERE userId = $1 )', [loggedInUser.id]);
+            }
+            // if user is not host it will be returned in the then
+          }
         }
-        /* validate the password  */
-        const matches = User.comparePasswords(password, loggedInUser.password);
-        if (!matches) {
-          return done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
+        return {};
+      }).
+      then((homeData) => {
+        if (loggedInUser && homeData) {
+          loggedInUser.house = {};
+          loggedInUser.house.id = homeData.id;
+          loggedInUser.house.hostCode = homeData.invitecode;
         }
-        return done(null, loggedInUser, { login: true, message: 'User successfully logged in.' });
+        return done(err, loggedInUser, info);
       })
       .catch((error) => {
         logger.info(error);
-        done(null, false, { login: false, message: 'Invalid login attempt, please try again.' });
+        done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
       });
   }));
 
