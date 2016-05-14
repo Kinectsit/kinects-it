@@ -21,7 +21,7 @@ export const NavMenu = (props) => (
       </NavLink>
     </div> :
     <div className="menu-container">
-      <NavLink to="/dashbaord">
+      <NavLink to="/dashboard">
         <MenuItem>My Dashboard</MenuItem>
       </NavLink>
       <NavLink to="/add-device">

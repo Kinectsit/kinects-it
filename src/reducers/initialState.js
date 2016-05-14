@@ -17,7 +17,7 @@ export default {
     id: '',
     isActive: false,
     paidUsage: false,
-    time: '',
+    cost: 12,
   },
   configuredDevice: {
     configured: false,
@@ -31,7 +31,7 @@ export default {
       isActive: false,
       name: 'Radio',
       paidUsage: false,
-      time: '',
+      cost: 10,
     },
     {
       description: 'It washes clothes',
@@ -39,7 +39,7 @@ export default {
       isActive: false,
       name: 'Washing Machine',
       paidUsage: false,
-      time: '',
+      time: 20,
     },
   ],
 };

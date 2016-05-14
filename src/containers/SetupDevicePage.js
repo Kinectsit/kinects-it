@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
-import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
+import { FormsyText } from 'formsy-material-ui/lib';
 import $ from 'jquery';
 
 export class SetupDevicePage extends React.Component {
@@ -21,9 +21,25 @@ export class SetupDevicePage extends React.Component {
       priceError: 'Please enter time and price options',
     };
     this.state = {
+      changed: false,
       canSubmit: false,
+      costPerDay: 0,
+      costPerThreeHours: 0,
+      costPerHour: 0,
+      costPerMinute: 0,
     };
   }
+
+  handleChange(e) {
+    const cost = parseInt(e.target.value, 10);
+    this.setState({
+      costPerWeek: (7 * cost).toFixed(2),
+      costPerDay: (cost).toFixed(2),
+      costPerHour: (cost / 24).toFixed(2),
+      costPerMinute: (cost / 1440).toFixed(2),
+    });
+  }
+
 
   enableButton() {
     this.setState({
@@ -39,12 +55,12 @@ export class SetupDevicePage extends React.Component {
 
   submitForm(data) {
     const device = data;
+    const house = this.props.appState.house.id || 1;
     device.id = this.props.appState.configuredDevice.id;
     device.isActive = this.props.appState.configuredDevice.isActive;
     device.paidUsage = false;
-    device.time = '';
 
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/add/'.concat(device.id);
+    const apiPath = `http://localhost:3001/api/v1/homes/${house}/devices/add/`.concat(device.id);
 
     $.post(apiPath, device, () => {
       this.props.actions.setFeatured(device);
@@ -55,8 +71,8 @@ export class SetupDevicePage extends React.Component {
     });
   }
 
-  notifyFormError(data) {
-    console.error('Form error:', data);
+  notifyFormError(e) {
+    console.error('Form error:', e.target.value);
   }
 
   render() {
@@ -80,6 +96,7 @@ export class SetupDevicePage extends React.Component {
             onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
             onInvalidSubmit={() => this.notifyFormError()}
+            // onChange={() => this.newChange()}
             onSuccess={(data) => console.log('request received by the server!', data)}
           >
             <FormsyText
@@ -98,25 +115,16 @@ export class SetupDevicePage extends React.Component {
               style={styles.fieldStyles}
               floatingLabelText="Device Description"
             />
-            <Subheader>Pricing Options</Subheader>
-            <FormsyRadioGroup name="time" defaultSelected="15">
-              <FormsyRadio
-                value="1"
-                label="1 minute"
-              />
-              <FormsyRadio
-                value="15"
-                label="15 minutes"
-              />
-              <FormsyRadio
-                value="60"
-                label="1 hour"
-              />
-              <FormsyRadio
-                value="1440"
-                label="1 day"
-              />
-            </FormsyRadioGroup>
+            <Subheader>How much do you want to charge per day?</Subheader>
+            <FormsyText
+              name="cost"
+              validations="isExisty" // add validation for number
+              validationError={this.errorMessages.descriptionError}
+              required
+              style={styles.fieldStyles}
+              onChange={(e) => this.handleChange(e)}
+              floatingLabelText="Must be a whole number"
+            />
             <FlatButton
               style={styles.submitStyle}
               type="submit"
@@ -124,6 +132,12 @@ export class SetupDevicePage extends React.Component {
               disabled={!this.state.canSubmit}
             />
           </Formsy.Form>
+          <Subheader>
+            <p>Cost per Minute: {this.state.costPerMinute}</p>
+            <p>Cost per Hour: {this.state.costPerHour}</p>
+            <p>Cost per Day: {this.state.costPerDay}</p>
+            <p>Cost per Week: {this.state.costPerWeek}</p>
+          </Subheader>
         </Paper>
       </div>
     );

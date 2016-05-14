@@ -1,4 +1,6 @@
 /* eslint-disable strict */
+/* eslint-disable max-len */
+
 'use strict';
 const logger = require('../config/logger.js');
 const db = require('../db.js');
@@ -38,8 +40,19 @@ crontab.scheduleJob('*/1 * * * *', () => {
           } else {
             // delete device from redis
             client.zrem('device', results[0][i]);
-            // need to send query to database to change toggle active to off
-            // also need to toggle paidUsage to false
+            // update persistent database
+            const deviceOff = {
+              isActive: false,
+              paidUsage: false,
+              hardwareKey: results[0][i],
+            };
+            db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
+              .then((result) => {
+                logger.info(result);
+              })
+              .catch((updateError) => {
+                logger.info(updateError);
+              });
           }
         });
       }
@@ -69,14 +82,14 @@ exports.getDevices = (req, res, next) => {
   });
 };
 
-
+// Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
-  const isActive = req.body.isActive;
-  const paidUsage = req.body.paidUsage;
-  const d = new Date();
-  const now = d.getTime();
-  const endingTime = now + parseInt(req.body.time, 10);
+  const updateDevice = {
+    hardwareKey: req.params.deviceId,
+    isActive: req.body.isActive,
+    paidUsage: req.body.paidUsage,
+  };
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -92,20 +105,70 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-      if (paidUsage === 'true') {
-        // Adds deviceId as value, endingTime as the score - time complexity is O(log(N))
-        client.zadd('device', endingTime, deviceId, redis.print);
-        // update database ---- db.query(update device w isActive and paidUsage booleans)
-        console.log(`database should include ${isActive} ${paidUsage}`);
-      }
+      // update database ---- db.query(update device w isActive and paidUsage booleans)
+      db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
+        .then((result) => {
+          logger.info(result);
+          // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+          if (req.body.paidUsage === 'true') {
+            const d = new Date();
+            const now = d.getTime();
+            const endingTime = now + parseInt(req.body.time, 10);
+
+            client.zadd('device', endingTime, deviceId, redis.print);
+            return res.json(body);
+          }
+          return res.json(body);
+        })
+        .catch((err) => {
+          logger.info(err);
+          return res.send(err);
+        });
+    }
+  });
+};
+
+// Sends ping to device after host first types the code
+exports.pingDevice = (req, res) => {
+  const deviceId = req.params.deviceId;
+
+  const options = { method: 'POST',
+    url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
+    headers: {
+      authorization: `Bearer ${hardware.ACCESS_TOKEN}`,
+      'content-type': 'application/json',
+      accept: 'application/vnd.littlebits.v2+json',
+    },
+    body: { duration_ms: 100 },
+    json: true };
+
+  request(options, (error, response, body) => {
+    if (error) {
+      throw new Error('error!!! ', error);
+    } else {
       return res.json(body);
     }
   });
 };
 
+// Adds the device to the database after host fills out set options form
 exports.addDevice = (req, res) => {
-  console.log('req.body is ', req.body);
-  // add to database
-  res.send('will add to db once query is written');
-};
+  const newDevice = {
+    houseId: req.params.homeId,
+    name: req.body.name,
+    description: req.body.description,
+    isActive: req.body.isActive,
+    hardwareKey: req.params.deviceId,
+    usageCostOptions: req.body.cost,
+  };
 
+  db.one('INSERT INTO devices(houseId, name, description, isActive, hardwareKey, usageCostOptions) VALUES(${houseId}, ${name}, ${description}, ${isActive}, ${hardwareKey}, ${usageCostOptions}) RETURNING *', newDevice)
+  .then((result) => {
+    logger.info(result);
+    return res.send(result);
+  })
+  .catch((error) => {
+    logger.info(error);
+    return res.send(error);
+  });
+};
