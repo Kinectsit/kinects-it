@@ -71,11 +71,14 @@ exports.getDevices = (req, res, next) => {
   });
 };
 
-
+// Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
-  const isActive = req.body.isActive;
-  const paidUsage = req.body.paidUsage;
+  const updateDevice = {
+    hardwareKey: req.params.deviceId,
+    isActive: req.body.isActive,
+    paidUsage: req.body.paidUsage,
+  };
   const d = new Date();
   const now = d.getTime();
   const endingTime = now + parseInt(req.body.time, 10);
@@ -94,17 +97,49 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-      if (paidUsage === 'true') {
-        // Adds deviceId as value, endingTime as the score - time complexity is O(log(N))
-        client.zadd('device', endingTime, deviceId, redis.print);
-        // update database ---- db.query(update device w isActive and paidUsage booleans)
-        console.log(`database should include ${isActive} ${paidUsage}`);
-      }
+      // update database ---- db.query(update device w isActive and paidUsage booleans)
+      db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', updateDevice)
+        .then((result) => {
+          logger.info(result);
+          // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+          if (req.body.paidUsage === 'true') {
+            client.zadd('device', endingTime, deviceId, redis.print);
+            return res.json(body);
+          }
+          return res.json(body);
+        })
+        .catch((err) => {
+          logger.info(err);
+          return res.send(err);
+        });
+    }
+  });
+};
+
+// Sends ping to device after host first types the code
+exports.pingDevice = (req, res) => {
+  const deviceId = req.params.deviceId;
+
+  const options = { method: 'POST',
+    url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
+    headers: {
+      authorization: `Bearer ${hardware.ACCESS_TOKEN}`,
+      'content-type': 'application/json',
+      accept: 'application/vnd.littlebits.v2+json',
+    },
+    body: { duration_ms: 100 },
+    json: true };
+
+  request(options, (error, response, body) => {
+    if (error) {
+      throw new Error('error!!! ', error);
+    } else {
       return res.json(body);
     }
   });
 };
 
+// Adds the device to the database after host fills out set options form
 exports.addDevice = (req, res) => {
   const newDevice = {
     houseId: req.params.homeId,
@@ -114,15 +149,14 @@ exports.addDevice = (req, res) => {
     hardwareKey: req.params.deviceId,
     usageCostOptions: req.body.cost,
   };
-  console.log('====', newDevice);
 
   db.one('INSERT INTO devices(houseId, name, description, isActive, hardwareKey, usageCostOptions) VALUES(${houseId}, ${name}, ${description}, ${isActive}, ${hardwareKey}, ${usageCostOptions}) RETURNING *', newDevice)
   .then((result) => {
     logger.info(result);
-    res.send(result);
+    return res.send(result);
   })
   .catch((error) => {
     logger.info(error);
-    res.send(error);
+    return res.send(error);
   });
 };
