@@ -9,4 +9,6 @@ const userController = require('../controllers/userController.js');
 
 userRouter.route('/').post(userController.signUp);
 
+userRouter.route('/users/:id/homes').post(userController.addToHome);
+
 module.exports = userRouter;
