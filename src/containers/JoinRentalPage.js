@@ -1,4 +1,9 @@
 import React, { PropTypes } from 'react';
+import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
+import Formsy from 'formsy-react';
+import { FormsyText } from 'formsy-material-ui/lib';
+import styles from '../assets/formStyles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
@@ -7,21 +12,32 @@ import $ from 'jquery';
 
 export class JoinRentalPage extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.errorMessages = {
+      inviteCodeError: 'Please enter an invite code',
+      submitError: 'Please resolve invalid input and try again',
+    };
+
+    this.state = {
+      error: '',
+      canSubmit: false,
+    };
+  }
+
   componentDidMount() {
     this.props.actions.addRental('');
   }
 
-  captureFormChange(event) {
-    this.setState({
-      rental: event.target.value,
-    });
-  }
-
   addRental(data) {
     console.log('props in JoinRentalPage: ', this.props);
-    // const userId = this.props.
+    const userId = this.props.authState.user.id;
+    const code = data.inviteCode;
+    const urlPath = 'http://localhost:3000/users/'.concat(userId).concat('/homes/').concat(code);
+
     $.ajax({
-      url: '/users/:id/homes/:code',
+      url: urlPath,
       dataType: 'json',
       crossDomain: true,
       method: 'POST',
@@ -29,23 +45,9 @@ export class JoinRentalPage extends React.Component {
       data: JSON.stringify(data),
       success: (response) => {
         console.log('response to /users/:id/homes/:code is: ', response);
-        if (!response.login) {
-          // server could not log user in, show error
-          this.setState({ error: 'INVALID_LOGIN' });
-        } else {
-          this.props.actions.setAuthentication(true, response.sessionId);
-          this.props.actions.setUser(response.user);
-          if (response.host) {
-            this.props.actions.setUserAsHost(true);
-            this.props.actions.addHouse(response.house);
-          } else {
-            this.props.actions.setUserAsHost(false);
-          }
-
-          this.props.actions.addRental(this.state.rental);
-          // send user to dashboard page if successful response
-          browserHistory.push('/dashboard');
-        }
+        this.props.actions.addRental(this.state.rental);
+        // send user to dashboard page if successful response
+        browserHistory.push('/dashboard');
       },
       error: (/* xhr, status, err */) => {
         this.setState({ error: 'INVALID_JOIN_RENTAL' });
@@ -53,19 +55,63 @@ export class JoinRentalPage extends React.Component {
     });
   }
 
+  enableButton() {
+    this.setState({
+      canSubmit: true,
+    });
+  }
+
+  disableButton() {
+    this.setState({
+      canSubmit: false,
+    });
+  }
+
+  formErrorMessage(error) {
+    let msg = null;
+    if (error === 'INVALID_JOIN_RENTAL') {
+      msg = 'Please resolve invalid input and try again.';
+    }
+
+    return msg;
+  }
+
   render() {
+    let errorMsg = '';
+    if (this.state.error) {
+      errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
+    }
+
     return (
       <div>
         <h2>Join new rental</h2>
-        <form>
-          <input
-            type="text"
-            name="device"
-            placeholder="New rental"
-            onChange={(event) => this.captureFormChange(event)}
-          />
-          <button type="button" onClick={() => this.addRental()}>ADD RENTAL</button>
-        </form>
+        <Paper style={styles.paperStyle}>
+          {errorMsg}
+          <Formsy.Form
+            onValid={() => this.enableButton()}
+            onInvalid={() => this.disableButton()}
+            onValidSubmit={(data) => this.addRental(data)}
+            onInvalidSubmit={this.errorMessages.submitError}
+            autoComplete="off"
+          >
+            <FormsyText
+              name="inviteCode"
+              validations="isExisty"
+              validationError={this.errorMessages.inviteCodeError}
+              required
+              style={styles.fieldStyles}
+              floatingLabelText="Invite Code"
+            />
+            <div style={styles.center}>
+              <FlatButton
+                style={styles.submitStyle}
+                type="submit"
+                label="Join"
+                disabled={!this.state.canSubmit}
+              />
+            </div>
+          </Formsy.Form>
+        </Paper>
         <h1>Current Rental is: {this.props.appState.houseName}</h1>
       </div>
     );
@@ -76,11 +122,13 @@ export class JoinRentalPage extends React.Component {
 JoinRentalPage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 
