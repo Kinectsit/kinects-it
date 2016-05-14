@@ -83,7 +83,6 @@ exports.pingDevice = (req, res) => {
 
 // Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
-  console.log('req.body is ', req.body);
   const deviceId = req.params.deviceId;
   const updateDevice = {
     hardwarekey: req.params.deviceId,
