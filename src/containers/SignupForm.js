@@ -69,13 +69,10 @@ class SignupForm extends React.Component {
           // first execute action to set user type to host
           if (data.host === true) {
             this.props.actions.setUserAsHost(true);
+            this.props.actions.addHouse(response.house);
           } else {
             this.props.actions.setUserAsHost(false);
           }
-
-          // TODO: add user -> home object (id and hostCode properties) to state
-          // so that the host code can be displayed in the dashboard page
-          this.props.actions.addHouse(response.house);
 
           // Next set authentication
           this.props.actions.setAuthentication(true, response.sessionId);
