@@ -18,7 +18,7 @@ export class DeviceProfilePage extends React.Component {
   toggleDevice() {
     const hardwarekey = this.props.appState.featured.hardwarekey;
     const deviceState = {
-      isActive: !this.props.appState.featured.isActive,
+      isactive: !this.props.appState.featured.isactive,
       paidUsage: false,
     };
     const context = this;
@@ -32,7 +32,7 @@ export class DeviceProfilePage extends React.Component {
           error: req.message,
         });
       } else {
-        if (this.props.appState.featured.isActive) {
+        if (this.props.appState.featured.isactive) {
           this.props.actions.toggleDevice(false);
         } else {
           this.props.actions.toggleDevice(true);
@@ -65,7 +65,7 @@ export class DeviceProfilePage extends React.Component {
         <h3>{this.props.appState.featured.description}</h3>
         <Toggle
           onToggle={() => this.toggleDevice()}
-          defaultToggled={this.props.appState.featured.isActive}
+          defaultToggled={this.props.appState.featured.isactive}
         />
       </div>
     );
