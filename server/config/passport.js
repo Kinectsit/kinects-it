@@ -54,11 +54,8 @@ module.exports = (passport) => {
           } else {
             loggedInUser = userData;
             info = { login: true, message: 'User successfully logged in.' };
-            // if user is a host, add home information to object going back to client
-            if (loggedInUser.defaultviewhost) {
-              return db.one('SELECT id, inviteCode FROM houses WHERE id = ( SELECT houseid FROM users_houses WHERE userId = $1 )', [loggedInUser.id]);
-            }
-            // if user is not host it will be returned in the then
+            // add home to response if user is already in one (use oneOrNone in case they aren't in a home yet)
+            return db.oneOrNone('SELECT id, inviteCode FROM houses WHERE id = ( SELECT houseid FROM users_houses WHERE userId = $1 )', [loggedInUser.id]);
           }
         }
         return {};

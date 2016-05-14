@@ -57,6 +57,7 @@ export class LoginPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        console.log('Login response: ', response);
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
@@ -66,11 +67,18 @@ export class LoginPage extends React.Component {
           if (response.host) {
             this.props.actions.setUserAsHost(true);
             this.props.actions.addHouse(response.house);
+            // send user to dashboard page if successful response
+            browserHistory.push('/dashboard');
           } else {
+            // user is guest
             this.props.actions.setUserAsHost(false);
+            // if the user is in a house, send to dashboard, otherwise send to join-rental
+            if (response.house) {
+              browserHistory.push('dashboard');
+            } else {
+              browserHistory.push('join-rental');
+            }
           }
-          // send user to dashboard page if successful response
-          browserHistory.push('/dashboard');
         }
       },
       error: (/* xhr, status, err */) => {
