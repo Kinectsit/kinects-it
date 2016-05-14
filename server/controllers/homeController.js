@@ -40,8 +40,19 @@ crontab.scheduleJob('*/1 * * * *', () => {
           } else {
             // delete device from redis
             client.zrem('device', results[0][i]);
-            // need to send query to database to change toggle active to off
-            // also need to toggle paidUsage to false
+            // update persistent database
+            const deviceOff = {
+              isActive: false,
+              paidUsage: false,
+              hardwareKey: results[0][i],
+            };
+            db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
+              .then((result) => {
+                logger.info(result);
+              })
+              .catch((updateError) => {
+                logger.info(updateError);
+              });
           }
         });
       }
@@ -79,9 +90,6 @@ exports.toggleDevice = (req, res) => {
     isActive: req.body.isActive,
     paidUsage: req.body.paidUsage,
   };
-  const d = new Date();
-  const now = d.getTime();
-  const endingTime = now + parseInt(req.body.time, 10);
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -98,11 +106,15 @@ exports.toggleDevice = (req, res) => {
       throw new Error('error!!! ', error);
     } else {
       // update database ---- db.query(update device w isActive and paidUsage booleans)
-      db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', updateDevice)
+      db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
         .then((result) => {
           logger.info(result);
           // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
           if (req.body.paidUsage === 'true') {
+            const d = new Date();
+            const now = d.getTime();
+            const endingTime = now + parseInt(req.body.time, 10);
+
             client.zadd('device', endingTime, deviceId, redis.print);
             return res.json(body);
           }
