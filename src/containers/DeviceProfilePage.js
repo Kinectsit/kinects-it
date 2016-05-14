@@ -23,11 +23,10 @@ export class DeviceProfilePage extends React.Component {
     };
     const context = this;
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(hardwarekey);
+    const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
-        console.log('there was an error???');
         context.setState({
           error: req.message,
         });

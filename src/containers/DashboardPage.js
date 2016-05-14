@@ -13,9 +13,8 @@ export class DashboardPage extends React.Component {
     // this.props.appState.house.id --- remove 1 after state is passed down
     const userHouseId = 1;
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = `http://localhost:3001/api/v1/homes/${userHouseId}/devices/`;
+    const apiPath = `/api/v1/homes/${userHouseId}/devices/`;
     $.get(apiPath, (req) => {
-      console.log('response from server is ', req);
       const devices = req;
       this.props.actions.loadDevices(devices);
     })
