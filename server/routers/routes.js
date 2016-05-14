@@ -3,6 +3,10 @@ const router = require('express').Router();
 const userController = require('../controllers/userController.js');
 
 module.exports = (app, passport) => {
+
+
+  app.route('/users/:id/homes/:code').post(userController.addToHome);
+  
   app.delete('/api/v1/authentication', (req, res) => {
     req.logout();
     res.json(true);

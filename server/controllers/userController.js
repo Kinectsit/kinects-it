@@ -27,7 +27,6 @@ module.exports.signUp = (req, res, next) => {
 };
 
 module.exports.addToHome = (req, res, next) => {
-
   /*
    transaction will need to do the following:
      1. Retrive the house id based on the invite code
@@ -37,26 +36,29 @@ module.exports.addToHome = (req, res, next) => {
   const userId = req.params.id;
   const inviteCode = req.params.code;
 
-  console.log('userId: ', userId);
-  console.log('invite code: ', inviteCode);
-
-  db.query('SELECT ${column^} FROM ${table~} where invitecode=${code}', {
+  db.query('SELECT ${column~} FROM ${table~} where invitecode=${code}', {
     column: 'id',
     table: 'houses',
     code: inviteCode,
   })
   .then((houseId) => {
+    // TODO: validate house exists
+    const house = houseId[0].id;
     logger.info('SUCCESS in addToHome retrival of house id: ', houseId);
 
-    return db.one('INSERT INTO users_houses (userid, houseid, ishosthouse) values($1, $2, $3) RETURNING *', [userId, houseId, false]);
+    return db.one('INSERT INTO users_houses (userid, houseid, ishosthouse) values($1, $2, $3) RETURNING *', [userId, house, false]);
   })
   .then((data) => {
-    console.log('Success insert for addToHome: ', data);
-    return res.json({ woot: 'woot' });
+    logger.info('SUCCESS insert for addToHome: ', data);
+    return res.json(data);
   })
   .catch((error) => {
     logger.info('ERROR in addToHome: ', error);
+    // TODO: check if duplicate key error (meaning already in home)
     return res.send(error);
+  })
+  .finally(() => {
+    next();
   });
 };
 
