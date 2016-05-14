@@ -3,7 +3,6 @@ import { Route, IndexRoute } from 'react-router';
 
 import { App } from './components/App';
 import { Home } from './components/Home';
-import DemoPage from './containers/DemoPage';
 import LoginPage from './containers/LoginPage';
 import { SignupPage } from './components/SignupPage';
 import DashboardPage from './containers/DashboardPage';
@@ -19,7 +18,6 @@ import { requireAuthentication } from './containers/requireAuthentication';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
-    <Route path="/demo" component={DemoPage} />
     <Route path="/login" component={LoginPage} />
     <Route path="/signup" component={SignupPage} />
     <Route path="/dashboard" component={requireAuthentication(DashboardPage)} />
