@@ -41,12 +41,12 @@ export class AddDevicePage extends React.Component {
   /**
     Called on after submit form to check hardware
   */
-  toggleDevice(device) {
+  pingDevice(device) {
     console.log('device is ', device);
     const context = this;
     const deviceState = { isActive: true };
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3000/api/v1/homes/1/devices/'.concat(device.deviceId);
+    const apiPath = 'http://localhost:3000/api/v1/homes/1/devices/ping/'.concat(device.deviceId);
 
     $.post(apiPath, deviceState, (req) => {
       const configuredDevice = {
@@ -110,7 +110,7 @@ export class AddDevicePage extends React.Component {
           <Formsy.Form
             onValid={() => this.enableButton()}
             onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.toggleDevice(data)}
+            onValidSubmit={(data) => this.pingDevice(data)}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
           >

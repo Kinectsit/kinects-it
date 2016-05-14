@@ -22,6 +22,7 @@ CREATE TABLE devices (
   name VARCHAR,
   description VARCHAR,
   isActive BOOLEAN DEFAULT FALSE,
+  paidUsage BOOLEAN DEFAULT FALSE,
   hardwareKey VARCHAR,
   hardwareType VARCHAR,
   usageTimeOptions INTEGER,
