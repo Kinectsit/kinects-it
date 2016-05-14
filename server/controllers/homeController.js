@@ -132,7 +132,7 @@ crontab.scheduleJob('*/1 * * * *', () => {
   const d = new Date();
   const now = d.getTime();
   client.multi()
-    .zrangebyscore('device', '-inf', now, redis.print)
+    .zrangebyscore('device', '-inf', now)
     .exec((err, results) => {
       // toggle off all of the devices that have expired times
       for (let i = 0; i < results[0].length; i++) {
