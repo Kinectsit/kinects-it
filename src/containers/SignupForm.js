@@ -54,7 +54,7 @@ class SignupForm extends React.Component {
     }
 
     $.ajax({
-      url: 'http://localhost:3001/api/v1/users/',
+      url: '/api/v1/users/',
       dataType: 'json',
       crossDomain: true,
       method: 'POST',
