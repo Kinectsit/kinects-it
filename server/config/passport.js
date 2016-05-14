@@ -1,4 +1,5 @@
 /* eslint max-len: ["error", 200] */
+/* eslint-disable no-var */
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../db.js');
 const User = require('../models/userModel');
