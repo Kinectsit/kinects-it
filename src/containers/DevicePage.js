@@ -95,8 +95,8 @@ export class DevicePage extends React.Component {
     const totalTime = data.time * data.units;
     const deviceState = this.props.appState.featured;
     deviceState.time = totalTime;
-    deviceState.paidUsage = true;
-    deviceState.isActive = true;
+    deviceState.paidusage = true;
+    deviceState.isactive = true;
 
     this.toggleDevice(deviceState);
   }
@@ -123,7 +123,7 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         <Toggle
           onToggle={() => this.toggleDevice()}
-          defaultToggled={this.props.appState.featured.isActive}
+          defaultToggled={this.props.appState.featured.isactive}
         />
         <Paper style={styles.paperStyle}>
           <Formsy.Form

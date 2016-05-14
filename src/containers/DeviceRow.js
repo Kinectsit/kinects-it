@@ -13,7 +13,7 @@ export class DeviceRow extends React.Component {
 
   render() {
     let active = '';
-    if (this.props.device.isActive) {
+    if (this.props.device.isactive) {
       active = 'Active';
     } else {
       active = 'Not Active';
