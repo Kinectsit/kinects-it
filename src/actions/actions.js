@@ -1,5 +1,9 @@
 import * as types from '../constants/actionTypes';
 
+export function loadDevices(devices) {
+  return { type: types.LOAD_DEVICES, devices };
+}
+
 export function setUser(user) {
   return { type: types.SET_USER, user };
 }

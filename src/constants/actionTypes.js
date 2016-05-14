@@ -1,4 +1,5 @@
 export const SET_USER = 'SET_USER';
+export const LOAD_DEVICES = 'LOAD_DEVICES';
 export const ADD_DEVICE = 'ADD_DEVICE';
 export const TOGGLE_DEVICE = 'TOGGLE_DEVICE';
 export const PAID_USAGE = 'PAID_USAGE';
@@ -20,6 +21,7 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 */
 export default {
   SET_USER: 'SET_USER',
+  LOAD_DEVICES: 'LOAD_DEVICES',
   ADD_DEVICE: 'ADD_DEVICE',
   TOGGLE_DEVICE: 'TOGGLE_DEVICE',
   PAID_USAGE: 'PAID_USAGE',

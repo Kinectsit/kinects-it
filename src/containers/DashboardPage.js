@@ -4,8 +4,28 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { DashboardHost } from '../components/DashboardHost';
 import { DashboardGuest } from '../components/DashboardGuest';
+import $ from 'jquery';
 
 export class DashboardPage extends React.Component {
+
+  componentWillMount() {
+    const context = this;
+    // this.props.appState.house.id --- remove 1 after state is passed down
+    const userHouseId = 1;
+     // TODO: need to replace the home ID with the real one once it is in appState
+    const apiPath = `http://localhost:3001/api/v1/homes/${userHouseId}/devices/`;
+    $.get(apiPath, (req) => {
+      console.log('response from server is ', req);
+      const devices = req;
+      this.props.actions.loadDevices(devices);
+    })
+    .fail(() => {
+      // set local state to display error
+      context.setState({
+        error: 'Failed to find devices, reload page.',
+      });
+    });
+  }
 
   clickButton() {
     this.props.actions.addDevice(this.state.device);
