@@ -42,7 +42,6 @@ export class AddDevicePage extends React.Component {
     Called on after submit form to check hardware
   */
   pingDevice(device) {
-    console.log('device is ', device);
     const context = this;
     const deviceState = { isActive: true };
      // TODO: need to replace the home ID with the real one once it is in appState
@@ -110,7 +109,7 @@ export class AddDevicePage extends React.Component {
           <Formsy.Form
             onValid={() => this.enableButton()}
             onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.pingDevice(data)}
+            onValidSubmit={(data) => { this.pingDevice(data); this.disableButton(); }}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
           >
