@@ -16,6 +16,7 @@ export class DeviceProfilePage extends React.Component {
   }
 
   toggleDevice() {
+    console.log('is active is set to ', this.props.appState.featured.isActive);
     const deviceId = this.props.appState.featured.id;
     const deviceState = {
       isActive: !this.props.appState.featured.isActive,
@@ -27,13 +28,16 @@ export class DeviceProfilePage extends React.Component {
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
+        console.log('there was an error???');
         context.setState({
           error: req.message,
         });
       } else {
         if (this.props.appState.featured.isActive) {
+          console.log('calling toggle device to set it to false');
           this.props.actions.toggleDevice(false);
         } else {
+          console.log('calling toggle device to set it to TRUE');
           this.props.actions.toggleDevice(true);
         }
       }

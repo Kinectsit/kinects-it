@@ -34,6 +34,7 @@ export default function appState(state = initialState, action) {
     }
     case TOGGLE_DEVICE: {
       const newState = objectAssign({}, state);
+      console.log('trying to change state tree to ', action.isActive);
       newState.featured.isActive = action.isActive;
       return newState;
     }
