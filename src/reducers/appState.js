@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import {
+  LOAD_DEVICES,
   SET_USER,
   ADD_DEVICE,
   SET_FEATURED,
@@ -22,6 +23,11 @@ import CONSTANTS from '../constants/actionTypes';
 // and update values on the copy.
 export default function appState(state = initialState, action) {
   switch (action.type) {
+    case LOAD_DEVICES: {
+      const newState = objectAssign({}, state);
+      newState.devices = action.devices;
+      return newState;
+    }
     case ADD_DEVICE: {
       const newState = objectAssign({}, state);
       newState.configuredDevice = action.configuredDevice;
@@ -34,7 +40,6 @@ export default function appState(state = initialState, action) {
     }
     case TOGGLE_DEVICE: {
       const newState = objectAssign({}, state);
-      console.log('trying to change state tree to ', action.isActive);
       newState.featured.isActive = action.isActive;
       return newState;
     }

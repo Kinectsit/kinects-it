@@ -24,23 +24,6 @@ export default {
     id: '',
     accessToken: '',
   },
-  devices: [
-    {
-      description: 'It plays music',
-      id: '00e04c038343',
-      isActive: false,
-      name: 'Radio',
-      paidUsage: false,
-      cost: 10,
-    },
-    {
-      description: 'It washes clothes',
-      id: '00e04c038343',
-      isActive: false,
-      name: 'Washing Machine',
-      paidUsage: false,
-      time: 20,
-    },
-  ],
+  devices: [],
 };
 

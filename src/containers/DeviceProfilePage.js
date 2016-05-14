@@ -16,15 +16,14 @@ export class DeviceProfilePage extends React.Component {
   }
 
   toggleDevice() {
-    console.log('is active is set to ', this.props.appState.featured.isActive);
-    const deviceId = this.props.appState.featured.id;
+    const hardwarekey = this.props.appState.featured.hardwarekey;
     const deviceState = {
       isActive: !this.props.appState.featured.isActive,
       paidUsage: false,
     };
     const context = this;
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(deviceId);
+    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
@@ -34,10 +33,8 @@ export class DeviceProfilePage extends React.Component {
         });
       } else {
         if (this.props.appState.featured.isActive) {
-          console.log('calling toggle device to set it to false');
           this.props.actions.toggleDevice(false);
         } else {
-          console.log('calling toggle device to set it to TRUE');
           this.props.actions.toggleDevice(true);
         }
       }

@@ -69,9 +69,9 @@ export class DevicePage extends React.Component {
 
   toggleDevice(deviceState) {
     const context = this;
-    const deviceId = this.props.appState.featured.id;
+    const hardwarekey = this.props.appState.featured.hardwarekey;
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(deviceId);
+    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
@@ -79,7 +79,6 @@ export class DevicePage extends React.Component {
           error: req.message,
         });
       } else {
-        console.log('success');
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
       }
@@ -94,8 +93,6 @@ export class DevicePage extends React.Component {
 
   submitForm(data) {
     const totalTime = data.time * data.units;
-    console.log(totalTime);
-
     const deviceState = this.props.appState.featured;
     deviceState.time = totalTime;
     deviceState.paidUsage = true;
@@ -134,7 +131,6 @@ export class DevicePage extends React.Component {
             onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
             onInvalidSubmit={() => this.notifyFormError()}
-            onSuccess={(data) => console.log('request received by the server!', data)}
           >
             <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
               <FormsyRadio
