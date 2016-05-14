@@ -50,7 +50,7 @@ export class LoginPage extends React.Component {
 
   login(data) {
     $.ajax({
-      url: 'http://localhost:3001/api/v1/session/',
+      url: '/api/v1/session/',
       dataType: 'json',
       crossDomain: true,
       method: 'POST',

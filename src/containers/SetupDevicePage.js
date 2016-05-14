@@ -60,7 +60,7 @@ export class SetupDevicePage extends React.Component {
     device.isActive = this.props.appState.configuredDevice.isActive;
     device.paidUsage = false;
 
-    const apiPath = `http://localhost:3001/api/v1/homes/${house}/devices/add/`.concat(device.id);
+    const apiPath = `/api/v1/homes/${house}/devices/add/`.concat(device.id);
 
     $.post(apiPath, device, () => {
       this.props.actions.setFeatured(device);

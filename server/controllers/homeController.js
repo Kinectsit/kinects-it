@@ -42,12 +42,12 @@ exports.addDevice = (req, res) => {
     houseId: req.params.homeId,
     name: req.body.name,
     description: req.body.description,
-    isActive: req.body.isActive,
-    hardwareKey: req.params.deviceId,
-    usageCostOptions: req.body.cost,
+    isactive: req.body.isactive,
+    hardwarekey: req.params.deviceId,
+    usagecostoptions: req.body.cost,
   };
 
-  db.one('INSERT INTO devices(houseId, name, description, isActive, hardwareKey, usageCostOptions) VALUES(${houseId}, ${name}, ${description}, ${isActive}, ${hardwareKey}, ${usageCostOptions}) RETURNING *', newDevice)
+  db.one('INSERT INTO devices(houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${houseId}, ${name}, ${description}, ${isactive}, ${hardwarekey}, ${usagecostoptions}) RETURNING *', newDevice)
   .then((result) => {
     logger.info(result);
     return res.json(result);
@@ -85,9 +85,9 @@ exports.pingDevice = (req, res) => {
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
   const updateDevice = {
-    hardwareKey: req.params.deviceId,
-    isActive: req.body.isActive,
-    paidUsage: req.body.paidUsage,
+    hardwarekey: req.params.deviceId,
+    isactive: req.body.isactive,
+    paidusage: req.body.paidusage,
   };
 
   const options = { method: 'POST',
@@ -104,12 +104,12 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-      // update database ---- db.query(update device w isActive and paidUsage booleans)
-      db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
+      // update database ---- db.query(update device w isactive and paidusage booleans)
+      db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
         .then((result) => {
           logger.info(result);
           // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
-          if (req.body.paidUsage === 'true') {
+          if (req.body.paidusage === 'true') {
             const d = new Date();
             const now = d.getTime();
             const endingTime = now + parseInt(req.body.time, 10);
@@ -155,11 +155,11 @@ crontab.scheduleJob('*/1 * * * *', () => {
             client.zrem('device', results[0][i]);
             // update persistent database
             const deviceOff = {
-              isActive: false,
-              paidUsage: false,
-              hardwareKey: results[0][i],
+              isactive: false,
+              paidusage: false,
+              hardwarekey: results[0][i],
             };
-            db.many('UPDATE devices SET isActive=${isActive}, paidUsage=${paidUsage} WHERE hardwareKey=${hardwareKey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
+            db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
               .then((result) => {
                 logger.info(result);
               })

@@ -71,7 +71,7 @@ export class DevicePage extends React.Component {
     const context = this;
     const hardwarekey = this.props.appState.featured.hardwarekey;
      // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = 'http://localhost:3001/api/v1/homes/1/devices/'.concat(hardwarekey);
+    const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
