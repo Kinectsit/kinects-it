@@ -7,6 +7,8 @@ const userController = require('../controllers/userController.js');
  The path '/api/users' is already prepended to all routes based on app.use statement in server.js
 */
 
-userRouter.route('/').post(userController.signUp);
+//userRouter.route('/').post(userController.signUp);
+
+userRouter.route('/users/:id/homes/:code').post(userController.addToHome);
 
 module.exports = userRouter;
