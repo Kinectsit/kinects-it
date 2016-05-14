@@ -69,7 +69,7 @@ exports.pingDevice = (req, res) => {
       'content-type': 'application/json',
       accept: 'application/vnd.littlebits.v2+json',
     },
-    body: { duration_ms: 100 },
+    body: { duration_ms: 4000 },
     json: true };
 
   request(options, (error, response, body) => {
