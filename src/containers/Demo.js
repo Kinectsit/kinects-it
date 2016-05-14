@@ -28,7 +28,7 @@ export class Demo extends React.Component {
         });
       } else {
         context.setState({
-          response: 'Success: Device toggled! Note: There is a 30 second delay in the video feed. Dance with fancy cat while you wait.',
+          response: 'Success: Device toggled! Dance with fancy cat while you wait.',
           catgif: true,
         });
         setTimeout(() => {
@@ -66,6 +66,7 @@ export class Demo extends React.Component {
         <div>
           <p>How this works: </p>
           <p>Press the button, and watch the light flash on and off in Krista's house!</p>
+          <p>Note: There is a 30 second delay in the video feed, but you'll receive a response as soon as the device toggle occured!</p>
           <RaisedButton label="Ping Device" onClick={() => this.pingDevice()} />
           <p>
           {this.state.response}
