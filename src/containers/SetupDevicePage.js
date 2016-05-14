@@ -57,7 +57,7 @@ export class SetupDevicePage extends React.Component {
     const device = data;
     const house = this.props.appState.house.id || 1;
     device.id = this.props.appState.configuredDevice.id;
-    device.isActive = this.props.appState.configuredDevice.isActive;
+    device.isactive = false;
     device.paidUsage = false;
 
     const apiPath = `/api/v1/homes/${house}/devices/add/`.concat(device.id);

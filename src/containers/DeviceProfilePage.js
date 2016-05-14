@@ -19,7 +19,7 @@ export class DeviceProfilePage extends React.Component {
     const hardwarekey = this.props.appState.featured.hardwarekey;
     const deviceState = {
       isactive: !this.props.appState.featured.isactive,
-      paidUsage: false,
+      paidusage: false,
     };
     const context = this;
      // TODO: need to replace the home ID with the real one once it is in appState
@@ -48,6 +48,13 @@ export class DeviceProfilePage extends React.Component {
 
   render() {
     let errorMsg = <div style={styles.error}>{this.state.details}</div>;
+    let toggle = (
+      <Toggle
+        onToggle={() => this.toggleDevice()}
+        defaultToggled={this.props.appState.featured.isactive}
+      />
+    );
+
     if (this.props.appState.featured.id === '') {
       return (
         <div style={styles.center}>
@@ -57,15 +64,25 @@ export class DeviceProfilePage extends React.Component {
         </div>
       );
     }
+    if (this.props.appState.featured.paidusage === true) {
+      toggle = (
+        <div>
+          <p>Your guest has paid to use the device</p>
+          <Toggle
+            disabled={'true'}
+            onToggle={() => this.toggleDevice()}
+            defaultToggled={this.props.appState.featured.isactive}
+          />
+        </div>
+      );
+    }
+
     return (
       <div>
         <h2>{this.props.appState.featured.name}</h2>
         {errorMsg}
         <h3>{this.props.appState.featured.description}</h3>
-        <Toggle
-          onToggle={() => this.toggleDevice()}
-          defaultToggled={this.props.appState.featured.isactive}
-        />
+        {toggle}
       </div>
     );
   }

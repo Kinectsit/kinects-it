@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
-import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
 import Paper from 'material-ui/Paper';
@@ -121,10 +120,6 @@ export class DevicePage extends React.Component {
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
         {errorMsg}
         <h3>This device is: {this.props.appState.featured.description}</h3>
-        <Toggle
-          onToggle={() => this.toggleDevice()}
-          defaultToggled={this.props.appState.featured.isactive}
-        />
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
