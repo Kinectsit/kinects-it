@@ -55,7 +55,7 @@ export default function appState(state = initialState, action) {
     }
     case ADD_RENTAL: {
       const newState = objectAssign({}, state);
-      newState.houseName = action.rental;
+      newState.house.id = action.rentalId;
       return newState;
     }
     case CONSTANTS.ADD_HOUSE: {

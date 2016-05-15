@@ -10,9 +10,7 @@ export class DashboardPage extends React.Component {
 
   componentWillMount() {
     const context = this;
-    // this.props.appState.house.id --- remove 1 after state is passed down
-    const userHouseId = 1;
-     // TODO: need to replace the home ID with the real one once it is in appState
+    const userHouseId = this.props.appState.house.id;
     const apiPath = `/api/v1/homes/${userHouseId}/devices/`;
     $.get(apiPath, (req) => {
       const devices = req;
@@ -37,12 +35,17 @@ export class DashboardPage extends React.Component {
       );
     }
     return (
-      <DashboardGuest appState={this.props.appState} actions={this.props.actions} />
+      <DashboardGuest
+        appState={this.props.appState}
+        authState={this.props.authState}
+        actions={this.props.actions}
+      />
     );
   }
 }
 
 DashboardPage.propTypes = {
+  authState: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -50,6 +53,7 @@ DashboardPage.propTypes = {
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 

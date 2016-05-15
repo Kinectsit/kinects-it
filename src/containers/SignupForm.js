@@ -77,8 +77,12 @@ class SignupForm extends React.Component {
           // Next set authentication
           this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
-          // next reroute to User Dashboard
-          browserHistory.push('/dashboard');
+          // next reroute to User Dashboard or join rental
+          if (response.house && response.house.id > 0) {
+            browserHistory.push('dashboard');
+          } else {
+            browserHistory.push('join-rental');
+          }
         }
       },
       error: (xhr, status, err) => {

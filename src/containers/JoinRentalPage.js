@@ -44,9 +44,8 @@ export class JoinRentalPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log('response to /users/:id/homes/:code is: ', response);
-        this.props.actions.addRental(this.state.rental);
-        // send user to dashboard page if successful response
+        // send user to dashboard if successful response
+        this.props.actions.addRental(response.houseid);
         browserHistory.push('/dashboard');
       },
       error: (/* xhr, status, err */) => {
