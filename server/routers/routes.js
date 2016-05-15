@@ -6,6 +6,7 @@ module.exports = (app, passport) => {
 
 
   app.route('/users/:id/homes/:code').post(userController.addToHome);
+  app.route('/users/:id/homes/leave/:code').post(userController.leaveHome);
   
   app.delete('/api/v1/authentication', (req, res) => {
     req.logout();

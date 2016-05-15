@@ -16,10 +16,9 @@ export class LeaveHomeButton extends React.Component {
   }
 
   leaveHome(data) {
-    console.log('props are', this.props.authState);
     const userId = this.props.authState.user.id;
     const houseId = this.props.appState.house.id;
-    const urlPath = `http://localhost:3000/users/${userId}/homes/${houseId}/leave`;
+    const urlPath = 'http://localhost:3000/users/'.concat(userId).concat('/homes/leave/').concat(houseId);
 
     $.ajax({
       url: urlPath,
@@ -29,9 +28,8 @@ export class LeaveHomeButton extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: () => {
-        console.log('success!!! leaving home');
-        // send user to dashboard if successful response
-        this.props.actions.addRental(0);
+        // remove house from state and send user to dashboard if successful response
+        this.props.actions.addHouse({});
         browserHistory.push('/join-rental');
       },
       error: (/* xhr, status, err */) => {
@@ -39,7 +37,6 @@ export class LeaveHomeButton extends React.Component {
       },
     });
   }
-
 
   render() {
     return (

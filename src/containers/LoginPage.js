@@ -63,7 +63,6 @@ export class LoginPage extends React.Component {
         } else {
           this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
-          this.props.actions.addHouse(response.house);
           if (response.host) {
             this.props.actions.setUserAsHost(true);
             // send user to dashboard page if successful response
@@ -72,7 +71,8 @@ export class LoginPage extends React.Component {
             // user is guest
             this.props.actions.setUserAsHost(false);
             // if the user is in a house, send to dashboard, otherwise send to join-rental
-            if (response.house && response.house.id > 0) {
+            if (response.house) {
+              this.props.actions.addHouse(response.house);
               browserHistory.push('dashboard');
             } else {
               browserHistory.push('join-rental');
