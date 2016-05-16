@@ -67,7 +67,6 @@ module.exports.leaveHome = (req, res) => {
   const user = {
     userid: parseInt(req.params.id, 10),
   };
-  console.log('lave home, user is - ', user);
   db.one('DELETE FROM users_houses WHERE userid=${userid} RETURNING *', user)
     .then((result) => {
       console.log('=====result====', result);
