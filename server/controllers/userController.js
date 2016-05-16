@@ -29,7 +29,7 @@ module.exports.signUp = (req, res, next) => {
 module.exports.addToHome = (req, res, next) => {
   /*
    transaction will need to do the following:
-     1. Retrive the house id based on the invite code
+     1. Retrieve the house id based on the invite code
      2. Insert a record into users_houses with the house id from #1 and the user id passed in on the API
 
   */

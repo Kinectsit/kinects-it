@@ -18,7 +18,7 @@ export class LeaveHomeButton extends React.Component {
   leaveHome(data) {
     const userId = this.props.authState.user.id;
     const houseId = this.props.appState.house.id;
-    const urlPath = '/users/'.concat(userId).concat('/homes/').concat(houseId);
+    const urlPath = '/api/v1/users/'.concat(userId).concat('/homes/').concat(houseId);
 
     $.ajax({
       url: urlPath,
