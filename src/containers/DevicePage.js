@@ -94,9 +94,12 @@ export class DevicePage extends React.Component {
   submitForm(data) {
     const totalTime = data.time * data.units;
     const deviceState = this.props.appState.featured;
-    deviceState.time = totalTime;
+    deviceState.useraccountid = this.props.authState.user.id;
+    deviceState.timespent = totalTime;
+    deviceState.amountspent = this.totalCost(data.time, data.units);
     deviceState.paidusage = true;
     deviceState.isactive = true;
+    deviceState.deviceid = this.props.appState.featured.id;
 
     this.toggleDevice(deviceState);
   }
@@ -179,11 +182,13 @@ export class DevicePage extends React.Component {
 DevicePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 

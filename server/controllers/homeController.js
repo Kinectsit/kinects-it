@@ -89,6 +89,13 @@ exports.toggleDevice = (req, res) => {
     isactive: req.body.isactive,
     paidusage: req.body.paidusage,
   };
+  const deviceTransaction = {
+    useraccountid: parseInt(req.body.useraccountid, 10),
+    deviceid: req.body.deviceid,
+    amountspent: parseFloat(req.body.amountspent, 10),
+    timespent: parseInt(req.body.timespent, 10),
+  };
+  console.log('======DEVICE TRANSACTION IS====', deviceTransaction);
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -104,18 +111,27 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-      // update database ---- db.query(update device w isactive and paidusage booleans)
+      // Update database with the current status of the device
       db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
-        .then((result) => {
-          logger.info(result);
-          // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+        .then(() => {
+          // If the guest purchased the time...
           if (req.body.paidusage === 'true') {
             const d = new Date();
             const now = d.getTime();
-            const endingTime = now + parseInt(req.body.time, 10);
-
-            client.zadd('device', endingTime, deviceId, redis.print);
-            return res.json(body);
+            const endingTime = now + parseInt(req.body.timespent, 10);
+            // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+            client.multi()
+              .zadd('device', endingTime, deviceId, redis.print)
+              .exec(() => {
+                // Add to the device transaction database
+                db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
+                  .then(() => {
+                    res.json(body);
+                  })
+                  .catch((er) => {
+                    logger.info(er);
+                  });
+              });
           }
           return res.json(body);
         })
