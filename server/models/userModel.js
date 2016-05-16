@@ -18,10 +18,11 @@ User.create = (newUser) => {
     t.one('INSERT INTO users(name, email, password, defaultviewhost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING id, name, email, defaultviewhost', newUser)
       .then(userData => {
         const pay = {
-          nickname: 'Demo',
+          nickname: 'Nickname for Demo Account',
           userid: userData.id,
+          paymethodid: 1,
         };
-        return t.one('INSERT INTO user_pay_accounts(nickname, userid) VALUES(${nickname}, ${userid}) RETURNING id, nickname', pay)
+        return t.one('INSERT INTO user_pay_accounts(nickname, userid, paymethodid) VALUES(${nickname}, ${userid}, ${paymethodid}) RETURNING id, nickname, paymethodid', pay)
         .then((payAccount) => {
           if (!userData.defaultviewhost) {
             return {
