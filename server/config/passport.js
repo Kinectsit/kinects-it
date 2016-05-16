@@ -69,7 +69,6 @@ module.exports = (passport) => {
 
         db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
           .then((payAccounts) => {
-            console.log('pay accounts is', payAccounts);
             loggedInUser.payAccounts = payAccounts;
             return done(err, loggedInUser, info);
           });

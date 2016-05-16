@@ -94,7 +94,6 @@ exports.toggleDevice = (req, res) => {
     amountspent: parseFloat(req.body.amountspent, 10),
     timespent: parseInt(req.body.timespent, 10),
   };
-  console.log('device transaction is ', deviceTransaction);
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,

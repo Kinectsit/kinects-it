@@ -57,7 +57,6 @@ export class LoginPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log('====RESPONSE LOGIN: ', response);
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
