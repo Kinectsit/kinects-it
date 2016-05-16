@@ -20,6 +20,7 @@ export class DevicePage extends React.Component {
       priceError: 'Please enter time and price options',
     };
     this.state = {
+      deviceActive: false,
       canSubmit: false,
       error: '',
       totalCost: 0,
@@ -29,10 +30,9 @@ export class DevicePage extends React.Component {
   }
 
   totalCost(time, units) {
-    const costPerMs = this.props.appState.featured.cost / 86400000;
+    const costPerMs = this.props.appState.featured.usagecostoptions / 3600000;
     return (units * time * costPerMs).toFixed(2);
   }
-
 
   handleTime(e) {
     const time = parseInt(e.target.value, 10);
@@ -76,6 +76,7 @@ export class DevicePage extends React.Component {
       if (!req.success === true) {
         context.setState({
           error: req.message,
+          deviceActive: true,
         });
       } else {
         this.props.actions.toggleDevice(true);
@@ -106,6 +107,8 @@ export class DevicePage extends React.Component {
 
   render() {
     let errorMsg = <div style={styles.error}>{this.state.details}</div>;
+    let formDisplay = <div>Device is active!</div>;
+
     if (this.props.appState.featured.id === '') {
       return (
         <div style={styles.center}>
@@ -115,11 +118,8 @@ export class DevicePage extends React.Component {
         </div>
       );
     }
-    return (
-      <div>
-        <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
-        {errorMsg}
-        <h3>This device is: {this.props.appState.featured.description}</h3>
+    if (this.state.deviceActive === false) {
+      formDisplay = (
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
@@ -128,10 +128,6 @@ export class DevicePage extends React.Component {
             onInvalidSubmit={() => this.notifyFormError()}
           >
             <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
-              <FormsyRadio
-                value="20000"
-                label="20 seconds"
-              />
               <FormsyRadio
                 value="60000"
                 label="1 minute"
@@ -165,6 +161,15 @@ export class DevicePage extends React.Component {
             <p>Total cost: {this.state.totalCost}</p>
           </Subheader>
         </Paper>
+      );
+    }
+
+    return (
+      <div>
+        <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
+        {errorMsg}
+        <h3>This device is: {this.props.appState.featured.description}</h3>
+        {formDisplay}
       </div>
     );
   }

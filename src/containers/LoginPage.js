@@ -57,7 +57,6 @@ export class LoginPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log('Login response: ', response);
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
@@ -74,6 +73,7 @@ export class LoginPage extends React.Component {
             this.props.actions.setUserAsHost(false);
             // if the user is in a house, send to dashboard, otherwise send to join-rental
             if (response.house) {
+              this.props.actions.addHouse(response.house);
               browserHistory.push('dashboard');
             } else {
               browserHistory.push('join-rental');

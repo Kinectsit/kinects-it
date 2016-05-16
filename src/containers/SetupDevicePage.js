@@ -33,10 +33,10 @@ export class SetupDevicePage extends React.Component {
   handleChange(e) {
     const cost = parseInt(e.target.value, 10);
     this.setState({
-      costPerWeek: (7 * cost).toFixed(2),
-      costPerDay: (cost).toFixed(2),
-      costPerHour: (cost / 24).toFixed(2),
-      costPerMinute: (cost / 1440).toFixed(2),
+      costPerWeek: (168 * cost).toFixed(2),
+      costPerDay: (24 * cost).toFixed(2),
+      costPerHour: (cost).toFixed(2),
+      costPerMinute: (cost / 60).toFixed(2),
     });
   }
 

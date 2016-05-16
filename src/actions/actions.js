@@ -28,8 +28,8 @@ export function paidUsage(paidusage) {
   return { type: types.PAID_USAGE, paidusage };
 }
 
-export function addRental(rental) {
-  return { type: types.ADD_RENTAL, rental };
+export function addRental(rentalId) {
+  return { type: types.ADD_RENTAL, rentalId };
 }
 
 export function addHouse(house) {

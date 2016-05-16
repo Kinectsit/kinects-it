@@ -31,7 +31,6 @@ export class JoinRentalPage extends React.Component {
   }
 
   addRental(data) {
-    console.log('props in JoinRentalPage: ', this.props);
     const userId = this.props.authState.user.id;
     const code = data.inviteCode;
     const urlPath = 'http://localhost:3000/users/'.concat(userId).concat('/homes/').concat(code);
@@ -44,9 +43,8 @@ export class JoinRentalPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log('response to /users/:id/homes/:code is: ', response);
-        this.props.actions.addRental(this.state.rental);
-        // send user to dashboard page if successful response
+        // send user to dashboard if successful response
+        this.props.actions.addRental(response.houseid);
         browserHistory.push('/dashboard');
       },
       error: (/* xhr, status, err */) => {

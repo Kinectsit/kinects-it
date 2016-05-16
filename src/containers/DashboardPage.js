@@ -4,25 +4,30 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { DashboardHost } from '../components/DashboardHost';
 import { DashboardGuest } from '../components/DashboardGuest';
+import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
 export class DashboardPage extends React.Component {
 
   componentWillMount() {
-    const context = this;
-    // this.props.appState.house.id --- remove 1 after state is passed down
-    const userHouseId = 1;
-     // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = `/api/v1/homes/${userHouseId}/devices/`;
-    $.get(apiPath, (req) => {
-      const devices = req;
-      this.props.actions.loadDevices(devices);
-    })
-    .fail(() => {
-      // set local state to display error
-      context.setState({
-        error: 'Failed to find devices, reload page.',
-      });
+    // const context = this;
+    if (!this.props.appState.house.id) {
+      browserHistory.push('/join-rental');
+    }
+    const userHouseId = this.props.appState.house.id;
+    const urlPath = '/api/v1/homes/'.concat(userHouseId).concat('/devices');
+    $.ajax({
+      url: urlPath,
+      dataType: 'json',
+      crossDomain: true,
+      method: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      // data: JSON.stringify(data),
+      success: (result) => {
+        this.props.actions.loadDevices(result);
+      },
+      error: (/* xhr, status, err */) => {
+      },
     });
   }
 
@@ -37,12 +42,17 @@ export class DashboardPage extends React.Component {
       );
     }
     return (
-      <DashboardGuest appState={this.props.appState} actions={this.props.actions} />
+      <DashboardGuest
+        appState={this.props.appState}
+        authState={this.props.authState}
+        actions={this.props.actions}
+      />
     );
   }
 }
 
 DashboardPage.propTypes = {
+  authState: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
 };
@@ -50,6 +60,7 @@ DashboardPage.propTypes = {
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 
