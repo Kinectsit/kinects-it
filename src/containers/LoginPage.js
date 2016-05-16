@@ -14,7 +14,7 @@ export class LoginPage extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
-      passwordError: 'Please enter a password of at least 5 characters dummy',
+      passwordError: 'Please enter a password of at least 5 characters',
       nameError: 'Please enter a user name',
       submitError: 'Please resolve invalid input and try again',
     };
@@ -57,12 +57,14 @@ export class LoginPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        console.log('====RESPONSE LOGIN: ', response);
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
         } else {
           this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
+          this.props.actions.loadPayAccounts(response.payAccounts);
           if (response.host) {
             this.props.actions.setUserAsHost(true);
             this.props.actions.addHouse(response.house);

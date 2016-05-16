@@ -50,7 +50,6 @@ module.exports.addToHome = (req, res, next) => {
   })
   .then((data) => {
     logger.info('SUCCESS insert for addToHome: ', data);
-    console.log('data is ...', data);
     return res.json(data);
   })
   .catch((error) => {
@@ -69,7 +68,6 @@ module.exports.leaveHome = (req, res) => {
   };
   db.one('DELETE FROM users_houses WHERE userid=${userid} RETURNING *', user)
     .then((result) => {
-      console.log('=====result====', result);
       logger.info(result);
       return res.json(result);
     })

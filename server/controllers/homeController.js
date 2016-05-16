@@ -17,7 +17,6 @@ client.on('error', (err) => {
 // Gets list of devices when dashboard first loads
 exports.getDevices = (req, res) => {
   const homeId = req.params.homeId;
-  console.log('home id is ', homeId);
   logger.info('HomeId in getDevices: ', homeId);
 
   db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
@@ -90,12 +89,12 @@ exports.toggleDevice = (req, res) => {
     paidusage: req.body.paidusage,
   };
   const deviceTransaction = {
-    useraccountid: parseInt(req.body.useraccountid, 10),
+    useraccountid: parseInt(req.body.payaccountid, 10),
     deviceid: req.body.deviceid,
     amountspent: parseFloat(req.body.amountspent, 10),
     timespent: parseInt(req.body.timespent, 10),
   };
-  console.log('======DEVICE TRANSACTION IS====', deviceTransaction);
+  console.log('device transaction is ', deviceTransaction);
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -126,7 +125,7 @@ exports.toggleDevice = (req, res) => {
                 // Add to the device transaction database
                 db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
                   .then(() => {
-                    res.json(body);
+                    res.end(body);
                   })
                   .catch((er) => {
                     logger.info(er);

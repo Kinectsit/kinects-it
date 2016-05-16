@@ -75,6 +75,7 @@ class SignupForm extends React.Component {
           // Next set authentication
           this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
+          this.props.actions.loadPayAccounts(response.payAccounts);
           // next reroute to User Dashboard or join rental
           if (response.house) {
             this.props.actions.addHouse(response.house);

@@ -8,6 +8,10 @@ export function setUser(user) {
   return { type: types.SET_USER, user };
 }
 
+export function loadPayAccounts(payAccounts) {
+  return { type: types.LOAD_PAY_ACCOUNTS, payAccounts };
+}
+
 export function addDevice(configuredDevice) {
   return { type: types.ADD_DEVICE, configuredDevice };
 }

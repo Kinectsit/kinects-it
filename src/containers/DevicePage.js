@@ -94,7 +94,7 @@ export class DevicePage extends React.Component {
   submitForm(data) {
     const totalTime = data.time * data.units;
     const deviceState = this.props.appState.featured;
-    deviceState.useraccountid = this.props.authState.user.id;
+    deviceState.payaccountid = this.props.appState.payAccounts[0].id; // first payment option
     deviceState.timespent = totalTime;
     deviceState.amountspent = this.totalCost(data.time, data.units);
     deviceState.paidusage = true;
