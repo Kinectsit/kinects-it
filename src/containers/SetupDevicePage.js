@@ -55,12 +55,11 @@ export class SetupDevicePage extends React.Component {
 
   submitForm(data) {
     const device = data;
-    const house = this.props.appState.house.id || 1;
+    const house = this.props.appState.house.id;
     device.id = this.props.appState.configuredDevice.id;
     device.isactive = false;
     device.paidUsage = false;
-
-    const apiPath = `/api/v1/homes/${house}/devices/add/`.concat(device.id);
+    const apiPath = `/api/v1/homes/${house}/devices`;
 
     $.post(apiPath, device, () => {
       this.props.actions.setFeatured(device);

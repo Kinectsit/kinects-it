@@ -34,15 +34,15 @@ exports.getDevices = (req, res) => {
   });
 };
 
-
 // Adds the device to the database after host fills out set options form
-exports.addDevice = (req, res) => {
+exports.addDevice = (req, res, next) => {
+  console.log('addDevice req body: ', req.body);
   const newDevice = {
     houseId: req.params.homeId,
     name: req.body.name,
     description: req.body.description,
     isactive: req.body.isactive,
-    hardwarekey: req.params.deviceId,
+    hardwarekey: req.body.id,
     usagecostoptions: req.body.cost,
   };
 
@@ -54,6 +54,9 @@ exports.addDevice = (req, res) => {
   .catch((error) => {
     logger.info(error);
     return res.send(error);
+  })
+  .finally(() => {
+    next();
   });
 };
 

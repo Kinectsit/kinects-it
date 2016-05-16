@@ -9,6 +9,6 @@ const homeController = require('../controllers/homeController.js');
 homeRouter.route('/:homeId/devices').get(homeController.getDevices);
 homeRouter.route('/:homeId/devices/:deviceId').post(homeController.toggleDevice);
 homeRouter.route('/:homeId/devices/ping/:deviceId').post(homeController.pingDevice);
-homeRouter.route('/:homeId/devices/add/:deviceId').post(homeController.addDevice);
+homeRouter.route('/:homeId/devices').post(homeController.addDevice);
 
 module.exports = homeRouter;
