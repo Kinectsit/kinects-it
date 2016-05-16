@@ -29,10 +29,9 @@ export class DevicePage extends React.Component {
   }
 
   totalCost(time, units) {
-    const costPerMs = this.props.appState.featured.cost / 86400000;
+    const costPerMs = this.props.appState.featured.usagecostoptions / 3600000;
     return (units * time * costPerMs).toFixed(2);
   }
-
 
   handleTime(e) {
     const time = parseInt(e.target.value, 10);
@@ -128,10 +127,6 @@ export class DevicePage extends React.Component {
             onInvalidSubmit={() => this.notifyFormError()}
           >
             <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
-              <FormsyRadio
-                value="20000"
-                label="20 seconds"
-              />
               <FormsyRadio
                 value="60000"
                 label="1 minute"
