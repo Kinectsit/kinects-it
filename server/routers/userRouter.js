@@ -9,7 +9,7 @@ const userController = require('../controllers/userController.js');
 
 //userRouter.route('/').post(userController.signUp);
 
-userRouter.route('/users/:id/homes/leave/:code').post(userController.leaveHome);
+userRouter.route('/users/:id/homes/:code').delete(userController.leaveHome);
 userRouter.route('/users/:id/homes/:code').post(userController.addToHome);
 
 module.exports = userRouter;

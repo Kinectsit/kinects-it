@@ -18,13 +18,13 @@ export class LeaveHomeButton extends React.Component {
   leaveHome(data) {
     const userId = this.props.authState.user.id;
     const houseId = this.props.appState.house.id;
-    const urlPath = 'http://localhost:3000/users/'.concat(userId).concat('/homes/leave/').concat(houseId);
+    const urlPath = '/api/v1/users/'.concat(userId).concat('/homes/').concat(houseId);
 
     $.ajax({
       url: urlPath,
       dataType: 'json',
       crossDomain: true,
-      method: 'POST',
+      method: 'DELETE',
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: () => {

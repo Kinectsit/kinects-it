@@ -16,14 +16,15 @@ export class DeviceProfilePage extends React.Component {
   }
 
   toggleDevice() {
-    const hardwarekey = this.props.appState.featured.hardwarekey;
+    const hardwarekey = this.props.appState.featured.id;
     const deviceState = {
       isactive: !this.props.appState.featured.isactive,
       paidusage: false,
     };
+
     const context = this;
-     // TODO: need to replace the home ID with the real one once it is in appState
-    const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
+    const homeId = this.props.appState.house.id;
+    const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
