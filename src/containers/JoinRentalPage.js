@@ -33,7 +33,7 @@ export class JoinRentalPage extends React.Component {
   addRental(data) {
     const userId = this.props.authState.user.id;
     const code = data.inviteCode;
-    const urlPath = 'http://localhost:3000/users/'.concat(userId).concat('/homes/').concat(code);
+    const urlPath = '/users/'.concat(userId).concat('/homes/').concat(code);
 
     $.ajax({
       url: urlPath,
