@@ -1,5 +1,5 @@
 /* eslint-disable strict */
-/* eslint-disable max-len */
+/* eslint-disable max-len, consistent-return, no-else-return */
 
 'use strict';
 const logger = require('../config/logger.js');
@@ -157,7 +157,10 @@ exports.toggleDevice = (req, res) => {
 
   request(options, (error, response, body) => {
     if (error) {
-      throw new Error('error!!! ', error);
+      return res.json({
+        success: false,
+        message: 'Failed to communicate to device, please try again',
+      });
     } else {
       // Update database with the current status of the device
       db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE id=${deviceId} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id

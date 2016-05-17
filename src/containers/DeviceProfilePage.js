@@ -41,10 +41,10 @@ export class DeviceProfilePage extends React.Component {
     const homeId = this.props.appState.house.id;
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(id);
 
-    $.post(apiPath, deviceState, (req) => {
-      if (!req.success === true) {
+    $.post(apiPath, deviceState, (res) => {
+      if (!res.success) {
         this.setState({
-          error: req.message,
+          error: res.message,
         });
       } else {
         if (this.props.appState.featured.isactive) {
@@ -63,7 +63,7 @@ export class DeviceProfilePage extends React.Component {
   }
 
   render() {
-    let errorMsg = <div style={styles.error}>{this.state.details}</div>;
+    let errorMsg = <div style={styles.error}>{this.state.error}</div>;
     let toggle = (
       <Toggle
         onToggle={() => this.toggleDevice()}
