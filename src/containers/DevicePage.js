@@ -67,27 +67,26 @@ export class DevicePage extends React.Component {
   }
 
   toggleDevice(deviceState) {
-    const context = this;
     const hardwarekey = this.props.appState.featured.hardwarekey;
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
-        context.setState({
+        this.setState({
           error: req.message,
         });
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
-        context.setState({
+        this.setState({
           deviceActive: true,
         });
       }
     })
     .fail(() => {
       // set local state to display error
-      context.setState({
+      this.setState({
         error: 'Failed to connect to device, try again.',
       });
     });

@@ -18,16 +18,15 @@ export class Demo extends React.Component {
   }
 
   pingDevice() {
-    const context = this;
     const apiPath = '/api/v1/homes/1/devices/ping/00e04c038343';
 
     $.post(apiPath, (req) => {
       if (!req.success === true) {
-        context.setState({
+        this.setState({
           response: req.message,
         });
       } else {
-        context.setState({
+        this.setState({
           response: 'Success: Device toggled! Dance with fancy cat while you wait.',
           catgif: true,
         });
@@ -41,7 +40,7 @@ export class Demo extends React.Component {
     })
     .fail(() => {
       // set local state to display error
-      context.setState({
+      this.setState({
         response: 'Failed to connect to device, try again.',
       });
     });
