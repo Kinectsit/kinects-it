@@ -88,12 +88,6 @@ exports.toggleDevice = (req, res) => {
     isactive: req.body.isactive,
     paidusage: req.body.paidusage,
   };
-  const deviceTransaction = {
-    useraccountid: parseInt(req.body.payaccountid, 10),
-    deviceid: req.body.deviceid,
-    amountspent: parseFloat(req.body.amountspent, 10),
-    timespent: parseInt(req.body.timespent, 10),
-  };
 
   const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
@@ -121,6 +115,12 @@ exports.toggleDevice = (req, res) => {
             client.multi()
               .zadd('device', endingTime, deviceId, redis.print)
               .exec(() => {
+                const deviceTransaction = {
+                  useraccountid: parseInt(req.body.payaccountid, 10),
+                  deviceid: req.body.deviceid,
+                  amountspent: parseFloat(req.body.amountspent, 10),
+                  timespent: parseInt(req.body.timespent, 10),
+                };
                 // Add to the device transaction database
                 db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
                   .then(() => {
