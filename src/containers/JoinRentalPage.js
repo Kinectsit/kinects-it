@@ -26,10 +26,6 @@ export class JoinRentalPage extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.props.actions.addHouse('');
-  // }
-
   addRental(data) {
     const userId = this.props.authState.user.id;
     const code = data.inviteCode;
