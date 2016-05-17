@@ -12,10 +12,6 @@ export function requireAuthentication(Component) {
       this.checkAuth();
     }
 
-    componentWillReceiveProps() {
-      this.checkAuth();
-    }
-
     checkAuth() {
       if (!this.props.authState.isAuthenticated) {
         // current local state not authenticated
@@ -23,13 +19,17 @@ export function requireAuthentication(Component) {
         $.get('/api/v1/authentication')
           .done((response) => {
             if (response) {
-              this.props.actions.setAuthentication(true, response.sessionId);
               this.props.actions.setUser(response.user);
+              this.props.actions.loadPayAccounts(response.payAccounts);
               if (response.host) {
                 this.props.actions.setUserAsHost(true);
               } else {
                 this.props.actions.setUserAsHost(false);
               }
+              if (response.house) {
+                this.props.actions.addHouse(response.house);
+              }
+              this.props.actions.setAuthentication(true, response.sessionId);
             } else {
               browserHistory.push('/login');
             }
@@ -55,11 +55,13 @@ export function requireAuthentication(Component) {
   AuthenticatedComponent.propTypes = {
     actions: PropTypes.object.isRequired,
     authState: PropTypes.object.isRequired,
+    appState: PropTypes.object.isRequired,
   };
 
   function mapStateToProps(state) {
     return {
       authState: state.authState,
+      appState: state.appState,
     };
   }
 
