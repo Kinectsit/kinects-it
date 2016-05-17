@@ -12,7 +12,7 @@ export class DashboardPage extends React.Component {
   componentWillMount() {
     // const context = this;
     if (!this.props.appState.isHost && !this.props.appState.house.id) {
-      browserHistory.push('/join-rental');
+      setTimeout(() => browserHistory.push('/join-rental'), 3000);
     }
     const userHouseId = this.props.appState.house.id;
     console.log('userhouse id is ', userHouseId);
