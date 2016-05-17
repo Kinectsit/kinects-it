@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { DeviceChart } from '../components/DeviceChart';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
@@ -194,6 +195,7 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
         {JSON.stringify(this.state.deviceTransactions)}
+        <DeviceChart />
       </div>
     );
   }
