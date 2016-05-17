@@ -141,9 +141,7 @@ module.exports = (passport) => {
   },
     (accessToken, refreshToken, profile, done) => {
       // asynchronous verification, for effect...
-      console.log('in passport coinbase strategy before nextTick');
       process.nextTick(() => {
-        console.log('in passport coinbase strategy after nextTick');
         const userJson = profile._json;
         const userInfo = {
           name: userJson.username,
@@ -184,7 +182,7 @@ module.exports = (passport) => {
   passport.use(new GitHubStrategy({
     clientID: authKeys.GITHUB_CLIENT_ID,
     clientSecret: authKeys.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://127.0.0.1:3000/api/v1/users/callback',
+    callbackURL: 'http://127.0.0.1:3001/api/v1/users/callback',
   },
   (accessToken, refreshToken, profile, cb) => {
     console.log('this is the profile returned:', profile);

@@ -26,13 +26,16 @@ app.all('*', (req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, srcPath)));
-app.use(cookieParser('kinectsit2016team3feb'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser('kinectsit2016team3feb'));
 app.use(session({
   secret: 'kinectsit2016team3feb',
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    httpOnly: false,
+  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
