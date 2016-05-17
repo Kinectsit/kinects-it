@@ -92,11 +92,13 @@ export class DeviceProfilePage extends React.Component {
 DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 

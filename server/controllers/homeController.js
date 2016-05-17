@@ -34,9 +34,32 @@ exports.getDevices = (req, res) => {
   });
 };
 
+// Gets device transactions
+exports.getDeviceInfo = (req, res) => {
+  const homeId = req.params.homeId;
+  const deviceId = req.params.deviceId;
+  const user = req.body.user;
+
+  console.log('response in get devices on server side is ', homeId, deviceId, user);
+
+  res.send('response from server');
+  // db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
+  //   column: '*',
+  //   table: 'devices',
+  //   home: homeId,
+  // })
+  // .then((result) => {
+  //   logger.info('SUCCESS in getDevices: ', result);
+  //   return res.json(result);
+  // })
+  // .catch((error) => {
+  //   logger.info('ERROR in get devices: ', error);
+  //   return res.send(error);
+  // });
+};
+
 // Adds the device to the database after host fills out set options form
 exports.addDevice = (req, res, next) => {
-  console.log('addDevice req body: ', req.body);
   const newDevice = {
     houseId: req.params.homeId,
     name: req.body.name,

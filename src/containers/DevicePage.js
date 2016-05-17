@@ -29,6 +29,21 @@ export class DevicePage extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log('in component did mount');
+    const homeId = this.props.appState.house.id;
+    const deviceId = this.props.appState.featured.id;
+    const user = this.props.authState.user.id;
+
+    const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
+    $.get(apiPath, user, (req) => {
+      console.log(req);
+    })
+    .fail((error) => {
+      console.log('error in server response', error);
+    });
+  }
+
   totalCost(time, units) {
     const costPerMs = this.props.appState.featured.usagecostoptions / 3600000;
     return (units * time * costPerMs).toFixed(2);
