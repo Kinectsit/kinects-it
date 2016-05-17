@@ -71,10 +71,10 @@ export class DevicePage extends React.Component {
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
-    $.post(apiPath, deviceState, (req) => {
-      if (!req.success === true) {
+    $.post(apiPath, deviceState, (res) => {
+      if (!res.success) {
         this.setState({
-          error: req.message,
+          error: res.message,
         });
       } else {
         this.props.actions.toggleDevice(true);
@@ -110,7 +110,7 @@ export class DevicePage extends React.Component {
   }
 
   render() {
-    let errorMsg = <div style={styles.error}>{this.state.details}</div>;
+    let errorMsg = <div style={styles.error}>{this.state.error}</div>;
 
     if (this.props.appState.featured.id === '') {
       return (
