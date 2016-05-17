@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import rd3 from 'rd3';
 const BarChart = rd3.BarChart;
 
@@ -16,17 +16,31 @@ const barData = [
   },
 ];
 
-export const DeviceChart = () => (
-  <div>
-    <BarChart
-      data={barData}
-      width={700}
-      height={200}
-      fill={'#3182bd'}
-      title="Bar Chart"
-      xAxisLabel="Recent Transactions"
-      yAxisLabel="Amount Spent"
-    />
-  </div>
-);
+export class DeviceChart extends React.Component {
+
+  componentWillMount() {
+    console.log(JSON.stringify(this.props.transactions));
+  }
+
+  render() {
+    return (
+      <div>
+        <BarChart
+          data={barData}
+          width={700}
+          height={200}
+          fill={'#3182bd'}
+          title="Bar Chart"
+          xAxisLabel="Recent Transactions"
+          yAxisLabel="Amount Spent"
+        />
+      </div>
+    );
+  }
+}
+
+
+DeviceChart.propTypes = {
+  transactions: PropTypes.array.isRequired,
+};
 
