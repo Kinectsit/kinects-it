@@ -15,13 +15,20 @@ module.exports = (passport) => {
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user);
+    return null;
   });
 
   // used to deserialize the user
   passport.deserializeUser((user, done) => {
     db.one('SELECT * from users where name=${name}', user)
-    .then((data) => done(null, data))
-    .catch((error) => done(error));
+      .then((data) => {
+        done(null, data);
+        return null;
+      })
+      .catch((error) => {
+        done(error);
+        return null;
+      });
   });
 
   // =========================================================================
@@ -59,8 +66,8 @@ module.exports = (passport) => {
           }
         }
         return {};
-      }).
-      then((homeData) => {
+      })
+      .then((homeData) => {
         if (loggedInUser && homeData) {
           loggedInUser.house = {};
           loggedInUser.house.id = homeData.id;
@@ -77,6 +84,7 @@ module.exports = (passport) => {
       .catch((error) => {
         logger.info(error);
         done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
+        return null;
       });
   }));
 

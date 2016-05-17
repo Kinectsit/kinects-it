@@ -108,5 +108,6 @@ module.exports = (app, passport) => {
         return res.json(info)
       }
     })(req, res, next);
+    return null;
   });
 };
