@@ -112,18 +112,10 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-<<<<<<< f53ad6309264668f6764ad761725e6d2cfdd81ea
       // Update database with the current status of the device
-      db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
+      db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE id=${deviceId} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
         .then(() => {
           // If the guest purchased the time...
-=======
-      // update database ---- db.query(update device w isactive and paidusage booleans)
-      db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE id=${deviceId} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
-        .then((result) => {
-          logger.info(result);
-          // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
->>>>>>> (fix) have hardware key and device id in setup page API call
           if (req.body.paidusage === 'true') {
             const d = new Date();
             const now = d.getTime();
