@@ -42,7 +42,6 @@ export class AddDevicePage extends React.Component {
     Called on after submit form to check hardware
   */
   pingDevice(device) {
-    const context = this;
     const deviceState = { isActive: true };
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/ping/'.concat(device.deviceId);
@@ -55,7 +54,7 @@ export class AddDevicePage extends React.Component {
       };
 
       if (!req.success === true) {
-        context.setState({
+        this.setState({
           error: 'ADD_DEVICE',
           details: req.message,
         });
@@ -67,7 +66,7 @@ export class AddDevicePage extends React.Component {
     })
     .fail(() => {
       // set local state to display error
-      context.setState({
+      this.setState({
         error: 'ADD_DEVICE',
         details: 'Failed to connect to device, try again.',
       });

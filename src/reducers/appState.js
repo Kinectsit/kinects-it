@@ -2,6 +2,7 @@
 
 import {
   LOAD_DEVICES,
+  LOAD_PAY_ACCOUNTS,
   SET_USER,
   ADD_DEVICE,
   SET_FEATURED,
@@ -26,6 +27,11 @@ export default function appState(state = initialState, action) {
     case LOAD_DEVICES: {
       const newState = objectAssign({}, state);
       newState.devices = action.devices;
+      return newState;
+    }
+    case LOAD_PAY_ACCOUNTS: {
+      const newState = objectAssign({}, state);
+      newState.payAccounts = action.payAccounts;
       return newState;
     }
     case ADD_DEVICE: {

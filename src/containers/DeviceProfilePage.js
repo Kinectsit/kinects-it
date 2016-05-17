@@ -22,13 +22,12 @@ export class DeviceProfilePage extends React.Component {
       paidusage: false,
     };
 
-    const context = this;
     const homeId = this.props.appState.house.id;
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
-        context.setState({
+        this.setState({
           error: req.message,
         });
       } else {
@@ -41,7 +40,7 @@ export class DeviceProfilePage extends React.Component {
     })
     .fail(() => {
       // set local state to display error
-      context.setState({
+      this.setState({
         error: 'Failed to connect to device, try again.',
       });
     });

@@ -66,7 +66,12 @@ module.exports = (passport) => {
           loggedInUser.house.id = homeData.id;
           loggedInUser.house.hostCode = homeData.invitecode;
         }
-        return done(err, loggedInUser, info);
+
+        db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
+          .then((payAccounts) => {
+            loggedInUser.payAccounts = payAccounts;
+            return done(err, loggedInUser, info);
+          });
       })
       .catch((error) => {
         logger.info(error);

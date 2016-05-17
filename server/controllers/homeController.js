@@ -17,7 +17,6 @@ client.on('error', (err) => {
 // Gets list of devices when dashboard first loads
 exports.getDevices = (req, res) => {
   const homeId = req.params.homeId;
-  console.log('home id is ', homeId);
   logger.info('HomeId in getDevices: ', homeId);
 
   db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
@@ -104,18 +103,33 @@ exports.toggleDevice = (req, res) => {
     if (error) {
       throw new Error('error!!! ', error);
     } else {
-      // update database ---- db.query(update device w isactive and paidusage booleans)
+      // Update database with the current status of the device
       db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
-        .then((result) => {
-          logger.info(result);
-          // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+        .then(() => {
+          // If the guest purchased the time...
           if (req.body.paidusage === 'true') {
             const d = new Date();
             const now = d.getTime();
-            const endingTime = now + parseInt(req.body.time, 10);
-
-            client.zadd('device', endingTime, deviceId, redis.print);
-            return res.json(body);
+            const endingTime = now + parseInt(req.body.timespent, 10);
+            // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
+            client.multi()
+              .zadd('device', endingTime, deviceId, redis.print)
+              .exec(() => {
+                const deviceTransaction = {
+                  useraccountid: parseInt(req.body.payaccountid, 10),
+                  deviceid: req.body.deviceid,
+                  amountspent: parseFloat(req.body.amountspent, 10),
+                  timespent: parseInt(req.body.timespent, 10),
+                };
+                // Add to the device transaction database
+                db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
+                  .then(() => {
+                    res.end(body);
+                  })
+                  .catch((er) => {
+                    logger.info(er);
+                  });
+              });
           }
           return res.json(body);
         })

@@ -67,25 +67,26 @@ export class DevicePage extends React.Component {
   }
 
   toggleDevice(deviceState) {
-    const context = this;
     const hardwarekey = this.props.appState.featured.hardwarekey;
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     $.post(apiPath, deviceState, (req) => {
       if (!req.success === true) {
-        context.setState({
+        this.setState({
           error: req.message,
-          deviceActive: true,
         });
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
+        this.setState({
+          deviceActive: true,
+        });
       }
     })
     .fail(() => {
       // set local state to display error
-      context.setState({
+      this.setState({
         error: 'Failed to connect to device, try again.',
       });
     });
@@ -94,9 +95,12 @@ export class DevicePage extends React.Component {
   submitForm(data) {
     const totalTime = data.time * data.units;
     const deviceState = this.props.appState.featured;
-    deviceState.time = totalTime;
+    deviceState.payaccountid = this.props.appState.payAccounts[0].id; // first payment option
+    deviceState.timespent = totalTime;
+    deviceState.amountspent = this.totalCost(data.time, data.units);
     deviceState.paidusage = true;
     deviceState.isactive = true;
+    deviceState.deviceid = this.props.appState.featured.id;
 
     this.toggleDevice(deviceState);
   }
@@ -107,7 +111,6 @@ export class DevicePage extends React.Component {
 
   render() {
     let errorMsg = <div style={styles.error}>{this.state.details}</div>;
-    let formDisplay = <div>Device is active!</div>;
 
     if (this.props.appState.featured.id === '') {
       return (
@@ -118,50 +121,53 @@ export class DevicePage extends React.Component {
         </div>
       );
     }
-    if (this.state.deviceActive === false) {
-      formDisplay = (
-        <Paper style={styles.paperStyle}>
-          <Formsy.Form
-            onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
-            onValidSubmit={(data) => this.submitForm(data)}
-            onInvalidSubmit={() => this.notifyFormError()}
-          >
-            <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
-              <FormsyRadio
-                value="60000"
-                label="1 minute"
-              />
-              <FormsyRadio
-                value="3600000"
-                label="1 hour"
-              />
-              <FormsyRadio
-                value="86400000"
-                label="1 day"
-              />
-            </FormsyRadioGroup>
-            <FormsyText
-              name="units"
-              validations="isExisty"
-              validationError={this.errorMessages.descriptionError}
-              required
-              style={styles.fieldStyles}
-              onChange={(e) => this.handleUnits(e)}
-              floatingLabelText="How many units do you want?"
+
+    let formDisplay = (
+      <Paper style={styles.paperStyle}>
+        <Formsy.Form
+          onValid={() => this.enableButton()}
+          onInvalid={() => this.disableButton()}
+          onValidSubmit={(data) => this.submitForm(data)}
+          onInvalidSubmit={() => this.notifyFormError()}
+        >
+          <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
+            <FormsyRadio
+              value="60000"
+              label="1 minute"
             />
-            <FlatButton
-              style={styles.submitStyle}
-              type="submit"
-              label="Submit"
-              disabled={!this.state.canSubmit}
+            <FormsyRadio
+              value="3600000"
+              label="1 hour"
             />
-          </Formsy.Form>
-          <Subheader>
-            <p>Total cost: {this.state.totalCost}</p>
-          </Subheader>
-        </Paper>
-      );
+            <FormsyRadio
+              value="86400000"
+              label="1 day"
+            />
+          </FormsyRadioGroup>
+          <FormsyText
+            name="units"
+            validations="isExisty"
+            validationError={this.errorMessages.descriptionError}
+            required
+            style={styles.fieldStyles}
+            onChange={(e) => this.handleUnits(e)}
+            floatingLabelText="How many units do you want?"
+          />
+          <FlatButton
+            style={styles.submitStyle}
+            type="submit"
+            label="Submit"
+            disabled={!this.state.canSubmit}
+          />
+        </Formsy.Form>
+        <Subheader>
+          <p>Total cost: {this.state.totalCost}</p>
+        </Subheader>
+      </Paper>
+    );
+
+    if (this.state.deviceActive === true) {
+      formDisplay = <div>Device is active!</div>;
     }
 
     return (
@@ -179,11 +185,13 @@ export class DevicePage extends React.Component {
 DevicePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 
