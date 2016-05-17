@@ -43,7 +43,7 @@ export class AddDevicePage extends React.Component {
   */
   pingDevice(device) {
     const deviceState = { isActive: true };
-     // TODO: need to replace the home ID with the real one once it is in appState
+    /* homes id does not matter in this API call, not used */
     const apiPath = '/api/v1/homes/1/devices/ping/'.concat(device.deviceId);
 
     $.post(apiPath, deviceState, (req) => {

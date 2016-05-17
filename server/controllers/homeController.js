@@ -42,11 +42,11 @@ exports.addDevice = (req, res, next) => {
     name: req.body.name,
     description: req.body.description,
     isactive: req.body.isactive,
-    hardwarekey: req.body.id,
+    deviceId: req.body.id,
     usagecostoptions: req.body.cost,
   };
 
-  db.one('INSERT INTO devices(houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${houseId}, ${name}, ${description}, ${isactive}, ${hardwarekey}, ${usagecostoptions}) RETURNING *', newDevice)
+  db.one('INSERT INTO devices(id, houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice)
   .then((result) => {
     logger.info(result);
     return res.json(result);
@@ -64,7 +64,14 @@ exports.addDevice = (req, res, next) => {
 exports.pingDevice = (req, res) => {
   const deviceId = req.params.deviceId;
 
-  const options = { method: 'POST',
+  db.none('SELECT ${column^} FROM ${table~} where id=${device}', {
+    column: '*',
+    table: 'devices',
+    device: deviceId,
+  })
+  .then(() => {
+    // if none exist, test if it responds
+    const options = { method: 'POST',
     url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
     headers: {
       authorization: `Bearer ${hardware.ACCESS_TOKEN}`,
@@ -74,23 +81,28 @@ exports.pingDevice = (req, res) => {
     body: { duration_ms: 4000 },
     json: true };
 
-  request(options, (error, response, body) => {
-    if (error) {
-      throw new Error('error!!! ', error);
-    } else {
-      return res.json(body);
-    }
+    request(options, (error, response, body) => {
+      if (error) {
+        throw new Error('error!!! ', error);
+      } else {
+        return res.json(body);
+      }
+    });
+  })
+  .catch((err) => {
+    // One already exists, return an error
+    logger.error('Device already exists, return error: ', err);
+
+    const error = { setup: false,
+                    message: 'Setup failed. Device already existsl' };
+
+    return res.send(error);
   });
 };
 
 // Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
-  const hardwarekey = req.body.hardwarekey;
-
-  console.log('params: ', req.params);
-  console.log('body: ', req.body);
-
 
   const updateDevice = {
     deviceId: req.params.deviceId,
@@ -99,7 +111,7 @@ exports.toggleDevice = (req, res) => {
   };
 
   const options = { method: 'POST',
-    url: `https://api-http.littlebitscloud.cc/devices/${hardwarekey}/output`,
+    url: `https://api-http.littlebitscloud.cc/devices/${deviceId}/output`,
     headers: {
       authorization: `Bearer ${hardware.ACCESS_TOKEN}`,
       'content-type': 'application/json',
@@ -182,7 +194,7 @@ crontab.scheduleJob('*/1 * * * *', () => {
               paidusage: false,
               hardwarekey: results[0][i],
             };
-            db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE hardwarekey=${hardwarekey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
+            db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE id=${hardwarekey} RETURNING *', deviceOff) // .many for demo purposes - multiple devices with same id
               .then((result) => {
                 logger.info(result);
               })
@@ -194,5 +206,3 @@ crontab.scheduleJob('*/1 * * * *', () => {
       }
     });
 });
-
-

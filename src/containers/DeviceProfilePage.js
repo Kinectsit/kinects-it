@@ -20,7 +20,6 @@ export class DeviceProfilePage extends React.Component {
     const deviceState = {
       isactive: !this.props.appState.featured.isactive,
       paidusage: false,
-      hardwarekey: this.props.appState.featured.hardwarekey,
     };
 
     const homeId = this.props.appState.house.id;
