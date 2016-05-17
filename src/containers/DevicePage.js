@@ -188,6 +188,12 @@ export class DevicePage extends React.Component {
       formDisplay = <div>Device is active!</div>;
     }
 
+    let chart = <div></div>;
+
+    if (this.state.deviceTransactions.length > 0) {
+      chart = <div><DeviceChart transactions={this.state.deviceTransactions} /></div>;
+    }
+
     return (
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
@@ -195,7 +201,7 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
         {JSON.stringify(this.state.deviceTransactions)}
-        <DeviceChart />
+        {chart}
       </div>
     );
   }
