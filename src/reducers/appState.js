@@ -66,7 +66,6 @@ export default function appState(state = initialState, action) {
       return newState;
     }
     case ADD_HOUSE: {
-      console.log('INSIDE ADD HOUSE --- action', action);
       const newState = objectAssign({}, state);
       newState.house.id = action.house.id;
       newState.house.code = action.house.code;

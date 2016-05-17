@@ -87,7 +87,6 @@ module.exports = (app, passport) => {
         // user was validated 
         // Manually establish the session...
         req.login(user, function(err) {
-          console.log('====user is', user);
             if (err) {
               return next(err);
             }

@@ -37,7 +37,6 @@ export function addRental(rentalId) {
 }
 
 export function addHouse(house) {
-  console.log('HOUSE IN ACTIONS.jS IS ', house);
   return { type: types.ADD_HOUSE, house };
 }
 
