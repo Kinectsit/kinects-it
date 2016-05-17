@@ -139,6 +139,8 @@ exports.pingDevice = (req, res) => {
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
 
+  console.log('req.body: ', req.body);
+
   const updateDevice = {
     deviceId: req.params.deviceId,
     isactive: req.body.isactive,

@@ -52,7 +52,7 @@ CREATE TABLE device_transactions (
   deviceId VARCHAR,
   amountSpent INTEGER,
   timeSpent INTEGER,
-  timeStamp TIMESTAMP
+  timeStamp TIMESTAMP default now()
 );
 
 
