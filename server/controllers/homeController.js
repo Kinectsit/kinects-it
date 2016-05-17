@@ -83,11 +83,11 @@ exports.addDevice = (req, res, next) => {
 
   db.one('INSERT INTO devices(id, houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice)
   .then((result) => {
-    logger.info(result);
+    logger.info('SUCCESS in addDevice:', result);
     return res.json(result);
   })
   .catch((error) => {
-    logger.info(error);
+    logger.info('ERROR in addDevice: ', error);
     return res.send(error);
   })
   .finally(() => {
@@ -193,7 +193,7 @@ exports.toggleDevice = (req, res) => {
           return res.json(body);
         })
         .catch((err) => {
-          logger.info(err);
+          logger.info('ERROR in toggleDevice: ', err);
           return res.send(err);
         });
     }
