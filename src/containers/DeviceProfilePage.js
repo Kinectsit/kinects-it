@@ -12,7 +12,23 @@ export class DeviceProfilePage extends React.Component {
     super(props);
     this.state = {
       error: '',
+      deviceTransactions: [],
     };
+  }
+
+  componentDidMount() {
+    const homeId = this.props.appState.house.id;
+    const deviceId = this.props.appState.featured.id;
+
+    const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
+    $.get(apiPath, (req) => {
+      this.setState({
+        deviceTransactions: req,
+      });
+    })
+    .fail((error) => {
+      console.log('error in server response', error);
+    });
   }
 
   toggleDevice() {
@@ -83,6 +99,7 @@ export class DeviceProfilePage extends React.Component {
         {errorMsg}
         <h3>{this.props.appState.featured.description}</h3>
         {toggle}
+        {JSON.stringify(this.state.deviceTransactions)}
       </div>
     );
   }
@@ -92,11 +109,13 @@ export class DeviceProfilePage extends React.Component {
 DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,
   appState: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     appState: state.appState,
+    authState: state.authState,
   };
 }
 

@@ -34,9 +34,44 @@ exports.getDevices = (req, res) => {
   });
 };
 
+// Gets device transactions
+exports.getDeviceInfo = (req, res, next) => {
+  if (req.query.user) {
+    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT id FROM user_pay_accounts WHERE userid=${userid})', {
+      deviceid: req.params.deviceId,
+      userid: req.query.user,
+    })
+    .then((result) => {
+      logger.info('SUCCESS in getDevices: ', result);
+      return res.json(result);
+    })
+    .catch((error) => {
+      logger.info('ERROR in get devices: ', error);
+      return res.send(error);
+    })
+    .finally(() => {
+      next();
+    });
+  } else {
+    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid}', {
+      deviceid: req.params.deviceId,
+    })
+    .then((result) => {
+      logger.info('SUCCESS in getDevices: ', result);
+      return res.json(result);
+    })
+    .catch((error) => {
+      logger.info('ERROR in get devices: ', error);
+      return res.send(error);
+    })
+    .finally(() => {
+      next();
+    });
+  }
+};
+
 // Adds the device to the database after host fills out set options form
 exports.addDevice = (req, res, next) => {
-  console.log('addDevice req body: ', req.body);
   const newDevice = {
     houseId: req.params.homeId,
     name: req.body.name,
