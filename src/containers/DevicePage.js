@@ -42,7 +42,7 @@ export class DevicePage extends React.Component {
       });
     })
     .fail((error) => {
-      console.log('err in server response', error);
+      console.log('error in server response', error);
     });
   }
 
