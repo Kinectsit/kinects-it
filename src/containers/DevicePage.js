@@ -184,6 +184,10 @@ export class DevicePage extends React.Component {
       </Paper>
     );
 
+    if (this.state.deviceActive === true) {
+      formDisplay = <div>Device is active!</div>;
+    }
+
     return (
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
