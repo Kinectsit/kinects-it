@@ -98,6 +98,7 @@ module.exports = (app, passport) => {
                message.house = {
                 id: user.house.id,
                 code: user.house.hostCode,
+                name: user.house.name,
               }
             }
             return res.json(message);
