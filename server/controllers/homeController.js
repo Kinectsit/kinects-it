@@ -26,7 +26,7 @@ exports.getDevices = (req, res) => {
   })
   .then((result) => {
     logger.info('SUCCESS in getDevices: ', result);
-    return res.json(result);
+    return res.end(result);
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
