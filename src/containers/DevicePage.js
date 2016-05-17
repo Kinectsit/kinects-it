@@ -33,7 +33,7 @@ export class DevicePage extends React.Component {
     console.log('in component did mount');
     const homeId = this.props.appState.house.id;
     const deviceId = this.props.appState.featured.id;
-    const user = this.props.authState.user.id;
+    const user = { user: this.props.authState.user.id };
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
     $.get(apiPath, user, (req) => {

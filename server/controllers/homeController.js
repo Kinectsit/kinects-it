@@ -35,10 +35,10 @@ exports.getDevices = (req, res) => {
 };
 
 // Gets device transactions
-exports.getDeviceInfo = (req, res) => {
+exports.getDeviceInfo = (req, res, next) => {
   const homeId = req.params.homeId;
   const deviceId = req.params.deviceId;
-  const user = req.body.user;
+  const user = req.query.user;
 
   console.log('response in get devices on server side is ', homeId, deviceId, user);
 
