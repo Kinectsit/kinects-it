@@ -50,7 +50,7 @@ CREATE TABLE device_transactions (
   id SERIAL PRIMARY KEY,
   userAccountId INTEGER,
   deviceId VARCHAR,
-  amountSpent INTEGER,
+  amountSpent DECIMAL(10,2),
   timeSpent INTEGER,
   timeStamp TIMESTAMP default now()
 );
