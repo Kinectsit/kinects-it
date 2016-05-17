@@ -75,8 +75,10 @@ User.create = (newUser) => {
 };
 
 User.update = (updateUser) => {
+  console.log('user found. updating user now');
   return db.one('UPDATE users SET name=${name}, email=${email}, password=${password}, defaultviewhost=${host}, avatarurl=${avatarURL} WHERE email = ${email} RETURNING id, name, email, defaultviewhost, avatarURL', updateUser)
   .then(updatedUser => {
+    console.log('we updated the user and here is the result', updatedUser);
     return updatedUser;
   })
   .catch(err => {

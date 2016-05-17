@@ -6,13 +6,11 @@ const authKeys = require('../../config.js');
 
 module.exports = (app, passport) => {
 
+/******************************
+************ USER ROUTES*******
+*******************************/
   app.route('/api/v1/users/:id/homes/:code').post(userController.addToHome);
   app.route('/api/v1/users/:id/homes/:code').delete(userController.leaveHome);
-  
-  app.delete('/api/v1/authentication', (req, res) => {
-    req.logout();
-    res.json(true);
-  })
 
   app.get('/api/v1/authentication', (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -40,7 +38,13 @@ module.exports = (app, passport) => {
       return res.json(false);
     }
   })
+  // Update a user's profile information
+  app.put('/api/v1/users',(req, res, next) => {
+    console.log('Updating an existing user:', req.body);
+    User.update(req.body)
+  });
 
+  // Signup new user
   app.route('/api/v1/users').post((req, res, next) => {
     passport.authenticate('local-signup', (err, user, info) => {
       if (err) {
@@ -83,9 +87,43 @@ module.exports = (app, passport) => {
     })(req, res, next);
   });
 
+/*****************************************
+********* Authentication ROUTES **********
+******************************************/
+// Log current user out
+  app.delete('/api/v1/authentication', (req, res) => {
+    req.logout();
+    res.json(true);
+  })
 
-  app.route('/api/v1/auth/coinbase').get(passport.authenticate('coinbase'));
+// Check if user is authenticated and return user information if so
+  app.get('/api/v1/authentication', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      const message = {
+        user: {
+          name:req.session.passport.user.name,
+          email: req.session.passport.user.email,
+          id: req.session.passport.user.id,
+        },
+        sessionId: req.session.id,
+        host: req.user.defaultviewhost,
+        house: req.session.passport.user.house,
+        payAccounts: req.session.passport.user.payAccounts,
+      }
 
+      if (req.session.passport.user.house) {
+        message.house = {
+          id: req.session.passport.user.house.id,
+          code: req.session.passport.user.house.hostCode,
+        };
+      }
+      return res.json(message);
+    } else {
+      return res.json(false);
+    }
+  })
+
+  // Authenticate and login user
   app.route('/api/v1/session').post((req, res, next) => {
     passport.authenticate('local-login', (err, user, info) => {
       if (err) {
@@ -95,7 +133,6 @@ module.exports = (app, passport) => {
         // user was validated 
         // Manually establish the session...
         req.login(user, function(err) {
-          console.log('logging in with this user, before or after serialize?', user);
             if (err) {
               return next(err);
             }
@@ -128,7 +165,11 @@ module.exports = (app, passport) => {
     })(req, res, next);
   });
 
-  app.route('/api/v1/users/callback').get((req, res, next) => {
+  // Authenticate coinbase
+  app.route('/api/v1/auth/coinbase').get(passport.authenticate('coinbase'));
+
+  // oAuth callback route 
+  app.route('/api/v1/auth/callback').get((req, res, next) => {
     passport.authenticate('coinbase', (err, user, info) => {
       if (err) {
         return next(err)

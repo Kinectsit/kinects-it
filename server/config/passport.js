@@ -157,12 +157,11 @@ module.exports = (passport) => {
           .then((result) => {
             // if there was a result, then we want to update the profile in the database
             if (result.length) {
-              return done(null, false, { login: false, message: 'That user already exists in the database' });
-              // return User.update(userInfo)
-              //   .then((data) => {
-              //     logger.info('Succesfully updated user = ', data);
-              //     return done(null, data, { login: true, message: 'user has been updated!' });
-              //   });
+              return User.update(userInfo)
+                .then((data) => {
+                  logger.info('Succesfully updated user = ', data);
+                  return done(null, data, { login: true, message: 'user has been updated!' });
+                });
             }
             // if there was no result, then we want to add the user to the database
             return User.create(userInfo)
@@ -182,7 +181,7 @@ module.exports = (passport) => {
   passport.use(new GitHubStrategy({
     clientID: authKeys.GITHUB_CLIENT_ID,
     clientSecret: authKeys.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://127.0.0.1:3001/api/v1/users/callback',
+    callbackURL: 'http://127.0.0.1:3001/api/v1/auth/callback',
   },
   (accessToken, refreshToken, profile, cb) => {
     console.log('this is the profile returned:', profile);
