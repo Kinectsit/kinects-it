@@ -59,11 +59,6 @@ export default function appState(state = initialState, action) {
       newState.device = action.device;
       return newState;
     }
-    case ADD_RENTAL: {
-      const newState = objectAssign({}, state);
-      newState.house.id = action.rentalId;
-      return newState;
-    }
     case CONSTANTS.ADD_HOUSE: {
       const newState = objectAssign({}, state);
       newState.house.id = action.house.id;

@@ -32,10 +32,6 @@ export function paidUsage(paidusage) {
   return { type: types.PAID_USAGE, paidusage };
 }
 
-export function addRental(rentalId) {
-  return { type: types.ADD_RENTAL, rentalId };
-}
-
 export function addHouse(house) {
   return { type: types.ADD_HOUSE, house };
 }
