@@ -25,6 +25,10 @@ export function requireAuthentication(Component) {
             if (response) {
               this.props.actions.setAuthentication(true, response.sessionId);
               this.props.actions.setUser(response.user);
+              this.props.actions.loadPayAccounts(response.payAccounts);
+              if (response.house) {
+                this.props.actions.addHouse(response.house);
+              }
               if (response.host) {
                 this.props.actions.setUserAsHost(true);
               } else {

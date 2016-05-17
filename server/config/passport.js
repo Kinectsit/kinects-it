@@ -79,12 +79,15 @@ module.exports = (passport) => {
           .then((payAccounts) => {
             loggedInUser.payAccounts = payAccounts;
             return done(err, loggedInUser, info);
+          })
+          .catch((e) => {
+            logger.info(e);
+            return done(err, loggedInUser, info);
           });
       })
       .catch((error) => {
         logger.info(error);
-        done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
-        return null;
+        return done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
       });
   }));
 

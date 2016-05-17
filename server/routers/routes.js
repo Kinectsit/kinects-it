@@ -21,6 +21,15 @@ module.exports = (app, passport) => {
         },
         sessionId: req.session.id,
         host: req.user.defaultviewhost,
+        house: req.session.passport.user.house,
+        payAccounts: req.session.passport.user.payAccounts,
+      }
+
+      if (req.session.passport.user.house) {
+        message.house = {
+          id: req.session.passport.user.house.id,
+          code: req.session.passport.user.house.hostCode,
+        };
       }
       return res.json(message);
     } else {
@@ -39,7 +48,7 @@ module.exports = (app, passport) => {
           if (err) return next(err);
           // creating a message to send to the client for session information
           const userInfo = {
-            name:req.session.passport.user.name,
+            name: req.session.passport.user.name,
             email: req.session.passport.user.email,
             id: req.session.passport.user.id,
           }
@@ -48,10 +57,10 @@ module.exports = (app, passport) => {
             sessionId: req.session.id,
             login: info.login,
             message: info.message,
-            payAccounts: user.payAccounts,
+            payAccounts: req.session.passport.user.payAccounts,
           };
 
-          if (user.house) {
+          if (req.session.passport.user.house) {
              message.house = {
               id: req.session.passport.user.house.id,
               code: req.session.passport.user.house.hostCode,
@@ -78,6 +87,7 @@ module.exports = (app, passport) => {
         // user was validated 
         // Manually establish the session...
         req.login(user, function(err) {
+          console.log('====user is', user);
             if (err) {
               return next(err);
             }

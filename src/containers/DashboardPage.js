@@ -11,11 +11,13 @@ export class DashboardPage extends React.Component {
 
   componentWillMount() {
     // const context = this;
-    if (!this.props.appState.house.id) {
+    if (!this.props.appState.isHost && !this.props.appState.house.id) {
       browserHistory.push('/join-rental');
     }
     const userHouseId = this.props.appState.house.id;
+    console.log('userhouse id is ', userHouseId);
     const urlPath = '/api/v1/homes/'.concat(userHouseId).concat('/devices');
+    console.log('url path is ', urlPath);
     $.ajax({
       url: urlPath,
       dataType: 'json',
