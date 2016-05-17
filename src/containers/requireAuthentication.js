@@ -8,13 +8,6 @@ import * as actions from '../actions/actions';
 export function requireAuthentication(Component) {
   class AuthenticatedComponent extends React.Component {
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        authenticated: false,
-      };
-    }
-
     componentWillMount() {
       this.checkAuth();
     }
