@@ -37,8 +37,8 @@ module.exports.addToHome = (req, res, next) => {
     code: inviteCode,
   })
   .then((houseData) => {
-    const house = houseData.id;
-    houseName = houseData.housename;
+    const house = houseData[0].id;
+    houseName = houseData[0].housename;
     logger.info('SUCCESS in addToHome retrival of house id: ', house);
 
     return db.one('INSERT INTO users_houses (userid, houseid, ishosthouse) values($1, $2, $3) RETURNING *', [userId, house, false]);
@@ -48,9 +48,9 @@ module.exports.addToHome = (req, res, next) => {
 
     const message = {
       success: true,
-      homeId: data.houseid,
-      userId: data.userid,
-      houseName,
+      houseid: data.houseid,
+      userid: data.userid,
+      housename: houseName,
     };
 
     return res.json(message);
