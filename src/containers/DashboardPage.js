@@ -4,32 +4,9 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { DashboardHost } from '../components/DashboardHost';
 import { DashboardGuest } from '../components/DashboardGuest';
-import { browserHistory } from 'react-router';
-import $ from 'jquery';
+
 
 export class DashboardPage extends React.Component {
-
-  componentWillMount() {
-    // const context = this;
-    if (!this.props.appState.house.id) {
-      browserHistory.push('/join-rental');
-    }
-    const userHouseId = this.props.appState.house.id;
-    const urlPath = '/api/v1/homes/'.concat(userHouseId).concat('/devices');
-    $.ajax({
-      url: urlPath,
-      dataType: 'json',
-      crossDomain: true,
-      method: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      // data: JSON.stringify(data),
-      success: (result) => {
-        this.props.actions.loadDevices(result);
-      },
-      error: (/* xhr, status, err */) => {
-      },
-    });
-  }
 
   clickButton() {
     this.props.actions.addDevice(this.state.device);

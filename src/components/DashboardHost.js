@@ -6,7 +6,7 @@ export const DashboardHost = (props) => (
   <div>
     <h1>Dashboard Host</h1>
     <p>Host Code: {props.appState.house.code}</p>
-    <p>Home Name: {props.appState.house.name}</p>
+    <p>Home Name: {props.appState.house.id}</p>
     <DeviceAddButton />
     <DeviceList appState={props.appState} actions={props.actions} />
   </div>

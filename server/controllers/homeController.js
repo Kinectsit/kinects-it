@@ -19,24 +19,43 @@ exports.getDevices = (req, res) => {
   const homeId = req.params.homeId;
   logger.info('HomeId in getDevices: ', homeId);
 
-  db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
-    column: '*',
-    table: 'devices',
+  db.query('SELECT * FROM devices where houseId=${home}', {
     home: homeId,
   })
   .then((result) => {
     logger.info('SUCCESS in getDevices: ', result);
+    res.json(result);
+  })
+  .catch((error) => {
+    logger.info('ERROR in get devices: ', error);
+    res.send(error);
+  });
+};
+
+// Gets all device transactions for host
+exports.getDeviceTransactions = (req, res, next) => {
+  const deviceId = req.params.deviceId;
+
+  db.query('SELECT ${column} FROM ${table} where deviceId=${deviceId} RETURNING *', {
+    column: '*',
+    table: 'device_transactions',
+    deviceid: deviceId,
+  })
+  .then((result) => {
+    logger.info('SUCCESS in getDeviceTransactions: ', result);
     return res.json(result);
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
     return res.send(error);
+  })
+  .finally(() => {
+    next();
   });
 };
 
 // Adds the device to the database after host fills out set options form
 exports.addDevice = (req, res, next) => {
-  console.log('addDevice req body: ', req.body);
   const newDevice = {
     houseId: req.params.homeId,
     name: req.body.name,

@@ -3,6 +3,7 @@
 import {
   LOAD_DEVICES,
   LOAD_PAY_ACCOUNTS,
+  ADD_HOUSE,
   SET_USER,
   ADD_DEVICE,
   SET_FEATURED,
@@ -64,7 +65,7 @@ export default function appState(state = initialState, action) {
       newState.house.id = action.rentalId;
       return newState;
     }
-    case CONSTANTS.ADD_HOUSE: {
+    case ADD_HOUSE: {
       const newState = objectAssign({}, state);
       newState.house.id = action.house.id;
       newState.house.code = action.house.code;

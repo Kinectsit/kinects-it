@@ -28,7 +28,7 @@ export class LeaveHomeButton extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: () => {
-        // remove house from state and send user to dashboard if successful response
+        // remove house and send user to dashboard if successful response
         this.props.actions.addHouse({});
         browserHistory.push('/join-rental');
       },

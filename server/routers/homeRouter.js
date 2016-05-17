@@ -10,5 +10,6 @@ homeRouter.route('/:homeId/devices').get(homeController.getDevices);
 homeRouter.route('/:homeId/devices/:deviceId').post(homeController.toggleDevice);
 homeRouter.route('/:homeId/devices/ping/:deviceId').post(homeController.pingDevice);
 homeRouter.route('/:homeId/devices').post(homeController.addDevice);
+homeRouter.route('/:homeId/devices/transactions/:deviceId').get(homeController.getDeviceTransactions);
 
 module.exports = homeRouter;
