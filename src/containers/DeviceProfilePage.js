@@ -94,6 +94,12 @@ export class DeviceProfilePage extends React.Component {
       );
     }
 
+    let chart = <div></div>;
+
+    if (this.state.deviceTransactions.length > 0) {
+      chart = <div><DeviceChart transactions={this.state.deviceTransactions} /></div>;
+    }
+
     return (
       <div>
         <h2>{this.props.appState.featured.name}</h2>
@@ -101,7 +107,7 @@ export class DeviceProfilePage extends React.Component {
         <h3>{this.props.appState.featured.description}</h3>
         {toggle}
         {JSON.stringify(this.state.deviceTransactions)}
-        <DeviceChart />
+        {chart}
       </div>
     );
   }
