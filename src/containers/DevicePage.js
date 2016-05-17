@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { DeviceChart } from '../components/DeviceChart';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
@@ -183,10 +184,6 @@ export class DevicePage extends React.Component {
       </Paper>
     );
 
-    if (this.state.deviceActive === true) {
-      formDisplay = <div>Device is active!</div>;
-    }
-
     return (
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
@@ -194,6 +191,7 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
         {JSON.stringify(this.state.deviceTransactions)}
+        <DeviceChart />
       </div>
     );
   }
@@ -223,4 +221,13 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(DevicePage);
+
+    // if (this.state.deviceActive === true) {
+    //   formDisplay = <div>Device is active!</div>;
+    // }
+
+    // let chart = <div></div>;
+    // if (this.state.deviceTransactions.length > 4) {
+    //   chart = <div><DeviceChart data={this.state.deviceTransactions} /></div>;
+    // }
 

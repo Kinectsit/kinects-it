@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import Toggle from 'material-ui/Toggle';
 import styles from '../assets/formStyles';
+import { DeviceChart } from '../components/DeviceChart';
 import $ from 'jquery';
 
 export class DeviceProfilePage extends React.Component {
@@ -100,6 +101,7 @@ export class DeviceProfilePage extends React.Component {
         <h3>{this.props.appState.featured.description}</h3>
         {toggle}
         {JSON.stringify(this.state.deviceTransactions)}
+        <DeviceChart />
       </div>
     );
   }
