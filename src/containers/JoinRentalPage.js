@@ -26,9 +26,9 @@ export class JoinRentalPage extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.actions.addRental('');
-  }
+  // componentDidMount() {
+  //   this.props.actions.addHouse('');
+  // }
 
   addRental(data) {
     const userId = this.props.authState.user.id;
@@ -43,8 +43,12 @@ export class JoinRentalPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        // send user to dashboard if successful response
-        this.props.actions.addRental(response.houseid);
+        const house = {
+          id: response.houseid,
+          code: data.inviteCode,
+          name: response.housename,
+        };
+        this.props.actions.addHouse(house);
         browserHistory.push('/dashboard');
       },
       error: (/* xhr, status, err */) => {

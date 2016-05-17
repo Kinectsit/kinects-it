@@ -4,7 +4,7 @@ import { LeaveHomeButton } from '../containers/LeaveHomeButton';
 
 export const DashboardGuest = (props) => (
   <div>
-    <h1>Dashboard Guest</h1>
+    <h1>{props.appState.house.name}</h1>
     <LeaveHomeButton
       appState={props.appState}
       authState={props.authState}
