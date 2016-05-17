@@ -226,12 +226,3 @@ export default connect(
   mapDispatchToProps
 )(DevicePage);
 
-    // if (this.state.deviceActive === true) {
-    //   formDisplay = <div>Device is active!</div>;
-    // }
-
-    // let chart = <div></div>;
-    // if (this.state.deviceTransactions.length > 4) {
-    //   chart = <div><DeviceChart data={this.state.deviceTransactions} /></div>;
-    // }
-
