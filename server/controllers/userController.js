@@ -1,23 +1,17 @@
 /* eslint max-len: ["error", 150] */
-// const User = require('../models/userModel.js');
+/* eslint-disable strict */
+'use strict';
 const logger = require('../config/logger.js');
 // const passport = require('passport');
 const db = require('../db.js');
 
 module.exports.signUp = (req, res, next) => {
-  // console.log('passport: ', passport.authenticate('coinbase'));
-  // passport.authenticate('coinbase');
-  // console.log('call to signup made with this data:', req.body);
   db.one('INSERT INTO users(name, email, password, defaultViewHost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING *', req.body)
   .then((result) => {
-        // success;
-    // console.log('the search was successful! Results:', result);
     logger.info(result);
     res.send(result);
   })
   .catch((error) => {
-     // error;
-    // console.log('there was an error in the search:', error);
     logger.info(error);
     res.send(error);
   })
@@ -35,22 +29,31 @@ module.exports.addToHome = (req, res, next) => {
   */
   const userId = req.params.id;
   const inviteCode = req.params.code;
+  let houseName;
 
-  db.query('SELECT ${column~} FROM ${table~} where invitecode=${code}', {
-    column: 'id',
+  db.query('SELECT ${column^} FROM ${table~} where invitecode=${code}', {
+    column: '*',
     table: 'houses',
     code: inviteCode,
   })
-  .then((houseId) => {
-    // TODO: validate house exists
-    const house = houseId[0].id;
-    logger.info('SUCCESS in addToHome retrival of house id: ', houseId);
+  .then((houseData) => {
+    const house = houseData.id;
+    houseName = houseData.housename;
+    logger.info('SUCCESS in addToHome retrival of house id: ', house);
 
     return db.one('INSERT INTO users_houses (userid, houseid, ishosthouse) values($1, $2, $3) RETURNING *', [userId, house, false]);
   })
   .then((data) => {
     logger.info('SUCCESS insert for addToHome: ', data);
-    return res.json(data);
+
+    const message = {
+      success: true,
+      homeId: data.houseid,
+      userId: data.userid,
+      houseName,
+    };
+
+    return res.json(message);
   })
   .catch((error) => {
     logger.info('ERROR in addToHome: ', error);

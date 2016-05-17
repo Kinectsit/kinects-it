@@ -68,6 +68,7 @@ export default function appState(state = initialState, action) {
       const newState = objectAssign({}, state);
       newState.house.id = action.house.id;
       newState.house.code = action.house.code;
+      newState.house.name = action.house.name;
       return newState;
     }
     case SET_USER_AS_HOST: {

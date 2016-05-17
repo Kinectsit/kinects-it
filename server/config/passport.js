@@ -55,7 +55,7 @@ module.exports = (passport) => {
             loggedInUser = userData;
             info = { login: true, message: 'User successfully logged in.' };
             // add home to response if user is already in one (use oneOrNone in case they aren't in a home yet)
-            return db.oneOrNone('SELECT id, inviteCode FROM houses WHERE id = ( SELECT houseid FROM users_houses WHERE userId = $1 )', [loggedInUser.id]);
+            return db.oneOrNone('SELECT id, inviteCode, housename FROM houses WHERE id = ( SELECT houseid FROM users_houses WHERE userId = $1 )', [loggedInUser.id]);
           }
         }
         return {};
@@ -65,6 +65,7 @@ module.exports = (passport) => {
           loggedInUser.house = {};
           loggedInUser.house.id = homeData.id;
           loggedInUser.house.hostCode = homeData.invitecode;
+          loggedInUser.house.name = homeData.housename;
         }
 
         db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
