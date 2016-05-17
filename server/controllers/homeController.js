@@ -94,7 +94,7 @@ exports.pingDevice = (req, res) => {
     logger.error('Device already exists, return error: ', err);
 
     const error = { setup: false,
-                    message: 'Setup failed. Device already existsl' };
+                    message: 'Setup failed. Device already exists' };
 
     return res.send(error);
   });

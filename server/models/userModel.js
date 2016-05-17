@@ -38,7 +38,7 @@ User.create = (newUser) => {
           }
           const hostCode = utils.randomString(6);
 
-          return t.one('INSERT INTO houses(invitecode) VALUES($1) RETURNING id, invitecode', hostCode)
+          return t.one('INSERT INTO houses(invitecode, housename) VALUES($1, $2) RETURNING id, invitecode, housename', [hostCode, newUser.home])
             .then((houseData) => {
               return t.one('INSERT INTO users_houses(userid, houseid, ishosthouse) VALUES($1, $2, $3) RETURNING userid, houseid, ishosthouse', [userData.id, houseData.id, true])
               .then(() => {
@@ -48,8 +48,9 @@ User.create = (newUser) => {
                   id: userData.id,
                   defaultViewHost: userData.defaultviewhost,
                   house: {
-                    hostCode: houseData.invitecode,
                     id: houseData.id,
+                    hostCode: houseData.invitecode,
+                    name: houseData.housename,
                   },
                   payAccounts: [{
                     id: payAccount.id,

@@ -55,6 +55,7 @@ module.exports = (app, passport) => {
              message.house = {
               id: req.session.passport.user.house.id,
               code: req.session.passport.user.house.hostCode,
+              name: req.session.passport.user.house.name,
              };
           }
 

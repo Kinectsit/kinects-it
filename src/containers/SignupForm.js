@@ -25,7 +25,20 @@ class SignupForm extends React.Component {
     this.state = {
       canSubmit: false,
       dialogueOpen: false,
+      isHost: true,
     };
+  }
+
+  onUserTypeChange(event) {
+    if (event.target.value === 'guest') {
+      this.setState({
+        isHost: false,
+      });
+    } else {
+      this.setState({
+        isHost: true,
+      });
+    }
   }
 
   enableButton() {
@@ -120,6 +133,20 @@ class SignupForm extends React.Component {
             style={styles.fieldStyles}
             floatingLabelText="E-mail"
           />
+
+          {
+            (this.state.isHost) ?
+              <FormsyText
+                name="home"
+                validations={this.state.homeRequired}
+                validationError={this.errorMessages.homeError}
+                style={styles.fieldStyles}
+                required
+                floatingLabelText="Home Name"
+              />
+              : ''
+          }
+
           <FormsyText
             name="password"
             validations="minLength:5"
@@ -141,7 +168,10 @@ class SignupForm extends React.Component {
             floatingLabelText="Re-type password"
           />
           <Subheader>Will you be a Host or a Guest</Subheader>
-          <FormsyRadioGroup name="host" defaultSelected="host">
+          <FormsyRadioGroup
+            name="host" defaultSelected="host"
+            onChange={(event) => this.onUserTypeChange(event)}
+          >
             <FormsyRadio
               value="host"
               label="I'm a host"
