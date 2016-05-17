@@ -22,7 +22,6 @@ export class DeviceProfilePage extends React.Component {
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
     $.get(apiPath, (req) => {
-      console.log(req);
       this.setState({
         deviceTransactions: req,
       });

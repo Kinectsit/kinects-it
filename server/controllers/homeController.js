@@ -37,13 +37,11 @@ exports.getDevices = (req, res) => {
 // Gets device transactions
 exports.getDeviceInfo = (req, res, next) => {
   if (req.query.user) {
-    console.log('req query user is ', req.query.user);
-    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT accountid FROM user_pay_accounts WHERE userid=${userid})', {
+    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT id FROM user_pay_accounts WHERE userid=${userid})', {
       deviceid: req.params.deviceId,
       userid: req.query.user,
     })
     .then((result) => {
-      console.log('result is ', result);
       logger.info('SUCCESS in getDevices: ', result);
       return res.json(result);
     })
