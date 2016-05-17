@@ -17,7 +17,7 @@ CREATE TABLE houses (
 DROP TABLE IF EXISTS devices CASCADE;
     
 CREATE TABLE devices (
-  id SERIAL PRIMARY KEY,
+  id VARCHAR PRIMARY KEY,
   houseId INTEGER,
   name VARCHAR,
   description VARCHAR,
@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS device_transactions CASCADE;
 CREATE TABLE device_transactions (
   id SERIAL PRIMARY KEY,
   userAccountId INTEGER,
-  deviceId INTEGER,
+  deviceId VARCHAR,
   amountSpent INTEGER,
   timeSpent INTEGER,
   timeStamp TIMESTAMP
