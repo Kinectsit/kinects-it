@@ -36,8 +36,9 @@ export function addRental(rentalId) {
   return { type: types.ADD_RENTAL, rentalId };
 }
 
-export function addHouse(houseCode, houseId) {
-  return { type: types.ADD_HOUSE, houseCode, houseId };
+export function addHouse(house) {
+  console.log('HOUSE IN ACTIONS.jS IS ', house);
+  return { type: types.ADD_HOUSE, house };
 }
 
 export function setUserAsHost(isHost) {

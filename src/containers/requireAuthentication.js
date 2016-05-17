@@ -27,7 +27,7 @@ export function requireAuthentication(Component) {
               this.props.actions.setUser(response.user);
               this.props.actions.loadPayAccounts(response.payAccounts);
               if (response.house && response.host) {
-                this.props.actions.addHouse(response.house.code, response.house.id);
+                this.props.actions.addHouse(response.house);
               }
               if (!response.host && response.house) {
                 this.props.actions.addRental(response.house.id);
@@ -61,11 +61,13 @@ export function requireAuthentication(Component) {
 
   AuthenticatedComponent.propTypes = {
     actions: PropTypes.object.isRequired,
+    appState: PropTypes.object.isRequired,
     authState: PropTypes.object.isRequired,
   };
 
   function mapStateToProps(state) {
     return {
+      appState: state.appState,
       authState: state.authState,
     };
   }
