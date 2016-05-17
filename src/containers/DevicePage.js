@@ -26,11 +26,11 @@ export class DevicePage extends React.Component {
       totalCost: 0,
       time: 0,
       units: 0,
+      deviceTransactions: [],
     };
   }
 
   componentDidMount() {
-    console.log('in component did mount');
     const homeId = this.props.appState.house.id;
     const deviceId = this.props.appState.featured.id;
     const user = { user: this.props.authState.user.id };
@@ -38,6 +38,9 @@ export class DevicePage extends React.Component {
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
     $.get(apiPath, user, (req) => {
       console.log(req);
+      this.setState({
+        deviceTransactions: req,
+      });
     })
     .fail((error) => {
       console.log('error in server response', error);
@@ -191,6 +194,7 @@ export class DevicePage extends React.Component {
         {errorMsg}
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
+        {JSON.stringify(this.state.deviceTransactions)}
       </div>
     );
   }

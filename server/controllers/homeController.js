@@ -36,26 +36,40 @@ exports.getDevices = (req, res) => {
 
 // Gets device transactions
 exports.getDeviceInfo = (req, res, next) => {
-  const homeId = req.params.homeId;
-  const deviceId = req.params.deviceId;
-  const user = req.query.user;
-
-  console.log('response in get devices on server side is ', homeId, deviceId, user);
-
-  res.send('response from server');
-  // db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
-  //   column: '*',
-  //   table: 'devices',
-  //   home: homeId,
-  // })
-  // .then((result) => {
-  //   logger.info('SUCCESS in getDevices: ', result);
-  //   return res.json(result);
-  // })
-  // .catch((error) => {
-  //   logger.info('ERROR in get devices: ', error);
-  //   return res.send(error);
-  // });
+  if (req.query.user) {
+    console.log('req query user is ', req.query.user);
+    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT accountid FROM user_pay_accounts WHERE userid=${userid})', {
+      deviceid: req.params.deviceId,
+      userid: req.query.user,
+    })
+    .then((result) => {
+      console.log('result is ', result);
+      logger.info('SUCCESS in getDevices: ', result);
+      return res.json(result);
+    })
+    .catch((error) => {
+      logger.info('ERROR in get devices: ', error);
+      return res.send(error);
+    })
+    .finally(() => {
+      next();
+    });
+  } else {
+    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid}', {
+      deviceid: req.params.deviceId,
+    })
+    .then((result) => {
+      logger.info('SUCCESS in getDevices: ', result);
+      return res.json(result);
+    })
+    .catch((error) => {
+      logger.info('ERROR in get devices: ', error);
+      return res.send(error);
+    })
+    .finally(() => {
+      next();
+    });
+  }
 };
 
 // Adds the device to the database after host fills out set options form
