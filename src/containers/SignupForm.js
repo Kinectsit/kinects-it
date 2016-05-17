@@ -65,6 +65,11 @@ class SignupForm extends React.Component {
     } else {
       data.host = false;
     }
+    if (!data.avatarURL) {
+      console.log('no avatarURl');
+      data.avatarURL = '';
+      data.coinbaseId = '';
+    }
 
     $.ajax({
       url: '/api/v1/users/',

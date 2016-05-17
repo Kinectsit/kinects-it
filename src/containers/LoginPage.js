@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign*/
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,6 +11,7 @@ import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import FontIcon from 'material-ui/FontIcon';
 
 export class LoginPage extends React.Component {
   constructor(props) {
@@ -108,6 +111,16 @@ export class LoginPage extends React.Component {
     return (
       <div>
         <h2>Login to your account</h2>
+        <FlatButton
+          label="Login With Coinbase"
+          backgroundColor="#2b71b1"
+          hoverColor="#18355C"
+          linkButton
+          href="/api/v1/auth/coinbase"
+          style={{ color: 'white' }}
+          secondary
+          icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+        />
         <Paper style={styles.paperStyle}>
           {errorMsg}
           <Formsy.Form

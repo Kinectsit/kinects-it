@@ -1,9 +1,13 @@
 /* eslint max-len: ["error", 200] */
-/* eslint-disable no-var */
+/* eslint-disable no-var, no-underscore-dangle */
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../db.js');
 const User = require('../models/userModel');
 const logger = require('../config/logger.js');
+const CoinbaseStrategy = require('passport-coinbase').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
+
+const authKeys = require('../../config.js');
 
 // expose this function to our app using module.exports
 module.exports = (passport) => {
@@ -14,13 +18,16 @@ module.exports = (passport) => {
   // passport needs ability to serialize and unserialize users out of session
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
+    console.log('serializeUser:', user);
     done(null, user);
   });
 
   // used to deserialize the user
   passport.deserializeUser((user, done) => {
     db.one('SELECT * from users where name=${name}', user)
-    .then((data) => done(null, data))
+    .then((data) => {
+      done(null, data);
+    })
     .catch((error) => done(error));
   });
 
@@ -121,4 +128,68 @@ module.exports = (passport) => {
       });
     })
   );
+  // =========================================================================
+    // Coinbase SIGNUP ============================================================
+    // =========================================================================
+  passport.use(new CoinbaseStrategy({
+    authorizationURL: 'https://www.coinbase.com/oauth/authorize',
+    tokenURL: 'https://www.coinbase.com/oauth/token',
+    clientID: authKeys.COINBASE_CLIENT_ID,
+    clientSecret: authKeys.COINBASE_CLIENT_SECRET,
+    callbackURL: 'http://127.0.0.1:3000/api/v1/users/callback',
+    scope: ['user'],
+  },
+    (accessToken, refreshToken, profile, done) => {
+      // asynchronous verification, for effect...
+      console.log('in passport coinbase strategy before nextTick');
+      process.nextTick(() => {
+        console.log('in passport coinbase strategy after nextTick');
+        const userJson = profile._json;
+        const userInfo = {
+          name: userJson.username,
+          email: userJson.email,
+          coinbaseId: userJson.uuid,
+          avatarURL: userJson.avatar_url,
+          password: null,
+          payAccount: 'coinbase',
+          host: undefined,
+        };
+        // see if the user exists in the database already
+        db.any('SELECT * from users WHERE email=$1 OR name=$2', [userInfo.email, userInfo.name])
+          .then((result) => {
+            // if there was a result, then we want to update the profile in the database
+            if (result.length) {
+              return done(null, false, { login: false, message: 'That user already exists in the database' });
+              // return User.update(userInfo)
+              //   .then((data) => {
+              //     logger.info('Succesfully updated user = ', data);
+              //     return done(null, data, { login: true, message: 'user has been updated!' });
+              //   });
+            }
+            // if there was no result, then we want to add the user to the database
+            return User.create(userInfo)
+              .then((data) => {
+                logger.info('Succesfully created user = ', data);
+                return done(null, data, { login: true, message: 'user has been created!' });
+              });
+          })
+          .catch((error) => {
+            logger.info(error);
+            return done(error, null, { login: false, message: 'error adding to the database' });
+          });
+      });
+    }
+  ));
+
+  passport.use(new GitHubStrategy({
+    clientID: authKeys.GITHUB_CLIENT_ID,
+    clientSecret: authKeys.GITHUB_CLIENT_SECRET,
+    callbackURL: 'http://127.0.0.1:3000/api/v1/users/callback',
+  },
+  (accessToken, refreshToken, profile, cb) => {
+    console.log('this is the profile returned:', profile);
+    return cb(null, profile);
+  }
+));
 };
+

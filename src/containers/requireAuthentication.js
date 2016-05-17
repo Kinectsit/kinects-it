@@ -16,7 +16,13 @@ export function requireAuthentication(Component) {
       if (!this.props.authState.isAuthenticated) {
         // current local state not authenticated
         // check with server if current session is authenticated
-        $.get('/api/v1/authentication')
+        $.ajax({
+          url: '/api/v1/authentication',
+          type: 'GET',
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
           .done((response) => {
             if (response) {
               this.props.actions.setUser(response.user);

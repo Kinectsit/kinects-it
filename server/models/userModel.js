@@ -1,9 +1,10 @@
-/* eslint max-len: ["error", 200] */
+/* eslint max-len: ["error", 250] */
 /* eslint-disable arrow-body-style */
 const bcrypt = require('bcrypt-nodejs');
 const User = {};
 const db = require('../db.js');
 const utils = require('../utils/helpers.js');
+const logger = require('../config/logger.js');
 
 User.generateHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -15,15 +16,24 @@ User.comparePasswords = (providedPassword, userPassword) => {
 
 User.create = (newUser) => {
   return db.tx(t => (
-    t.one('INSERT INTO users(name, email, password, defaultviewhost) VALUES(${name}, ${email}, ${password}, ${host}) RETURNING id, name, email, defaultviewhost', newUser)
+    t.one('INSERT INTO users(name, email, password, defaultviewhost,avatarurl) VALUES(${name}, ${email}, ${password}, ${host}, ${avatarURL}) RETURNING id, name, email, defaultviewhost, avatarurl', newUser)
       .then(userData => {
         const pay = {
-          nickname: 'Nickname for Demo Account',
           userid: userData.id,
-          paymethodid: 1,
         };
+        // if there is a coinbase id associated with new user
+        // add the payment method
+        if (newUser.coinbaseId.length) {
+          pay.nickname = 'My Coinbase';
+          pay.paymethodid = 2;
+        } else {
+          pay.nickname = 'My Demo Pay Method';
+          pay.paymethodid = 1;
+        }
         return t.one('INSERT INTO user_pay_accounts(nickname, userid, paymethodid) VALUES(${nickname}, ${userid}, ${paymethodid}) RETURNING id, nickname, paymethodid', pay)
         .then((payAccount) => {
+          // need to handle if this is coming from coinbase then
+          // skip until we can update the user with the host information
           if (!userData.defaultviewhost) {
             return {
               name: userData.name,
@@ -64,5 +74,15 @@ User.create = (newUser) => {
   ));
 };
 
+User.update = (updateUser) => {
+  return db.one('UPDATE users SET name=${name}, email=${email}, password=${password}, defaultviewhost=${host}, avatarurl=${avatarURL} WHERE email = ${email} RETURNING id, name, email, defaultviewhost, avatarURL', updateUser)
+  .then(updatedUser => {
+    return updatedUser;
+  })
+  .catch(err => {
+    logger.info(err);
+    return err;
+  });
+};
 
 module.exports = User;

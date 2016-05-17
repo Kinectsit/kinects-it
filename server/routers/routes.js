@@ -1,6 +1,8 @@
 /* eslint new-cap: ["error", { "capIsNewExceptions": "Router" }] */
 const router = require('express').Router();
 const userController = require('../controllers/userController.js');
+const https = require('https');
+const authKeys = require('../../config.js');
 
 module.exports = (app, passport) => {
 
@@ -11,7 +13,10 @@ module.exports = (app, passport) => {
     req.logout();
     res.json(true);
   })
-  app.get('/api/v1/authentication', (req, res) => {
+
+  app.get('/api/v1/authentication', (req, res, next) => {
+    console.log('here is the session data when getting authentication', req.session);
+    console.log('am I authenticated?', req.isAuthenticated());
     if (req.isAuthenticated()) {
       const message = {
         user: {
@@ -37,6 +42,7 @@ module.exports = (app, passport) => {
       return res.json(false);
     }
   })
+
   app.route('/api/v1/users').post((req, res, next) => {
     passport.authenticate('local-signup', (err, user, info) => {
       if (err) {
@@ -79,6 +85,9 @@ module.exports = (app, passport) => {
     })(req, res, next);
   });
 
+
+  app.route('/api/v1/auth/coinbase').get(passport.authenticate('coinbase'));
+
   app.route('/api/v1/session').post((req, res, next) => {
     passport.authenticate('local-login', (err, user, info) => {
       if (err) {
@@ -88,6 +97,7 @@ module.exports = (app, passport) => {
         // user was validated 
         // Manually establish the session...
         req.login(user, function(err) {
+          console.log('logging in with this user, before or after serialize?', user);
             if (err) {
               return next(err);
             }
@@ -119,4 +129,38 @@ module.exports = (app, passport) => {
       }
     })(req, res, next);
   });
+
+  app.route('/api/v1/users/callback').get((req, res, next) => {
+    passport.authenticate('coinbase', (err, user, info) => {
+      if (err) {
+        return next(err)
+      };
+      console.log('the user to login:', user);
+      console.log('the info:', info);
+     req.login(user, function(err) {
+          if (err) { 
+            console.log('got an error:', err);
+            return next(err); 
+          }
+          console.log('this is my session id:', req.session.id);
+          console.log('am i authenticated?', req.isAuthenticated());
+          console.log('this is the response:', res);
+          process.nextTick(() => {
+            return res.redirect('http://localhost:3001/dashboard');
+          });
+      });
+    })(req, res, next);
+  });
 };
+// const code = req.query.code;
+// const options = {
+//   hostname: 'https://api.coinbase.com/oauth/token',
+//   method: 'POST',
+//   path: '?grant_type=authorization_code&code='.concat(code).'&client_id='.concat(req.query.)
+// };
+// const request = https.request(options, (response) => {
+//   response.on('data', (data) => {
+//     console.log('this was the data response from coinbase:', data);
+//   })
+
+// });

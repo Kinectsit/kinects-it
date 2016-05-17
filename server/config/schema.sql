@@ -82,9 +82,9 @@ CREATE TABLE users (
   name VARCHAR,
   email VARCHAR,
   password VARCHAR,
-  defaultViewHost BOOLEAN
+  defaultViewHost BOOLEAN,
+  avatarURL VARCHAR
 );
-
 
 ALTER TABLE users_houses ADD FOREIGN KEY (userId) REFERENCES users (id);
 ALTER TABLE users_houses ADD FOREIGN KEY (houseId) REFERENCES houses (id);
@@ -94,4 +94,5 @@ ALTER TABLE device_transactions ADD FOREIGN KEY (userAccountId) REFERENCES user_
 ALTER TABLE device_transactions ADD FOREIGN KEY (deviceId) REFERENCES devices (id);
 ALTER TABLE user_pay_accounts ADD FOREIGN KEY (payMethodId) REFERENCES pay_methods (id);
 ALTER TABLE user_pay_accounts ADD FOREIGN KEY (userId) REFERENCES users (id);
+
 INSERT INTO pay_methods (name) VALUES ('demo'), ('coinbase');
