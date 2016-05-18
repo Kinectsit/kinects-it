@@ -157,7 +157,7 @@ exports.toggleDevice = (req, res) => {
     body: { duration_ms: 100 },
     json: true };
 
-  request(options, (error, response, body) => {
+  request(options, (error /* , response, body */) => {
     if (error) {
       return res.json({
         success: false,
@@ -166,39 +166,37 @@ exports.toggleDevice = (req, res) => {
     } else {
       // Update database with the current status of the device
       db.many('UPDATE devices SET isactive=${isactive}, paidusage=${paidusage} WHERE id=${deviceId} RETURNING *', updateDevice) // .many for demo purposes - multiple devices with same id
-        .then(() => {
+        .then((deviceData) => {
+          logger.info('SUCCESS UPDATE of devices: ', deviceData);
           // If the guest purchased the time...
           if (req.body.paidusage === 'true') {
+            const deviceTransaction = {
+              useraccountid: parseInt(req.body.payaccountid, 10),
+              deviceid: req.body.deviceid,
+              amountspent: parseFloat(req.body.amountspent, 10),
+              timespent: parseInt(req.body.timespent, 10),
+            };
+            // Add to the device transaction database
+            return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+          }
+          return;
+        })
+        .then((transactionData) => {
+          if (transactionData) {
+            logger.info('SUCCESS in device_transactions INSERT: ', transactionData);
             const d = new Date();
             const now = d.getTime();
             const endingTime = now + parseInt(req.body.timespent, 10);
+
             // Add to expiry queue if guest request - adds deviceId as value, endingTime as the score - time complexity is O(log(N))
-            client.multi()
-              .zadd('device', endingTime, deviceId, redis.print)
-              .exec(() => {
-                const deviceTransaction = {
-                  useraccountid: parseInt(req.body.payaccountid, 10),
-                  deviceid: req.body.deviceid,
-                  amountspent: parseFloat(req.body.amountspent, 10),
-                  timespent: parseInt(req.body.timespent, 10),
-                };
-                // Add to the device transaction database
-                db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
-                  .then((deviceData) => {
-                    const message = deviceData;
-                    message.success = true;
-                    return res.json(message);
-                  })
-                  .catch((er) => {
-                    logger.info(er);
-                  });
-              });
+            client.zadd('device', endingTime, deviceId, redis.print);
           }
-          return res.json(body);
+
+          return res.json({ success: true, transactionData });
         })
-        .catch((err) => {
-          logger.info('ERROR in toggleDevice: ', err);
-          return res.send(err);
+        .catch((transError) => {
+          logger.error('ERROR in toggleDevice: ', transError);
+          return res.json({ success: false, message: 'Failed to communicate to device, please try again' });
         });
     }
   });
