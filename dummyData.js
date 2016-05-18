@@ -22,6 +22,24 @@ const User = require('./server/models/userModel');
 const guestPassword = bcrypt.hashSync('12345', bcrypt.genSaltSync(8), null);
 const hostPassword = bcrypt.hashSync('12345', bcrypt.genSaltSync(8), null);
 
+const randomDate = () => {
+  let dt = new Date();
+  const month = Math.floor( Math.random() * 5 );
+  const day = Math.floor( Math.random() * 28 );
+
+  dt.setMonth(month);
+  dt.setDate(day);
+  return dt;
+};
+
+const randomSpend = () => {
+  return Math.random() * 20;
+};
+
+const randomTime = () => {
+  return Math.floor(Math.random() * 60);
+};
+
 const hostUser = { name: 'hostBob',
   email: 'hostBob@bob.com',
   password: hostPassword,
@@ -62,13 +80,14 @@ User.create(guestUser)
 
     const newDevice1 = {
       houseId: homeId,
-      name: 'George',
-      description: 'Washing Machine',
-      isactive: true,
+      name: 'Washing Machine',
+      description: 'New Whirlpool washing machine.  A standard washing cycle is 45 minutes.',
+      isactive: false,
+      paidusage: false,
       deviceId: '00e04c038343',
       usagecostoptions: 1,
     };
-    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice1);
+    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, paidusage, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${paidusage}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice1);
   })
   .then((result) => {
     console.log('SUCCESS adding device1:', result);
@@ -77,13 +96,14 @@ User.create(guestUser)
 
     const newDevice2 = {
       houseId: homeId,
-      name: 'Paul',
-      description: 'Dryer',
-      isactive: false,
+      name: 'Dryer',
+      description: 'New Whirlpool dryer.  A standard washing cycle is 60 minutes.',
+      isactive: true,
+      paidusage: true,
       deviceId: '11234lj234',
       usagecostoptions: 1,
     };
-    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice2);
+    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, paidusage, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${paidusage}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice2);
   })
   .then((result) => {
     console.log('SUCCESS adding device2:', result);
@@ -91,13 +111,14 @@ User.create(guestUser)
 
     const newDevice3 = {
       houseId: homeId,
-      name: 'John',
-      description: 'Blender',
+      name: 'Electric Fireplace',
+      description: 'See temparature settings behind the control panel on top of fireplace.',
       isactive: false,
+      paidusage: false,
       deviceId: 'klj32454j4aso',
       usagecostoptions: 1,
     };
-    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice3);
+    return db.one('INSERT INTO devices(id, houseId, name, description, isactive, paidusage, hardwarekey, usagecostoptions) VALUES(${deviceId}, ${houseId}, ${name}, ${description}, ${isactive}, ${paidusage}, ${deviceId}, ${usagecostoptions}) RETURNING *', newDevice3);
   })
   .then((result) => {
     console.log('SUCCESS adding device3:', result);
@@ -107,11 +128,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 100,
-      timespent: 1000,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -120,11 +142,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -133,11 +156,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 250,
-      timespent: 1700,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -146,11 +170,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -159,11 +184,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -172,11 +198,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -185,11 +212,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -198,11 +226,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -211,11 +240,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -224,11 +254,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId1,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -237,28 +268,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
-  })
-
-
-
-
-  .then((result) => {
-    console.log('SUCCESS adding transaction:', result);
-
-    // create all the transactions
-    const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
-      deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
-    };
-    // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -267,11 +282,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 250,
-      timespent: 1700,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -280,11 +296,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -293,11 +310,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -306,11 +324,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -319,11 +338,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -332,11 +352,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -345,11 +366,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -358,11 +380,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -371,11 +394,26 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId2,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
+  })
+  .then((result) => {
+    console.log('SUCCESS adding transaction:', result);
+
+    // create all the transactions
+    const deviceTransaction = {
+      useraccountid: parseInt(guest.payAccounts[0].id),
+      deviceid: deviceId2,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
+    };
+    // Add to the device transaction database
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -384,11 +422,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -397,11 +436,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 250,
-      timespent: 1700,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -410,11 +450,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -423,11 +464,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -436,11 +478,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -449,11 +492,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -462,11 +506,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -475,11 +520,12 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
@@ -488,13 +534,16 @@ User.create(guestUser)
     const deviceTransaction = {
       useraccountid: parseInt(guest.payAccounts[0].id),
       deviceid: deviceId3,
-      amountspent: 200,
-      timespent: 1500,
+      amountspent: randomSpend(),
+      timespent: randomTime(),
+      timestamp: randomDate(),
     };
     // Add to the device transaction database
-    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction);
+    return db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent, timestamp) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}, ${timestamp}) RETURNING *', deviceTransaction);
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
   });
+
+return;
 
