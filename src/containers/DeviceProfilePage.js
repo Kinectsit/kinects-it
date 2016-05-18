@@ -106,7 +106,6 @@ export class DeviceProfilePage extends React.Component {
         {errorMsg}
         <h3>{this.props.appState.featured.description}</h3>
         {toggle}
-        {JSON.stringify(this.state.deviceTransactions)}
         {chart}
       </div>
     );

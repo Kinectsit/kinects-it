@@ -184,8 +184,10 @@ exports.toggleDevice = (req, res) => {
                 };
                 // Add to the device transaction database
                 db.one('INSERT INTO device_transactions(useraccountid, deviceid, amountspent, timespent) VALUES(${useraccountid}, ${deviceid}, ${amountspent}, ${timespent}) RETURNING *', deviceTransaction)
-                  .then(() => {
-                    res.end(body);
+                  .then((deviceData) => {
+                    const message = deviceData;
+                    message.success = true;
+                    return res.json(message);
                   })
                   .catch((er) => {
                     logger.info(er);

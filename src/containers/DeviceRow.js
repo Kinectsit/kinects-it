@@ -13,18 +13,17 @@ export class DeviceRow extends React.Component {
 
   render() {
     let active = 'Active';
-    let guestButton = (
-      <div>Device is currently on - come back later to access options.</div>
-    );
+    let buttonMessage = 'View Transactions';
 
     if (this.props.device.isactive === false) {
-      active = 'Not Active';
-      guestButton = (
-        <NavLink to="/device">
-          <RaisedButton label="Purchase Usage" onClick={() => this.setFeatured()} />
-        </NavLink>
-      );
+      buttonMessage = 'Purchase Usage';
     }
+
+    let guestButton = (
+      <NavLink to="/device">
+        <RaisedButton label={buttonMessage} onClick={() => this.setFeatured()} />
+      </NavLink>
+    );
 
     if (this.props.appState.isHost) {
       return (

@@ -97,8 +97,13 @@ export class DevicePage extends React.Component {
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
+        // const updatedTransactions = this.state.deviceTransactions.concat({
+        //   amountspent: this.state.totalCost,
+        //   timestamp: 'Now',
+        // });
         this.setState({
           deviceActive: true,
+          // deviceTransactions: updatedTransactions,
         });
       }
     })
@@ -184,7 +189,7 @@ export class DevicePage extends React.Component {
       </Paper>
     );
 
-    if (this.state.deviceActive === true) {
+    if (this.state.deviceActive || this.props.appState.featured.isActive) {
       formDisplay = <div>Device is active!</div>;
     }
 
@@ -200,7 +205,6 @@ export class DevicePage extends React.Component {
         {errorMsg}
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
-        {JSON.stringify(this.state.deviceTransactions)}
         {chart}
       </div>
     );
