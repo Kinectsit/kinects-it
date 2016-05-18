@@ -195,7 +195,7 @@ export class DevicePage extends React.Component {
       );
     } else if (this.state.deviceActive === true) {
       formDisplay = (
-        <h2>You've enabled the device! Your time expires {this.state.expiration}.</h2>
+        <h2>You enabled the device! Your time expires {this.state.expiration}.</h2>
       );
     }
 
