@@ -5,6 +5,7 @@ const https = require('https');
 const authKeys = require('../../config.js');
 const User = require('../models/userModel');
 const logger = require('../config/logger.js');
+const coinbase = require('coinbase');
 
 module.exports = (app, passport) => {
 
@@ -13,7 +14,7 @@ module.exports = (app, passport) => {
 *******************************/
   app.route('/api/v1/users/:id/homes/:code').post(userController.addToHome);
   app.route('/api/v1/users/:id/homes/:code').delete(userController.leaveHome);
-  
+
   // Update a user's profile information
   app.put('/api/v1/users',(req, res, next) => {
     return User.update(req.body)
@@ -70,6 +71,14 @@ module.exports = (app, passport) => {
 
     })(req, res, next);
   });
+
+/*****************************************
+********* Transaction ROUTES **********
+******************************************/
+  // app.post('/api/v1/users/:id/payment', (req, res) =>{
+  //   cbClient = new coinbase.Client({'apiKey': authKeys.COINBASE_CLIENT_ID, 'apiSecret': authKeys.COINBASE_CLIENT_SECRET});
+
+  // });
 
 /*****************************************
 ********* Authentication ROUTES **********
