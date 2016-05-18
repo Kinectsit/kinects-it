@@ -3,6 +3,8 @@ const router = require('express').Router();
 const userController = require('../controllers/userController.js');
 const https = require('https');
 const authKeys = require('../../config.js');
+const User = require('../models/userModel');
+const logger = require('../config/logger.js');
 
 module.exports = (app, passport) => {
 
@@ -40,8 +42,16 @@ module.exports = (app, passport) => {
   })
   // Update a user's profile information
   app.put('/api/v1/users',(req, res, next) => {
-    console.log('Updating an existing user:', req.body);
-    User.update(req.body)
+    console.log('here is the body of the put request:', req.body);
+    return User.update(req.body)
+    .then((updateResult) => {
+      logger.info('Succesfully updated user = ', updateResult);
+      return res.json(updateResult);
+    })
+    .catch(err => {
+      logger.info('There was an error updating the user:', err);
+      next(err, null);
+    });
   });
 
   // Signup new user
@@ -181,7 +191,7 @@ module.exports = (app, passport) => {
           }
           process.nextTick(() => {
             res.cookie('connect.sid', req.signedCookies['connect.sid'], {secure: false,});
-            return res.redirect('/dashboard');
+            return res.redirect('/choose-role');
           });
       });
     })(req, res, next);

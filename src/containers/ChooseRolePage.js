@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign, no-return-assign */
 import React, { PropTypes } from 'react';
 import Formsy from 'formsy-react';
-import { FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
+import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import $ from 'jquery';
 import { browserHistory } from 'react-router';
 import Subheader from 'material-ui/Subheader';
@@ -19,6 +19,9 @@ class ChooseRolePage extends React.Component {
       canSubmit: false,
       dialogueOpen: false,
       isHost: true,
+    };
+    this.errorMessages = {
+      homeError: 'Please enter a name for your house',
     };
   }
 
@@ -54,13 +57,13 @@ class ChooseRolePage extends React.Component {
     // need to do this because checkbox components won't fire. Radio buttons work
     // but need to send a boolean to the server
     const currentAppState = this.props.authState;
-    console.log('appstate:', this.props.authState);
     const userInfo = {
       email: currentAppState.user.email,
       name: currentAppState.user.name,
     };
     if (data.host === 'host') {
       userInfo.host = true;
+      userInfo.home = data.home;
     } else {
       userInfo.host = false;
     }
@@ -72,30 +75,41 @@ class ChooseRolePage extends React.Component {
       method: 'PUT',
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(userInfo),
-      success: (response) => {
-        if (!response.login) {
-          // server could not add user to the database
-          this.openErrorMessage();
-        } else {
-          // if the response.login is true then user was added
-          // first execute action to set user type to host
-          if (data.host === true) {
-            this.props.actions.setUserAsHost(true);
-          } else {
-            this.props.actions.setUserAsHost(false);
-          }
-          // Next set authentication
-          this.props.actions.setAuthentication(true, response.sessionId);
-          this.props.actions.setUser(response.user);
-          this.props.actions.loadPayAccounts(response.payAccounts);
-          // next reroute to User Dashboard or join rental
-          if (response.house) {
-            this.props.actions.addHouse(response.house);
+      success: (updatedUser) => {
+        console.log('we got a response back!!!', updatedUser);
+        if (updatedUser.user.defaultviewhost) {
+          this.props.actions.setUserAsHost(true);
+          if (updatedUser.house) {
+            this.props.actions.addHouse(updatedUser.house);
             browserHistory.push('dashboard');
-          } else {
-            browserHistory.push('join-rental');
           }
+        } else {
+          this.props.actions.setUserAsHost(false);
+          browserHistory.push('join-rental');
         }
+        // if (!response.login) {
+        //   // server could not add user to the database
+        //   this.openErrorMessage();
+        // } else {
+        //   // if the response.login is true then user was added
+        //   // first execute action to set user type to host
+        //   if (data.host === true) {
+        //     this.props.actions.setUserAsHost(true);
+        //   } else {
+        //     this.props.actions.setUserAsHost(false);
+        //   }
+        //   // Next set authentication
+        //   this.props.actions.setAuthentication(true, response.sessionId);
+        //   this.props.actions.setUser(response.user);
+        //   this.props.actions.loadPayAccounts(response.payAccounts);
+        //   // next reroute to User Dashboard or join rental
+        //   if (response.house) {
+        //     this.props.actions.addHouse(response.house);
+        //     browserHistory.push('dashboard');
+        //   } else {
+        //     browserHistory.push('join-rental');
+        //   }
+        // }
       },
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
@@ -133,6 +147,18 @@ class ChooseRolePage extends React.Component {
                 label="I'm a guest"
               />
             </FormsyRadioGroup>
+            {
+              (this.state.isHost) ?
+                <FormsyText
+                  name="home"
+                  validations={this.state.homeRequired}
+                  validationError={this.errorMessages.homeError}
+                  style={styles.fieldStyles}
+                  required
+                  floatingLabelText="Home Name"
+                />
+                : ''
+            }
             <FlatButton
               style={styles.submitStyle}
               type="submit"

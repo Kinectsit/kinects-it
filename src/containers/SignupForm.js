@@ -139,19 +139,6 @@ class SignupForm extends React.Component {
             floatingLabelText="E-mail"
           />
 
-          {
-            (this.state.isHost) ?
-              <FormsyText
-                name="home"
-                validations={this.state.homeRequired}
-                validationError={this.errorMessages.homeError}
-                style={styles.fieldStyles}
-                required
-                floatingLabelText="Home Name"
-              />
-              : ''
-          }
-
           <FormsyText
             name="password"
             validations="minLength:5"
@@ -186,6 +173,18 @@ class SignupForm extends React.Component {
               label="I'm a guest"
             />
           </FormsyRadioGroup>
+          {
+            (this.state.isHost) ?
+              <FormsyText
+                name="home"
+                validations={this.state.homeRequired}
+                validationError={this.errorMessages.homeError}
+                style={styles.fieldStyles}
+                required
+                floatingLabelText="Home Name"
+              />
+              : ''
+          }
           <FlatButton
             style={styles.submitStyle}
             type="submit"
