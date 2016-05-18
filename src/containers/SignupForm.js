@@ -61,9 +61,13 @@ class SignupForm extends React.Component {
     // need to do this because checkbox components won't fire. Radio buttons work
     // but need to send a boolean to the server
     if (data.host === 'host') {
-      data.host = true;
+      data.defaultviewhost = true;
     } else {
-      data.host = false;
+      data.defaultviewhost = false;
+    }
+    if (!data.avatarURL) {
+      data.avatarURL = '';
+      data.coinbaseId = '';
     }
 
     $.ajax({
@@ -80,7 +84,7 @@ class SignupForm extends React.Component {
         } else {
           // if the response.login is true then user was added
           // first execute action to set user type to host
-          if (data.host === true) {
+          if (data.defaultviewhost === true) {
             this.props.actions.setUserAsHost(true);
           } else {
             this.props.actions.setUserAsHost(false);
@@ -134,19 +138,6 @@ class SignupForm extends React.Component {
             floatingLabelText="E-mail"
           />
 
-          {
-            (this.state.isHost) ?
-              <FormsyText
-                name="home"
-                validations={this.state.homeRequired}
-                validationError={this.errorMessages.homeError}
-                style={styles.fieldStyles}
-                required
-                floatingLabelText="Home Name"
-              />
-              : ''
-          }
-
           <FormsyText
             name="password"
             validations="minLength:5"
@@ -181,6 +172,18 @@ class SignupForm extends React.Component {
               label="I'm a guest"
             />
           </FormsyRadioGroup>
+          {
+            (this.state.isHost) ?
+              <FormsyText
+                name="home"
+                validations={this.state.homeRequired}
+                validationError={this.errorMessages.homeError}
+                style={styles.fieldStyles}
+                required
+                floatingLabelText="Home Name"
+              />
+              : ''
+          }
           <FlatButton
             style={styles.submitStyle}
             type="submit"

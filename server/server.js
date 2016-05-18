@@ -17,21 +17,22 @@ require('./config/passport')(passport); // pass passport for configuration
 const port = process.env.PORT || 3000;
 const srcPath = process.env.NODE_ENV === 'development' ? '/../src/' : '/../dist';
 
-app.use(express.static(path.join(__dirname, srcPath)));
-// eslint-disable-next-line global-require
 app.use(require('morgan')('combined', { stream: logger.stream }));
-app.use((req, res, next) => {
+app.all('*', (req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
-app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, srcPath)));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser('kinectsit2016team3feb'));
 app.use(session({
   secret: 'kinectsit2016team3feb',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -10,7 +10,6 @@ import $ from 'jquery';
 export class DashboardPage extends React.Component {
 
   componentWillMount() {
-    // const context = this;
     if (!this.props.appState.house.id) {
       browserHistory.push('/join-rental');
     }

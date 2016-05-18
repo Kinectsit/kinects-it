@@ -16,16 +16,18 @@ export function requireAuthentication(Component) {
       if (!this.props.authState.isAuthenticated) {
         // current local state not authenticated
         // check with server if current session is authenticated
-        $.get('/api/v1/authentication')
+        $.ajax({
+          url: '/api/v1/authentication',
+          type: 'GET',
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
           .done((response) => {
             if (response) {
+              this.props.actions.setUserAsHost(response.defaultviewhost);
               this.props.actions.setUser(response.user);
               this.props.actions.loadPayAccounts(response.payAccounts);
-              if (response.host) {
-                this.props.actions.setUserAsHost(true);
-              } else {
-                this.props.actions.setUserAsHost(false);
-              }
               if (response.house) {
                 this.props.actions.addHouse(response.house);
               }

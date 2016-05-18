@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
@@ -12,8 +11,9 @@ export const SignupPage = () => (
       backgroundColor="#2b71b1"
       hoverColor="#18355C"
       linkButton
-      disabled
-      href="/api/v1/users/signup"
+      // onMouseUp={() => this.onClick()}
+      // onTouchEnd={() => this.onClick()}
+      href="/api/v1/auth/coinbase"
       style={{ color: 'white' }}
       secondary
       icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
