@@ -166,7 +166,6 @@ module.exports = (app, passport) => {
             return next(err); 
           }
           process.nextTick(() => {
-            console.log('====', user);
             const loginUser = user.user || user;
             if (loginUser.defaultViewHost === null) {
               return res.redirect('/choose-role');
