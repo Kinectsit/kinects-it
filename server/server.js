@@ -33,9 +33,6 @@ app.use(session({
   secret: 'kinectsit2016team3feb',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -10,7 +10,6 @@ import $ from 'jquery';
 export class DashboardPage extends React.Component {
 
   componentWillMount() {
-    // const context = this;
     if (!this.props.appState.house.id) {
       browserHistory.push('/join-rental');
     }
@@ -36,8 +35,6 @@ export class DashboardPage extends React.Component {
   }
 
   render() {
-    console.log('this is the app state host state. isHost?', this.props.appState.isHost);
-    console.log('this is the app state host state.', this.props.appState);
     if (this.props.appState.isHost) {
       return (
         <DashboardHost appState={this.props.appState} actions={this.props.actions} />

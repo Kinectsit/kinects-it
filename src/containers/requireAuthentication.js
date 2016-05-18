@@ -24,8 +24,6 @@ export function requireAuthentication(Component) {
           },
         })
           .done((response) => {
-            console.log('this is the response from server in requireAuthentication', response);
-            console.log('is host? ', response.defaultviewhost);
             if (response) {
               this.props.actions.setUserAsHost(response.defaultviewhost);
               this.props.actions.setUser(response.user);
