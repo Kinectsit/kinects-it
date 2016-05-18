@@ -10,6 +10,7 @@ import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import $ from 'jquery';
+import moment from 'moment';
 
 export class DevicePage extends React.Component {
 
@@ -97,13 +98,14 @@ export class DevicePage extends React.Component {
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
-        // const updatedTransactions = this.state.deviceTransactions.concat({
-        //   amountspent: this.state.totalCost,
-        //   timestamp: 'Now',
-        // });
+        const updatedTransactions = this.state.deviceTransactions.concat(res.transactionData);
+        const currentTime = Date.now();
+        const expirationTime = currentTime + res.transactionData.timespent;
+        const expiration = moment(expirationTime).calendar().toLowerCase();
         this.setState({
           deviceActive: true,
-          // deviceTransactions: updatedTransactions,
+          updatedTransactions,
+          expiration,
         });
       }
     })
@@ -145,52 +147,56 @@ export class DevicePage extends React.Component {
       );
     }
 
-    let formDisplay = (
-      <Paper style={styles.paperStyle}>
-        <Formsy.Form
-          onValid={() => this.enableButton()}
-          onInvalid={() => this.disableButton()}
-          onValidSubmit={(data) => this.submitForm(data)}
-          onInvalidSubmit={() => this.notifyFormError()}
-        >
-          <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
-            <FormsyRadio
-              value="60000"
-              label="1 minute"
-            />
-            <FormsyRadio
-              value="3600000"
-              label="1 hour"
-            />
-            <FormsyRadio
-              value="86400000"
-              label="1 day"
-            />
-          </FormsyRadioGroup>
-          <FormsyText
-            name="units"
-            validations="isExisty"
-            validationError={this.errorMessages.descriptionError}
-            required
-            style={styles.fieldStyles}
-            onChange={(e) => this.handleUnits(e)}
-            floatingLabelText="How many units do you want?"
-          />
-          <FlatButton
-            style={styles.submitStyle}
-            type="submit"
-            label="Submit"
-            disabled={!this.state.canSubmit}
-          />
-        </Formsy.Form>
-        <Subheader>
-          <p>Total cost: {this.state.totalCost}</p>
-        </Subheader>
-      </Paper>
-    );
+    let formDisplay = <h2>This device is currently active!</h2>;
 
-    if (this.state.deviceActive || this.props.appState.featured.isActive) {
-      formDisplay = <div>Device is active!</div>;
+    if (this.props.appState.featured.isactive === false) {
+      formDisplay = (
+        <Paper style={styles.paperStyle}>
+          <Formsy.Form
+            onValid={() => this.enableButton()}
+            onInvalid={() => this.disableButton()}
+            onValidSubmit={(data) => this.submitForm(data)}
+            onInvalidSubmit={() => this.notifyFormError()}
+          >
+            <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
+              <FormsyRadio
+                value="60000"
+                label="1 minute"
+              />
+              <FormsyRadio
+                value="3600000"
+                label="1 hour"
+              />
+              <FormsyRadio
+                value="86400000"
+                label="1 day"
+              />
+            </FormsyRadioGroup>
+            <FormsyText
+              name="units"
+              validations="isExisty"
+              validationError={this.errorMessages.descriptionError}
+              required
+              style={styles.fieldStyles}
+              onChange={(e) => this.handleUnits(e)}
+              floatingLabelText="How many units do you want?"
+            />
+            <FlatButton
+              style={styles.submitStyle}
+              type="submit"
+              label="Submit"
+              disabled={!this.state.canSubmit}
+            />
+          </Formsy.Form>
+          <Subheader>
+            <p>Total cost: {this.state.totalCost}</p>
+          </Subheader>
+        </Paper>
+      );
+    } else if (this.state.deviceActive === true) {
+      formDisplay = (
+        <h2>You've enabled the device! Your time expires {this.state.expiration}.</h2>
+      );
     }
 
     let chart = <div></div>;
@@ -199,12 +205,20 @@ export class DevicePage extends React.Component {
       chart = <div><DeviceChart transactions={this.state.deviceTransactions} /></div>;
     }
 
+    let newchart = <div></div>;
+
+    if (this.state.updatedTransactions) {
+      chart = <div></div>;
+      newchart = <div><DeviceChart transactions={this.state.updatedTransactions} /></div>;
+    }
+
     return (
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
         {errorMsg}
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
+        {newchart}
         {chart}
       </div>
     );

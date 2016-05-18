@@ -39,9 +39,9 @@ export class DeviceChart extends React.Component {
           width={650}
           height={400}
           fill={'#3182bd'}
-          title="Bar Chart"
-          xAxisLabel="Recent Transactions"
-          yAxisLabel="Amount Spent in $"
+          title="Previous Transactions"
+          // xAxisLabel="Recent Transactions"
+          // yAxisLabel="Amount Spent in $"
         />
       </div>
     );
