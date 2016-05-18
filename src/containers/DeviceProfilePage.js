@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import Toggle from 'material-ui/Toggle';
 import styles from '../assets/formStyles';
+import { DeleteDeviceButton } from './DeleteDeviceButton';
 import { DeviceChart } from '../components/DeviceChart';
 import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
@@ -75,10 +76,15 @@ export class DeviceProfilePage extends React.Component {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
     let toggle = (
-      <Toggle
-        onToggle={() => this.toggleDevice()}
-        defaultToggled={this.props.appState.featured.isactive}
-      />
+      <div style={{ height: '150px', paddingTop: '20px' }}>
+        <Toggle
+          iconStyle={{ width: '120px' }}
+          trackStyle={{ height: '75px', width: '220px', borderRadius: '220px' }}
+          thumbStyle={{ width: '130px', height: '130px', top: '-20px' }}
+          onToggle={() => this.toggleDevice()}
+          defaultToggled={this.props.appState.featured.isactive}
+        />
+      </div>
     );
 
     if (this.props.appState.featured.id === '') {
@@ -111,11 +117,15 @@ export class DeviceProfilePage extends React.Component {
 
     return (
       <div>
-        <h2>{this.props.appState.featured.name}</h2>
+        <h1 style={{ textTransform: 'capitalize' }}>{this.props.appState.featured.name}</h1>
         {errorMsg}
         {spinner}
         <h3>{this.props.appState.featured.description}</h3>
+        <h2>Toggle Device</h2>
+        <p>Use this to test the device or enable without payment</p>
         {toggle}
+        <DeleteDeviceButton device={this.props.appState.featured} />
+        <h2>Recent Guest Transactions</h2>
         {chart}
       </div>
     );

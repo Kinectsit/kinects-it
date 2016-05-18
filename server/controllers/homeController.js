@@ -246,3 +246,19 @@ crontab.scheduleJob('*/1 * * * *', () => {
       }
     });
 });
+
+module.exports.removeDevice = (req, res) => {
+  const device = {
+    id: req.params.deviceId,
+  };
+  db.one('DELETE FROM devices WHERE id=${id} RETURNING *', device)
+    .then((result) => {
+      logger.info(result);
+      return res.json(result);
+    })
+    .catch((err) => {
+      logger.info(err);
+      return res.send(err);
+    });
+};
+
