@@ -181,6 +181,7 @@ module.exports = (app, passport) => {
   // oAuth callback route 
   app.route('/api/v1/auth/callback').get((req, res, next) => {
     passport.authenticate('coinbase', (err, user, info) => {
+      console.log('this is my user in the oAuth callback:', user);
       if (err) {
         return next(err)
       };
@@ -190,7 +191,7 @@ module.exports = (app, passport) => {
             return next(err); 
           }
           process.nextTick(() => {
-            res.cookie('connect.sid', req.signedCookies['connect.sid'], {secure: false,});
+            // res.cookie('connect.sid', req.signedCookies['connect.sid'], {secure: false,});
             return res.redirect('/choose-role');
           });
       });

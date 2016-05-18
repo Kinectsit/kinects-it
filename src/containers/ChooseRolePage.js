@@ -23,7 +23,17 @@ class ChooseRolePage extends React.Component {
     this.errorMessages = {
       homeError: 'Please enter a name for your house',
     };
+    this.userInfo = {
+      email: '',
+      name: '',
+    };
   }
+
+  // componentDidMount() {
+  //   console.log('current auth state is:', this.props.authState);
+  //   this.userInfo.name = this.props.authState.user.name;
+  //   this.userInfo.email = this.props.authState.user.email;
+  // }
 
   onUserTypeChange(event) {
     if (event.target.value === 'guest') {
@@ -56,25 +66,22 @@ class ChooseRolePage extends React.Component {
   submitForm(data) {
     // need to do this because checkbox components won't fire. Radio buttons work
     // but need to send a boolean to the server
-    const currentAppState = this.props.authState;
-    const userInfo = {
-      email: currentAppState.user.email,
-      name: currentAppState.user.name,
-    };
+    this.userInfo.name = this.props.authState.user.name;
+    this.userInfo.email = this.props.authState.user.email;
     if (data.host === 'host') {
-      userInfo.host = true;
-      userInfo.home = data.home;
+      this.userInfo.host = true;
+      this.userInfo.home = data.home;
     } else {
-      userInfo.host = false;
+      this.userInfo.host = false;
     }
-
+    console.log('send this information to the database:', this.userInfo);
     $.ajax({
       url: '/api/v1/users/',
       dataType: 'json',
       crossDomain: true,
       method: 'PUT',
       contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(userInfo),
+      data: JSON.stringify(this.userInfo),
       success: (updatedUser) => {
         console.log('we got a response back!!!', updatedUser);
         if (updatedUser.user.defaultviewhost) {
@@ -87,29 +94,6 @@ class ChooseRolePage extends React.Component {
           this.props.actions.setUserAsHost(false);
           browserHistory.push('join-rental');
         }
-        // if (!response.login) {
-        //   // server could not add user to the database
-        //   this.openErrorMessage();
-        // } else {
-        //   // if the response.login is true then user was added
-        //   // first execute action to set user type to host
-        //   if (data.host === true) {
-        //     this.props.actions.setUserAsHost(true);
-        //   } else {
-        //     this.props.actions.setUserAsHost(false);
-        //   }
-        //   // Next set authentication
-        //   this.props.actions.setAuthentication(true, response.sessionId);
-        //   this.props.actions.setUser(response.user);
-        //   this.props.actions.loadPayAccounts(response.payAccounts);
-        //   // next reroute to User Dashboard or join rental
-        //   if (response.house) {
-        //     this.props.actions.addHouse(response.house);
-        //     browserHistory.push('dashboard');
-        //   } else {
-        //     browserHistory.push('join-rental');
-        //   }
-        // }
       },
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());

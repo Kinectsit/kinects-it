@@ -136,7 +136,7 @@ module.exports = (passport) => {
     tokenURL: 'https://www.coinbase.com/oauth/token',
     clientID: authKeys.COINBASE_CLIENT_ID,
     clientSecret: authKeys.COINBASE_CLIENT_SECRET,
-    callbackURL: 'http://127.0.0.1:3000/api/v1/users/callback',
+    callbackURL: 'http://127.0.0.1:3000/api/v1/auth/callback',
     scope: ['user'],
   },
     (accessToken, refreshToken, profile, done) => {
