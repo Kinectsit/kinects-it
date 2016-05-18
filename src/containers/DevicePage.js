@@ -9,6 +9,7 @@ import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 import moment from 'moment';
 
@@ -29,6 +30,7 @@ export class DevicePage extends React.Component {
       time: 0,
       units: 0,
       deviceTransactions: [],
+      spinner: false,
     };
   }
 
@@ -90,6 +92,8 @@ export class DevicePage extends React.Component {
      // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
+    this.setState({ spinner: true });
+
     $.post(apiPath, deviceState, (res) => {
       if (!res.success) {
         this.setState({
@@ -114,6 +118,9 @@ export class DevicePage extends React.Component {
       this.setState({
         error: 'Failed to connect to device, try again.',
       });
+    })
+    .always(() => {
+      this.setState({ spinner: false });
     });
   }
 
@@ -135,6 +142,8 @@ export class DevicePage extends React.Component {
   }
 
   render() {
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
     let errorMsg = <div style={styles.error}>{this.state.error}</div>;
 
     if (this.props.appState.featured.id === '') {
@@ -149,7 +158,7 @@ export class DevicePage extends React.Component {
 
     let formDisplay = <h2>This device is currently active!</h2>;
 
-    if (this.props.appState.featured.isactive === false) {
+    if (!this.props.appState.featured.isactive) {
       formDisplay = (
         <Paper style={styles.paperStyle}>
           <Formsy.Form
@@ -216,6 +225,7 @@ export class DevicePage extends React.Component {
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
         {errorMsg}
+        {spinner}
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
         {newchart}

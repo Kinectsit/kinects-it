@@ -5,6 +5,7 @@ import * as actions from '../actions/actions';
 import Toggle from 'material-ui/Toggle';
 import styles from '../assets/formStyles';
 import { DeviceChart } from '../components/DeviceChart';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 
 export class DeviceProfilePage extends React.Component {
@@ -14,6 +15,7 @@ export class DeviceProfilePage extends React.Component {
     this.state = {
       error: '',
       deviceTransactions: [],
+      spinner: false,
     };
   }
 
@@ -42,6 +44,8 @@ export class DeviceProfilePage extends React.Component {
     const homeId = this.props.appState.house.id;
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(id);
 
+    this.setState({ spinner: true });
+
     $.post(apiPath, deviceState, (res) => {
       if (!res.success) {
         this.setState({
@@ -60,11 +64,16 @@ export class DeviceProfilePage extends React.Component {
       this.setState({
         error: 'Failed to connect to device, try again.',
       });
+    })
+    .always(() => {
+      this.setState({ spinner: false });
     });
   }
 
   render() {
     let errorMsg = <div style={styles.error}>{this.state.error}</div>;
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
     let toggle = (
       <Toggle
         onToggle={() => this.toggleDevice()}
@@ -104,6 +113,7 @@ export class DeviceProfilePage extends React.Component {
       <div>
         <h2>{this.props.appState.featured.name}</h2>
         {errorMsg}
+        {spinner}
         <h3>{this.props.appState.featured.description}</h3>
         {toggle}
         {chart}

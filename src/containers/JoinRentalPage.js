@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { browserHistory } from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 
 export class JoinRentalPage extends React.Component {
@@ -23,6 +24,7 @@ export class JoinRentalPage extends React.Component {
     this.state = {
       error: '',
       canSubmit: false,
+      spinner: false,
     };
   }
 
@@ -30,6 +32,8 @@ export class JoinRentalPage extends React.Component {
     const userId = this.props.authState.user.id;
     const code = data.inviteCode;
     const urlPath = '/api/v1/users/'.concat(userId).concat('/homes/').concat(code);
+
+    this.setState({ spinner: true });
 
     $.ajax({
       url: urlPath,
@@ -49,6 +53,9 @@ export class JoinRentalPage extends React.Component {
       },
       error: (/* xhr, status, err */) => {
         this.setState({ error: 'INVALID_JOIN_RENTAL' });
+      },
+      always: () => {
+        this.setState({ spinner: false });
       },
     });
   }
@@ -80,9 +87,13 @@ export class JoinRentalPage extends React.Component {
       errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
     }
 
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
+
     return (
       <div>
         <h2>Join new rental</h2>
+        {spinner}
         <Paper style={styles.paperStyle}>
           {errorMsg}
           <Formsy.Form
