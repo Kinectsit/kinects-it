@@ -76,7 +76,7 @@ export class DeviceProfilePage extends React.Component {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
     let toggle = (
-      <div style={{ height: '150px', 'padding-top': '20px' }}>
+      <div style={{ height: '150px', paddingTop: '20px' }}>
         <Toggle
           iconStyle={{ width: '120px' }}
           trackStyle={{ height: '75px', width: '220px', borderRadius: '220px' }}
@@ -117,14 +117,14 @@ export class DeviceProfilePage extends React.Component {
 
     return (
       <div>
-        <h1 style={{ 'text-transform': 'capitalize' }}>{this.props.appState.featured.name}</h1>
+        <h1 style={{ textTransform: 'capitalize' }}>{this.props.appState.featured.name}</h1>
         {errorMsg}
         {spinner}
         <h3>{this.props.appState.featured.description}</h3>
         <h2>Toggle Device</h2>
         <p>Use this to test the device or enable without payment</p>
         {toggle}
-        <DeleteDeviceButton />
+        <DeleteDeviceButton device={this.props.appState.featured} />
         <h2>Recent Guest Transactions</h2>
         {chart}
       </div>
