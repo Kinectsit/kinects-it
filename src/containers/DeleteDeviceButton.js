@@ -6,7 +6,6 @@ import $ from 'jquery';
 export class DeleteDeviceButton extends React.Component {
 
   constructor(props) {
-    console.log('=== props are', props);
     super(props);
     this.state = {
       error: '',
