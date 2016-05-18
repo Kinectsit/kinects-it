@@ -75,7 +75,6 @@ module.exports = (passport) => {
           loggedInUser.house.hostCode = homeData.invitecode;
           loggedInUser.house.name = homeData.housename;
         }
-
         db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
           .then((payAccounts) => {
             loggedInUser.payAccounts = payAccounts;
@@ -145,7 +144,7 @@ module.exports = (passport) => {
       process.nextTick(() => {
         const userJson = profile._json;
         const userInfo = {
-          name: userJson.username,
+          name: userJson.username || userJson.name,
           email: userJson.email,
           coinbaseId: userJson.uuid,
           avatarURL: userJson.avatar_url,

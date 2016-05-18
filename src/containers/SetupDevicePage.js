@@ -123,7 +123,7 @@ export class SetupDevicePage extends React.Component {
               validationError={this.errorMessages.descriptionError}
               required
               style={styles.fieldStyles}
-              floatingLabelText="Device Description"
+              floatingLabelText="Instructions for device use"
             />
             <Subheader>How much do you want to charge per day?</Subheader>
             <FormsyText

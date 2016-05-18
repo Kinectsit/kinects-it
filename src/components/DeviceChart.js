@@ -21,7 +21,7 @@ export class DeviceChart extends React.Component {
     for (let i = arrayLength; i > chartLength; i--) {
       const newObj = {};
       const time = this.props.transactions[i].timestamp;
-      const formattedTime = moment(time).format('MMMM D, h:mm');
+      const formattedTime = moment(time).format('M/D, h:mm');
       newObj.x = formattedTime;
       newObj.y = this.props.transactions[i].amountspent;
       values.push(newObj);
@@ -36,12 +36,9 @@ export class DeviceChart extends React.Component {
       <div>
         <BarChart
           data={this.state.barData}
-          width={650}
-          height={400}
+          width={600}
+          height={300}
           fill={'#3182bd'}
-          title="Your Purchase History"
-          xAxisLabel="Most Recent Transactions"
-          yAxisLabel="$ Spent"
         />
       </div>
     );
