@@ -68,7 +68,6 @@ class ChooseRolePage extends React.Component {
     } else {
       this.userInfo.defaultviewhost = false;
     }
-    console.log('send this information to the database:', this.userInfo);
     $.ajax({
       url: '/api/v1/users/',
       dataType: 'json',
@@ -77,7 +76,6 @@ class ChooseRolePage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(this.userInfo),
       success: (response) => {
-        console.log('we got a response back!!!', response);
         const updatedUser = response.user || response;
         if (updatedUser.defaultviewhost) {
           this.props.actions.setUserAsHost(updatedUser.defaultviewhost);
