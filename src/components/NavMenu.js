@@ -4,6 +4,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
 export const NavMenu = (props) => (
+
   <Menu onTouchTap={props.onClick} >
   {!props.isLoggedIn ?
     <div className="menu-container">
@@ -24,9 +25,11 @@ export const NavMenu = (props) => (
       <NavLink to="/dashboard">
         <MenuItem>My Dashboard</MenuItem>
       </NavLink>
-      <NavLink to="/add-device">
-        <MenuItem>Add A Device</MenuItem>
-      </NavLink>
+      {props.isHost ?
+        <NavLink to="/add-device">
+          <MenuItem>Add A Device</MenuItem>
+        </NavLink>
+      : ''}
       <a href="/logout">
         <MenuItem>Logout</MenuItem>
       </a>
@@ -38,4 +41,5 @@ export const NavMenu = (props) => (
 NavMenu.propTypes = {
   onClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  isHost: PropTypes.bool.isRequired,
 };
