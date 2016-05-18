@@ -29,16 +29,18 @@ class TitleBar extends React.Component {
           onLeftIconButtonTouchTap={() => this.handleToggle()}
           style={{ position: 'fixed' }}
         />
-
         <Drawer
           docked={false}
           width={200}
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}
         >
-          <NavMenu onClick={() => this.handleClose()} isLoggedIn={this.props.isAuth} />
+          <NavMenu
+            onClick={() => this.handleClose()}
+            isLoggedIn={this.props.isAuth}
+            isHost={this.props.isHost}
+          />
         </Drawer>
-
       </div>
     );
   }
@@ -46,11 +48,13 @@ class TitleBar extends React.Component {
 
 TitleBar.propTypes = {
   isAuth: PropTypes.bool.isRequired,
+  isHost: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     isAuth: state.authState.isAuthenticated,
+    isHost: state.appState.isHost,
   };
 }
 
