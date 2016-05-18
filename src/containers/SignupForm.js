@@ -11,6 +11,7 @@ import Subheader from 'material-ui/Subheader';
 import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import { browserHistory } from 'react-router';
 
 class SignupForm extends React.Component {
@@ -70,6 +71,8 @@ class SignupForm extends React.Component {
       data.coinbaseId = '';
     }
 
+    this.setState({ spinner: true });
+
     $.ajax({
       url: '/api/v1/users/',
       dataType: 'json',
@@ -105,6 +108,10 @@ class SignupForm extends React.Component {
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
       },
+      always: () => {
+        console.log('im here!!!!!!!!!!');
+        this.setState({ spinner: false });
+      },
     });
   }
 
@@ -113,94 +120,100 @@ class SignupForm extends React.Component {
   }
 
   render() {
-    return (
-      <Paper style={styles.paperStyle}>
-        <Formsy.Form
-          onValid={() => this.enableButton()}
-          onInvalid={() => this.disableButton()}
-          onValidSubmit={(data) => this.submitForm(data)}
-          onInvalidSubmit={() => this.notifyFormError()}
-        >
-          <FormsyText
-            name="name"
-            validations="isExisty"
-            validationError={this.errorMessages.nameError}
-            required
-            style={styles.fieldStyles}
-            floatingLabelText="User Name"
-          />
-          <FormsyText
-            name="email"
-            validations="isEmail"
-            validationError={this.errorMessages.emailError}
-            required
-            style={styles.fieldStyles}
-            floatingLabelText="E-mail"
-          />
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
 
-          <FormsyText
-            name="password"
-            validations="minLength:5"
-            validationError={this.errorMessages.passwordError}
-            required
-            type="password"
-            style={styles.fieldStyles}
-            hintText="Minimum 5 characters"
-            floatingLabelText="Password"
-          />
-          <FormsyText
-            name="repeated_password"
-            validations="equalsField:password"
-            validationError={this.errorMessages.mismatchPassword}
-            required
-            type="password"
-            style={styles.fieldStyles}
-            hintText="Must be same as above"
-            floatingLabelText="Re-type password"
-          />
-          <Subheader>Will you be a Host or a Guest</Subheader>
-          <FormsyRadioGroup
-            name="host" defaultSelected="host"
-            onChange={(event) => this.onUserTypeChange(event)}
+    return (
+      <div>
+        {spinner}
+        <Paper style={styles.paperStyle}>
+          <Formsy.Form
+            onValid={() => this.enableButton()}
+            onInvalid={() => this.disableButton()}
+            onValidSubmit={(data) => this.submitForm(data)}
+            onInvalidSubmit={() => this.notifyFormError()}
           >
-            <FormsyRadio
-              value="host"
-              label="I'm a host"
+            <FormsyText
+              name="name"
+              validations="isExisty"
+              validationError={this.errorMessages.nameError}
+              required
+              style={styles.fieldStyles}
+              floatingLabelText="User Name"
             />
-            <FormsyRadio
-              value="guest"
-              label="I'm a guest"
+            <FormsyText
+              name="email"
+              validations="isEmail"
+              validationError={this.errorMessages.emailError}
+              required
+              style={styles.fieldStyles}
+              floatingLabelText="E-mail"
             />
-          </FormsyRadioGroup>
-          {
-            (this.state.isHost) ?
-              <FormsyText
-                name="home"
-                validations={this.state.homeRequired}
-                validationError={this.errorMessages.homeError}
-                style={styles.fieldStyles}
-                required
-                floatingLabelText="Home Name"
+
+            <FormsyText
+              name="password"
+              validations="minLength:5"
+              validationError={this.errorMessages.passwordError}
+              required
+              type="password"
+              style={styles.fieldStyles}
+              hintText="Minimum 5 characters"
+              floatingLabelText="Password"
+            />
+            <FormsyText
+              name="repeated_password"
+              validations="equalsField:password"
+              validationError={this.errorMessages.mismatchPassword}
+              required
+              type="password"
+              style={styles.fieldStyles}
+              hintText="Must be same as above"
+              floatingLabelText="Re-type password"
+            />
+            <Subheader>Will you be a Host or a Guest</Subheader>
+            <FormsyRadioGroup
+              name="host" defaultSelected="host"
+              onChange={(event) => this.onUserTypeChange(event)}
+            >
+              <FormsyRadio
+                value="host"
+                label="I'm a host"
               />
-              : ''
-          }
-          <FlatButton
-            style={styles.submitStyle}
-            type="submit"
-            label="Submit"
-            disabled={!this.state.canSubmit}
-          />
-        </Formsy.Form>
-        <FormMessageDialogue
-          ref={(node) => this.messageDialogue = node}
-          title="User Already Exists"
-          failure
-        >
-          <p>This email or username already exists.
-          Please choose another username or if you already have an account
-          you can try and login</p>
-        </FormMessageDialogue>
-      </Paper>
+              <FormsyRadio
+                value="guest"
+                label="I'm a guest"
+              />
+            </FormsyRadioGroup>
+            {
+              (this.state.isHost) ?
+                <FormsyText
+                  name="home"
+                  validations={this.state.homeRequired}
+                  validationError={this.errorMessages.homeError}
+                  style={styles.fieldStyles}
+                  required
+                  floatingLabelText="Home Name"
+                />
+                : ''
+            }
+            <FlatButton
+              style={styles.submitStyle}
+              type="submit"
+              label="Submit"
+              disabled={!this.state.canSubmit}
+            />
+          </Formsy.Form>
+          <FormMessageDialogue
+            ref={(node) => this.messageDialogue = node}
+            title="User Already Exists"
+            failure
+          >
+            <p>This email or username already exists.
+            Please choose another username or if you already have an account
+            you can try and login</p>
+          </FormMessageDialogue>
+        </Paper>
+      </div>
     );
   }
 }

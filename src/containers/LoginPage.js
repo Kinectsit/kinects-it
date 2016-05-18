@@ -10,6 +10,7 @@ import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -52,6 +53,8 @@ export class LoginPage extends React.Component {
   }
 
   login(data) {
+    this.setState({ spinner: true });
+
     $.ajax({
       url: '/api/v1/session/',
       dataType: 'json',
@@ -88,6 +91,9 @@ export class LoginPage extends React.Component {
       error: (/* xhr, status, err */) => {
         this.setState({ error: 'INVALID_LOGIN' });
       },
+      always: () => {
+        this.setState({ spinner: false });
+      },
     });
   }
 
@@ -104,6 +110,8 @@ export class LoginPage extends React.Component {
 
   render() {
     let errorMsg = '';
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
     if (this.state.error) {
       errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
     }
@@ -121,6 +129,7 @@ export class LoginPage extends React.Component {
           secondary
           icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
         />
+        {spinner}
         <Paper style={styles.paperStyle}>
           {errorMsg}
           <Formsy.Form

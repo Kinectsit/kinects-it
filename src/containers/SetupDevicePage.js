@@ -10,6 +10,7 @@ import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 
 export class SetupDevicePage extends React.Component {
@@ -27,6 +28,7 @@ export class SetupDevicePage extends React.Component {
       costPerThreeHours: 0,
       costPerHour: 0,
       costPerMinute: 0,
+      spinner: false,
     };
   }
 
@@ -60,6 +62,7 @@ export class SetupDevicePage extends React.Component {
     device.isactive = false;
     device.paidUsage = false;
     const apiPath = `/api/v1/homes/${house}/devices`;
+    this.setState({ spinner: true });
 
     $.post(apiPath, device, () => {
       this.props.actions.setFeatured(device);
@@ -67,6 +70,9 @@ export class SetupDevicePage extends React.Component {
     })
     .fail((error) => {
       console.log(error);
+    })
+    .always(() => {
+      this.setState({ spinner: false });
     });
   }
 
@@ -83,12 +89,17 @@ export class SetupDevicePage extends React.Component {
         </div>
       );
     }
+
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
+
     return (
       <div>
         <div style={styles.center}>
           <h2>Set up Device</h2>
           You must complete this form to add the device to your house.
         </div>
+        {spinner}
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}

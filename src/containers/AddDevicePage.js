@@ -8,6 +8,7 @@ import Formsy from 'formsy-react';
 import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
 import $ from 'jquery';
 // import hardware from '../../config.js';
 
@@ -23,6 +24,7 @@ export class AddDevicePage extends React.Component {
     this.state = {
       error: '',
       canSubmit: false,
+      spinner: false,
     };
   }
 
@@ -45,6 +47,8 @@ export class AddDevicePage extends React.Component {
     const deviceState = { isActive: true };
     /* homes id does not matter in this API call, not used */
     const apiPath = '/api/v1/homes/1/devices/ping/'.concat(device.deviceId);
+
+    this.setState({ spinner: true });
 
     $.post(apiPath, deviceState, (req) => {
       const configuredDevice = {
@@ -70,6 +74,9 @@ export class AddDevicePage extends React.Component {
         error: 'ADD_DEVICE',
         details: 'Failed to connect to device, try again.',
       });
+    })
+    .always(() => {
+      this.setState({ spinner: false });
     });
   }
 
@@ -89,6 +96,9 @@ export class AddDevicePage extends React.Component {
 
   render() {
     let errorMsg = '';
+    let spinner = this.state.spinner ?
+      <div className="loading"><CircularProgress size={2} /></div> : '';
+
     if (this.state.error === 'ADD_DEVICE') {
       errorMsg = <div style={styles.error}>{this.state.details}</div>;
     }
@@ -98,6 +108,7 @@ export class AddDevicePage extends React.Component {
         <div style={styles.center}>
           <h2>Add Device</h2>
           {errorMsg}
+          {spinner}
           <div>
             <p>Your device should be OFF before starting this process.</p>
             <p>Enter a device ID to begin setting up a new device.</p>
