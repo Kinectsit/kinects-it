@@ -17,7 +17,6 @@ User.comparePasswords = (providedPassword, userPassword) => {
 };
 
 User.create = (newUser) => {
-  console.log('create this user:', newUser);
   return db.tx(t => (
     t.one('INSERT INTO users(name, email, password, defaultviewhost,avatarurl) VALUES(${name}, ${email}, ${password}, ${defaultviewhost}, ${avatarURL}) RETURNING id, name, email, defaultviewhost, avatarurl', newUser)
       .then(userData => {
@@ -106,28 +105,23 @@ User.update = (updateUser) => {
         })
         .then((updatedUser) => {
           Object.assign(newUserObject, updatedUser);
-          console.log('in update user, after merging newUserObject with updatedUser, this is newUserObject:', newUserObject);
           // if the user object has an access token from coinbase
           // need to save that in the datbase
           if (newUserObject.payAccount && newUserObject.payAccount === 'coinbase') {
-            console.log('there is a pay account present in newUserObject, so add it');
             return t.one('UPDATE user_pay_accounts SET accesstoken=$1, accountid=$2 WHERE userid=$3 AND paymethodid=2 RETURNING id, userid, nickname, paymethodid', [newUserObject.accessToken, newUserObject.coinbaseId, newUserObject.id]);
           }
           return {};
         })
         .then(() => {
           // updated user now need to check if has home to update
-          console.log('time to check for a home');
           return t.any('SELECT * FROM users_houses WHERE userid=$1', newUserObject.id);
         })
         .then((houseResult) => {
-          console.log('was there a houseResult?', houseResult);
           if (houseResult.length) {
             // then there was a house association
             // we need to find the house and return its data
             return t.one('SELECT * FROM houses WHERE id=$1', houseResult[0].houseid)
             .then((foundHouse) => {
-              console.log('found a house:', foundHouse);
               // found a house and need to return the user object
               returnObject.user = newUserObject;
               returnObject.user.house = {
@@ -135,18 +129,15 @@ User.update = (updateUser) => {
                 code: foundHouse.invitecode,
                 name: foundHouse.housename,
               };
-              console.log('returning this object after finding house:', foundHouse);
               return returnObject;
             });
           } else if (newUserObject.defaultviewhost) {
             // the user is a host but has no house association in database
             // need to add/create a house
-            console.log('the user is a host but has no house associated, need to add/create a house');
             const hostCode = utils.randomString(6);
 
             return t.one('INSERT INTO houses(invitecode, housename) VALUES($1, $2) RETURNING id, invitecode, housename', [hostCode, newUserObject.home])
               .then((newHouseData) => {
-                console.log('house created:', newHouseData);
                 returnObject.user = newUserObject;
                 returnObject.user.house = {
                   id: newHouseData.id,

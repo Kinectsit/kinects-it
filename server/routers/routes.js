@@ -109,7 +109,6 @@ module.exports = (app, passport) => {
 // Check if user is authenticated and return user information if so
   app.get('/api/v1/authentication', (req, res, next) => {
     if (req.isAuthenticated()) {
-      console.log('this is the passport user object in auth check', req.session.passport);
       const loginUser = req.session.passport.user.user || req.session.passport.user;
       const message = {
         user: {
@@ -129,7 +128,6 @@ module.exports = (app, passport) => {
           code: loginUser.house.code,
         };
       }
-      console.log('the message to send back to auth check:', message);
       return res.json(message);
     } else {
       return res.json(false);
@@ -151,7 +149,6 @@ module.exports = (app, passport) => {
             }
             // creating a message to send to the client for session information
             const loginUser = user.user || user;
-            console.log('logging in this user:', loginUser);
             const message = {
               user: {
                 name: loginUser.name,
@@ -195,13 +192,10 @@ module.exports = (app, passport) => {
             return next(err); 
           }
           process.nextTick(() => {
-            console.log('this is the info to send to client:', user);
             const loginUser = user.user || user;
             if (loginUser.defaultViewHost === null) {
-              console.log('going to the choose-role page');
               return res.redirect('/choose-role');
             } else {
-              console.log('going to the dashboard');
               return res.redirect('/dashboard');
             }
           });

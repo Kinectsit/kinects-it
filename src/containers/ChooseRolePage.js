@@ -78,7 +78,7 @@ class ChooseRolePage extends React.Component {
       data: JSON.stringify(this.userInfo),
       success: (response) => {
         console.log('we got a response back!!!', response);
-        const updatedUser = response.user;
+        const updatedUser = response.user || response;
         if (updatedUser.defaultviewhost) {
           this.props.actions.setUserAsHost(updatedUser.defaultviewhost);
           if (updatedUser.house) {
