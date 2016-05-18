@@ -29,12 +29,6 @@ class ChooseRolePage extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   console.log('current auth state is:', this.props.authState);
-  //   this.userInfo.name = this.props.authState.user.name;
-  //   this.userInfo.email = this.props.authState.user.email;
-  // }
-
   onUserTypeChange(event) {
     if (event.target.value === 'guest') {
       this.setState({
@@ -69,10 +63,10 @@ class ChooseRolePage extends React.Component {
     this.userInfo.name = this.props.authState.user.name;
     this.userInfo.email = this.props.authState.user.email;
     if (data.host === 'host') {
-      this.userInfo.host = true;
+      this.userInfo.defaultviewhost = true;
       this.userInfo.home = data.home;
     } else {
-      this.userInfo.host = false;
+      this.userInfo.defaultviewhost = false;
     }
     console.log('send this information to the database:', this.userInfo);
     $.ajax({
@@ -82,16 +76,17 @@ class ChooseRolePage extends React.Component {
       method: 'PUT',
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(this.userInfo),
-      success: (updatedUser) => {
-        console.log('we got a response back!!!', updatedUser);
-        if (updatedUser.user.defaultviewhost) {
-          this.props.actions.setUserAsHost(true);
+      success: (response) => {
+        console.log('we got a response back!!!', response);
+        const updatedUser = response.user;
+        if (updatedUser.defaultviewhost) {
+          this.props.actions.setUserAsHost(updatedUser.defaultviewhost);
           if (updatedUser.house) {
             this.props.actions.addHouse(updatedUser.house);
             browserHistory.push('dashboard');
           }
         } else {
-          this.props.actions.setUserAsHost(false);
+          this.props.actions.setUserAsHost(updatedUser.defaultviewhost);
           browserHistory.push('join-rental');
         }
       },

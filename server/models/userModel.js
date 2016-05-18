@@ -67,7 +67,7 @@ User.create = (newUser) => {
                     defaultViewHost: userData.defaultviewhost,
                     house: {
                       id: houseData.id,
-                      hostCode: houseData.invitecode,
+                      code: houseData.invitecode,
                       name: houseData.housename,
                     },
                     payAccounts: [{
@@ -85,9 +85,7 @@ User.create = (newUser) => {
 
 User.update = (updateUser) => {
   // before update, just confirm we can find the user in the db
-  console.log('============= this is update user:', updateUser);
   let newUserObject = updateUser;
-  console.log('============= this is new user object:', newUserObject);
   const returnObject = {};
   return db.tx(t => (
     t.any('SELECT * from users where email=$1 OR name=$2', [updateUser.email, updateUser.name])
@@ -103,39 +101,64 @@ User.update = (updateUser) => {
           return newUserObject;
         })
         .then(() => {
+          // now we update the found user with the new user object
           return t.one('UPDATE users SET name=${name}, email=${email}, password=${password}, defaultviewhost=${defaultviewhost}, avatarurl=${avatarurl} WHERE email = ${email} RETURNING id, name, email, defaultviewhost, avatarURL', newUserObject);
         })
         .then((updatedUser) => {
           Object.assign(newUserObject, updatedUser);
+          console.log('in update user, after merging newUserObject with updatedUser, this is newUserObject:', newUserObject);
           // if the user object has an access token from coinbase
           // need to save that in the datbase
           if (newUserObject.payAccount && newUserObject.payAccount === 'coinbase') {
+            console.log('there is a pay account present in newUserObject, so add it');
             return t.one('UPDATE user_pay_accounts SET accesstoken=$1, accountid=$2 WHERE userid=$3 AND paymethodid=2 RETURNING id, userid, nickname, paymethodid', [newUserObject.accessToken, newUserObject.coinbaseId, newUserObject.id]);
           }
           return {};
         })
         .then(() => {
           // updated user now need to check if has home to update
-          if (newUserObject.home) {
-            // if adding a home, create house code and add to db
+          console.log('time to check for a home');
+          return t.any('SELECT * FROM users_houses WHERE userid=$1', newUserObject.id);
+        })
+        .then((houseResult) => {
+          console.log('was there a houseResult?', houseResult);
+          if (houseResult.length) {
+            // then there was a house association
+            // we need to find the house and return its data
+            return t.one('SELECT * FROM houses WHERE id=$1', houseResult[0].houseid)
+            .then((foundHouse) => {
+              console.log('found a house:', foundHouse);
+              // found a house and need to return the user object
+              returnObject.user = newUserObject;
+              returnObject.user.house = {
+                id: foundHouse.id,
+                code: foundHouse.invitecode,
+                name: foundHouse.housename,
+              };
+              console.log('returning this object after finding house:', foundHouse);
+              return returnObject;
+            });
+          } else if (newUserObject.defaultviewhost) {
+            // the user is a host but has no house association in database
+            // need to add/create a house
+            console.log('the user is a host but has no house associated, need to add/create a house');
             const hostCode = utils.randomString(6);
+
             return t.one('INSERT INTO houses(invitecode, housename) VALUES($1, $2) RETURNING id, invitecode, housename', [hostCode, newUserObject.home])
-              // home added to home table, now need to adde to users_houses
-              .then((houseData) => {
-                returnObject.house = {
-                  id: houseData.id,
-                  code: houseData.invitecode,
-                  name: houseData.housename,
-                };
-                return t.one('INSERT INTO users_houses(userid, houseid, ishosthouse) VALUES($1, $2, $3) RETURNING userid, houseid, ishosthouse', [newUserObject.id, houseData.id, true]);
-              })
-              .then(houseData => {
+              .then((newHouseData) => {
+                console.log('house created:', newHouseData);
                 returnObject.user = newUserObject;
-                return returnObject;
+                returnObject.user.house = {
+                  id: newHouseData.id,
+                  code: newHouseData.invitecode,
+                  name: newHouseData.housename,
+                };
+                return t.one('INSERT INTO users_houses(userid, houseid, ishosthouse) VALUES($1, $2, $3) RETURNING userid, houseid, ishosthouse', [newUserObject.id, newHouseData.id, true])
+                .then(() => returnObject);
               });
           }
-          // user is just a guest so just return updatedUser
-          return { user: newUserObject };
+          console.log('no house result and user is not a host, just return new newUserObject', newUserObject);
+          return newUserObject;
         })
         .catch(err => {
           logger.info(err);

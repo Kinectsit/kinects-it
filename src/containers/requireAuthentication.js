@@ -24,14 +24,12 @@ export function requireAuthentication(Component) {
           },
         })
           .done((response) => {
+            console.log('this is the response from server in requireAuthentication', response);
+            console.log('is host? ', response.defaultviewhost);
             if (response) {
+              this.props.actions.setUserAsHost(response.defaultviewhost);
               this.props.actions.setUser(response.user);
               this.props.actions.loadPayAccounts(response.payAccounts);
-              if (response.host) {
-                this.props.actions.setUserAsHost(true);
-              } else {
-                this.props.actions.setUserAsHost(false);
-              }
               if (response.house) {
                 this.props.actions.addHouse(response.house);
               }

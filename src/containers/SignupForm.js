@@ -66,7 +66,6 @@ class SignupForm extends React.Component {
       data.defaultviewhost = false;
     }
     if (!data.avatarURL) {
-      console.log('no avatarURl');
       data.avatarURL = '';
       data.coinbaseId = '';
     }
@@ -79,14 +78,13 @@ class SignupForm extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        console.log('this is the response from the server:', response);
         if (!response.login) {
           // server could not add user to the database
           this.openErrorMessage();
         } else {
           // if the response.login is true then user was added
           // first execute action to set user type to host
-          if (data.host === true) {
+          if (data.defaultviewhost === true) {
             this.props.actions.setUserAsHost(true);
           } else {
             this.props.actions.setUserAsHost(false);

@@ -63,26 +63,27 @@ module.exports = (app, passport) => {
         // user was created in the database
         // Manually establish the session...
         req.login(user, function(err) {
+          const loginUser = user.user || user;
           if (err) return next(err);
           // creating a message to send to the client for session information
           const userInfo = {
-            name: user.name,
-            email: user.email,
-            id: user.id,
+            name: loginUser.name,
+            email: loginUser.email,
+            id: loginUser.id,
           }
           const message = {
             user: userInfo,
             sessionId: req.session.id,
             login: info.login,
             message: info.message,
-            payAccounts: user.payAccounts,
+            payAccounts: loginUser.payAccounts,
           };
 
-          if (user.house) {
+          if (loginUser.house) {
              message.house = {
-              id: user.house.id,
-              code: user.house.hostCode,
-              name: user.house.name,
+              id: loginUser.house.id,
+              code: loginUser.house.code,
+              name: loginUser.house.name,
              };
           }
 
@@ -108,24 +109,27 @@ module.exports = (app, passport) => {
 // Check if user is authenticated and return user information if so
   app.get('/api/v1/authentication', (req, res, next) => {
     if (req.isAuthenticated()) {
+      console.log('this is the passport user object in auth check', req.session.passport);
+      const loginUser = req.session.passport.user.user || req.session.passport.user;
       const message = {
         user: {
-          name:req.session.passport.user.name,
-          email: req.session.passport.user.email,
-          id: req.session.passport.user.id,
+          name:loginUser.name,
+          email: loginUser.email,
+          id: loginUser.id,
         },
         sessionId: req.session.id,
-        host: req.user.defaultviewhost,
-        house: req.session.passport.user.house,
-        payAccounts: req.session.passport.user.payAccounts,
+        defaultviewhost: req.user.defaultviewhost,
+        house: loginUser.house,
+        payAccounts: loginUser.payAccounts,
       }
 
-      if (req.session.passport.user.house) {
+      if (req.session.passport.house) {
         message.house = {
-          id: req.session.passport.user.house.id,
-          code: req.session.passport.user.house.hostCode,
+          id: loginUser.house.id,
+          code: loginUser.house.code,
         };
       }
+      console.log('the message to send back to auth check:', message);
       return res.json(message);
     } else {
       return res.json(false);
@@ -146,23 +150,25 @@ module.exports = (app, passport) => {
               return next(err);
             }
             // creating a message to send to the client for session information
+            const loginUser = user.user || user;
+            console.log('logging in this user:', loginUser);
             const message = {
               user: {
-                name: user.name,
-                email: user.email,
-                id: user.id,
+                name: loginUser.name,
+                email: loginUser.email,
+                id: loginUser.id,
               },
               sessionId: req.session.id,
-              host: user.defaultviewhost,
+              host: loginUser.defaultviewhost,
               login: info.login,
               message: info.message,
-              payAccounts: user.payAccounts,
+              payAccounts: loginUser.payAccounts,
             }
-            if (user.house) {
+            if (loginUser.house) {
                message.house = {
-                id: user.house.id,
-                code: user.house.hostCode,
-                name: user.house.name,
+                id: loginUser.house.id,
+                code: loginUser.house.code,
+                name: loginUser.house.name,
               }
             }
             return res.json(message);
@@ -189,10 +195,13 @@ module.exports = (app, passport) => {
             return next(err); 
           }
           process.nextTick(() => {
+            console.log('this is the info to send to client:', user);
             const loginUser = user.user || user;
-            if (loginUser.defaultviewhost === null) {
+            if (loginUser.defaultViewHost === null) {
+              console.log('going to the choose-role page');
               return res.redirect('/choose-role');
             } else {
+              console.log('going to the dashboard');
               return res.redirect('/dashboard');
             }
           });
