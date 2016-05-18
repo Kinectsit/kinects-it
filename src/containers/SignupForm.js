@@ -61,9 +61,9 @@ class SignupForm extends React.Component {
     // need to do this because checkbox components won't fire. Radio buttons work
     // but need to send a boolean to the server
     if (data.host === 'host') {
-      data.host = true;
+      data.defaultviewhost = true;
     } else {
-      data.host = false;
+      data.defaultviewhost = false;
     }
     if (!data.avatarURL) {
       console.log('no avatarURl');
@@ -79,6 +79,7 @@ class SignupForm extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        console.log('this is the response from the server:', response);
         if (!response.login) {
           // server could not add user to the database
           this.openErrorMessage();

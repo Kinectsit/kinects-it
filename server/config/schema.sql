@@ -69,8 +69,8 @@ DROP TABLE IF EXISTS user_pay_accounts CASCADE;
 CREATE TABLE user_pay_accounts (
   id SERIAL PRIMARY KEY,
   nickname VARCHAR,
-  accountId INTEGER,
-  apiAccess VARCHAR,
+  accountId VARCHAR,
+  accessToken VARCHAR,
   payMethodId INTEGER,
   userId INTEGER
 );

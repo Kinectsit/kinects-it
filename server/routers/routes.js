@@ -42,7 +42,6 @@ module.exports = (app, passport) => {
   })
   // Update a user's profile information
   app.put('/api/v1/users',(req, res, next) => {
-    console.log('here is the body of the put request:', req.body);
     return User.update(req.body)
     .then((updateResult) => {
       logger.info('Succesfully updated user = ', updateResult);
@@ -181,7 +180,6 @@ module.exports = (app, passport) => {
   // oAuth callback route 
   app.route('/api/v1/auth/callback').get((req, res, next) => {
     passport.authenticate('coinbase', (err, user, info) => {
-      console.log('this is my user in the oAuth callback:', user);
       if (err) {
         return next(err)
       };
@@ -191,8 +189,12 @@ module.exports = (app, passport) => {
             return next(err); 
           }
           process.nextTick(() => {
-            // res.cookie('connect.sid', req.signedCookies['connect.sid'], {secure: false,});
-            return res.redirect('/choose-role');
+            const loginUser = user.user || user;
+            if (loginUser.defaultviewhost === null) {
+              return res.redirect('/choose-role');
+            } else {
+              return res.redirect('/dashboard');
+            }
           });
       });
     })(req, res, next);
