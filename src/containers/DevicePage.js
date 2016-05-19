@@ -10,6 +10,7 @@ import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import CircularProgress from 'material-ui/CircularProgress';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
 import moment from 'moment';
 
@@ -40,14 +41,29 @@ export class DevicePage extends React.Component {
     const user = { user: this.props.authState.user.id };
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
-    $.get(apiPath, user, (req) => {
+    $.get(apiPath, user, (res) => {
+      if (res.success === false) {
+        this.openErrorMessage();
+        this.setState({
+          error: 'Error retrieving device info',
+          details: res.message,
+        });
+      }
       this.setState({
-        deviceTransactions: req,
+        deviceTransactions: res.data,
       });
     })
-    .fail((error) => {
-      console.log('error in server response', error);
+    .fail((/* error */) => {
+      this.openErrorMessage();
+      this.setState({
+        error: 'Error retrieving device info',
+        details: 'There was an error retrieving the device information. Please try again.',
+      });
     });
+  }
+
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   totalCost(time, units) {
@@ -89,7 +105,6 @@ export class DevicePage extends React.Component {
 
   toggleDevice(deviceState) {
     const hardwarekey = this.props.appState.featured.hardwarekey;
-     // TODO: need to replace the home ID with the real one once it is in appState
     const apiPath = '/api/v1/homes/1/devices/'.concat(hardwarekey);
 
     this.setState({ spinner: true });
@@ -98,7 +113,9 @@ export class DevicePage extends React.Component {
       if (!res.success) {
         this.setState({
           error: res.message,
+          details: 'Failed to activate device, please try again',
         });
+        this.openErrorMessage();
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
@@ -116,8 +133,10 @@ export class DevicePage extends React.Component {
     .fail(() => {
       // set local state to display error
       this.setState({
-        error: 'Failed to connect to device, try again.',
+        error: 'Communication error',
+        details: 'Failed to connect to device, please try again',
       });
+      this.openErrorMessage();
     })
     .always(() => {
       this.setState({ spinner: false });
@@ -144,7 +163,6 @@ export class DevicePage extends React.Component {
   render() {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
-    let errorMsg = <div style={styles.error}>{this.state.error}</div>;
 
     if (this.props.appState.featured.id === '') {
       return (
@@ -227,12 +245,18 @@ export class DevicePage extends React.Component {
     return (
       <div>
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
-        {errorMsg}
         {spinner}
         <h3>This device is: {this.props.appState.featured.description}</h3>
         {formDisplay}
         {newchart}
         {chart}
+        <FormMessageDialogue
+          ref={(node) => { this.messageDialogue = node; }}
+          title={this.state.error}
+          failure
+        >
+          <p>{this.state.details}</p>
+        </FormMessageDialogue>
       </div>
     );
   }

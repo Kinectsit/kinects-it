@@ -17,6 +17,7 @@ export class DeviceRow extends React.Component {
 
     if (this.props.device.isactive === false) {
       buttonMessage = 'Purchase Usage';
+      active = 'No';
     }
 
     let guestButton = (

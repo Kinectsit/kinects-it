@@ -97,11 +97,6 @@ export class JoinRentalPage extends React.Component {
   }
 
   render() {
-    let errorMsg = '';
-    if (this.state.error) {
-      errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
-    }
-
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
 
@@ -110,7 +105,6 @@ export class JoinRentalPage extends React.Component {
         <h2>Join new rental</h2>
         {spinner}
         <Paper style={styles.paperStyle}>
-          {errorMsg}
           <Formsy.Form
             onValid={() => this.enableButton()}
             onValidSubmit={(data) => this.addRental(data)}
