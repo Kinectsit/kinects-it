@@ -16,13 +16,23 @@ client.on('error', (err) => {
 
 // Gets all device transactions for a home
 exports.getUsage = (req, res, next) => {
-  console.log('in get usage', req.params.homeId);
   db.query('SELECT * FROM device_transactions WHERE deviceId IN(SELECT id FROM devices WHERE houseid=${houseid})', {
     houseid: req.params.homeId,
   })
   .then((result) => {
-    logger.info('SUCCESS in getDevices: ', result);
-    return res.json(result);
+    const message = { transactions: result };
+    db.query('SELECT name, hardwarekey from devices WHERE houseid=${houseid}', { houseid: req.params.homeId })
+      .then((devices) => {
+        message.devices = devices;
+        return res.json(message);
+      })
+      .catch((error) => {
+        logger.info('ERROR in get devices: ', error);
+        return res.send(error);
+      })
+      .finally(() => {
+        next();
+      });
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
