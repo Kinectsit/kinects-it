@@ -7,6 +7,7 @@ import Demo from './containers/Demo';
 import LoginPage from './containers/LoginPage';
 import { SignupPage } from './components/SignupPage';
 import DashboardPage from './containers/DashboardPage';
+import UsageStatsPage from './containers/UsageStatsPage';
 import AddDevicePage from './containers/AddDevicePage';
 import SetupDevicePage from './containers/SetupDevicePage';
 import DeviceProfilePage from './containers/DeviceProfilePage';
@@ -25,6 +26,7 @@ export default (
     <Route path="/signup" component={SignupPage} />
     <Route path="/dashboard" component={requireAuthentication(DashboardPage)} />
     <Route path="/add-device" component={requireAuthentication(AddDevicePage)} />
+    <Route path="/usage-stats" component={requireAuthentication(UsageStatsPage)} />
     <Route path="/setup-device" component={requireAuthentication(SetupDevicePage)} />
     <Route path="/device-profile" component={requireAuthentication(DeviceProfilePage)} />
     <Route path="/home-usage" component={requireAuthentication(HomeUsage)} />
