@@ -48,13 +48,13 @@ exports.getDevices = (req, res) => {
   const homeId = req.params.homeId;
   logger.info('HomeId in getDevices: ', homeId);
 
-  db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
+  return db.query('SELECT ${column^} FROM ${table~} where houseId=${home}', {
     column: '*',
     table: 'devices',
     home: homeId,
   })
   .then((result) => {
-    logger.info('SUCCESS in getDevices: ', result);
+    logger.info('SUCCESS in getDevices');
     return res.json(result);
   })
   .catch((error) => {
@@ -70,7 +70,7 @@ exports.getDeviceInfo = (req, res, next) => {
     let data = null;
     let message = null;
 
-    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT id FROM user_pay_accounts WHERE userid=${userid})', {
+    return db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT id FROM user_pay_accounts WHERE userid=${userid})', {
       deviceid: req.params.deviceId,
       userid: req.query.user,
     })
@@ -92,11 +92,10 @@ exports.getDeviceInfo = (req, res, next) => {
       logger.info('ERROR in get devices: ', error);
       return res.json({ success: false, message: 'Failed to retrieve devices' });
     })
-    .finally(() => {
-      next();
-    });
+    .finally(() => next()
+    );
   } else {
-    db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid}', {
+    return db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid}', {
       deviceid: req.params.deviceId,
     })
     .then((result) => {
@@ -107,9 +106,8 @@ exports.getDeviceInfo = (req, res, next) => {
       logger.info('ERROR in get devices: ', error);
       return res.send(error);
     })
-    .finally(() => {
-      next();
-    });
+    .finally(() => next()
+    );
   }
 };
 
