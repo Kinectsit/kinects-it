@@ -77,14 +77,13 @@ module.exports = (passport) => {
         }
 
         if (loggedInUser) {
-          db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
+          return db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
             .then((payAccounts) => {
               loggedInUser.payAccounts = payAccounts;
               return done(err, loggedInUser, info);
             });
-        } else {
-          return done(err, loggedInUser, info);
         }
+        return done(err, loggedInUser, info);
       })
       .catch((error) => {
         logger.info('ERROR in logging in: ', error);

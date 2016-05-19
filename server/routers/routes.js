@@ -96,10 +96,11 @@ module.exports = (app, passport) => {
         payAccounts: loginUser.payAccounts,
       }
 
-      if (req.session.passport.house) {
+      if (loginUser.house) {
         message.house = {
           id: loginUser.house.id,
-          code: loginUser.house.code,
+          code: loginUser.house.hostCode,
+          name: loginUser.house.name,
         };
       }
       return res.json(message);
@@ -138,7 +139,7 @@ module.exports = (app, passport) => {
             if (loginUser.house) {
                message.house = {
                 id: loginUser.house.id,
-                code: loginUser.house.code,
+                code: loginUser.house.hostCode,
                 name: loginUser.house.name,
               }
             }

@@ -53,6 +53,7 @@ export class LoginPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
+        this.setState({ spinner: false });
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
@@ -80,11 +81,11 @@ export class LoginPage extends React.Component {
         }
       },
       error: (/* xhr, status, err */) => {
+        this.setState({ spinner: false });
         this.setState({ error: 'INVALID_LOGIN' });
         this.openErrorMessage();
       },
       complete: () => {
-        this.setState({ spinner: false });
       },
     });
   }
