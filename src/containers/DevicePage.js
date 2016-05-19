@@ -19,12 +19,12 @@ export class DevicePage extends React.Component {
     super(props);
     this.errorMessages = {
       nameError: 'Please provide a valid name',
-      descriptionError: 'Please enter a valid description',
+      unitsError: 'Please enter valid units',
       priceError: 'Please enter time and price options',
     };
     this.state = {
       deviceActive: false,
-      canSubmit: false,
+      canSubmit: true,
       error: '',
       totalCost: 0,
       time: 0,
@@ -163,11 +163,12 @@ export class DevicePage extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
             onInvalidSubmit={() => this.notifyFormError()}
           >
-            <FormsyRadioGroup name="time" defaultSelected="1" onChange={(e) => this.handleTime(e)}>
+            <FormsyRadioGroup
+              name="time" defaultSelected="60000" onChange={(e) => this.handleTime(e)}
+            >
               <FormsyRadio
                 value="60000"
                 label="1 minute"
@@ -183,19 +184,21 @@ export class DevicePage extends React.Component {
             </FormsyRadioGroup>
             <FormsyText
               name="units"
-              validations="isExisty"
-              validationError={this.errorMessages.descriptionError}
+              validations="isInt"
+              validationError={this.errorMessages.unitsError}
               required
               style={styles.fieldStyles}
               onChange={(e) => this.handleUnits(e)}
               floatingLabelText="How many units do you want?"
             />
-            <FlatButton
-              style={styles.submitStyle}
-              type="submit"
-              label="Submit"
-              disabled={!this.state.canSubmit}
-            />
+            <div style={styles.center}>
+              <FlatButton
+                style={styles.submitStyle}
+                type="submit"
+                label="Submit"
+                disabled={!this.state.canSubmit}
+              />
+            </div>
           </Formsy.Form>
           <Subheader>
             <p>Total cost: {this.state.totalCost}</p>
