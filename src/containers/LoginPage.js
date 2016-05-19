@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign*/
-
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +10,7 @@ import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -23,21 +23,11 @@ export class LoginPage extends React.Component {
       submitError: 'Please resolve invalid input and try again',
     };
     this.state = {
-      canSubmit: false,
+      // setting to always be true due to Formsy only validating on blur of text fields
+      // TODO: write onChange to do own validation and set this back to false
+      canSubmit: true,
       error: '',
     };
-  }
-
-  /**
-    Called by onBlur and onChange of form to determine if submit button
-    should be enabled or not
-  */
-  onTextChange(event) {
-    if (event.target.value.length > 0) {
-      this.enableButton();
-    } else {
-      this.disableButton();
-    }
   }
 
   enableButton() {
@@ -66,6 +56,7 @@ export class LoginPage extends React.Component {
         if (!response.login) {
           // server could not log user in, show error
           this.setState({ error: 'INVALID_LOGIN' });
+          this.openErrorMessage();
         } else {
           this.props.actions.setAuthentication(true, response.sessionId);
           this.props.actions.setUser(response.user);
@@ -90,11 +81,16 @@ export class LoginPage extends React.Component {
       },
       error: (/* xhr, status, err */) => {
         this.setState({ error: 'INVALID_LOGIN' });
+        this.openErrorMessage();
       },
-      always: () => {
+      complete: () => {
         this.setState({ spinner: false });
       },
     });
+  }
+
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   formErrorMessage(error) {
@@ -102,19 +98,17 @@ export class LoginPage extends React.Component {
     if (error === 'INVALID_SUBMIT') {
       msg = 'Please resolve invalid input and try again.';
     } else if (error === 'INVALID_LOGIN') {
-      msg = 'Login attempt failed, please try again';
+      msg = 'Invalid Login';
+    } else {
+      msg = 'Unknown error';
     }
 
     return msg;
   }
 
   render() {
-    let errorMsg = '';
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
-    if (this.state.error) {
-      errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
-    }
 
     return (
       <div>
@@ -131,13 +125,12 @@ export class LoginPage extends React.Component {
         />
         {spinner}
         <Paper style={styles.paperStyle}>
-          {errorMsg}
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.login(data)}
             onInvalidSubmit={this.errorMessages.submitError}
             autoComplete="off"
+            onChange={this.validateForm}
           >
             <FormsyText
               name="name"
@@ -166,6 +159,13 @@ export class LoginPage extends React.Component {
               />
             </div>
           </Formsy.Form>
+          <FormMessageDialogue
+            ref={(node) => { this.messageDialogue = node; }}
+            title={this.formErrorMessage(this.state.error)}
+            failure
+          >
+            <p>The login attempt failed.  Please re-enter your user name and password.</p>
+          </FormMessageDialogue>
         </Paper>
       </div>
     );

@@ -58,7 +58,7 @@ module.exports.addToHome = (req, res, next) => {
   .catch((error) => {
     logger.info('ERROR in addToHome: ', error);
     // TODO: check if duplicate key error (meaning already in home)
-    return res.send(error);
+    return res.json({ success: false, message: 'Unable to retrieve home assigned to the provided invite code' });
   })
   .finally(() => {
     next();

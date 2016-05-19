@@ -30,24 +30,38 @@ exports.getDevices = (req, res) => {
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
-    return res.send(error);
+    return res.json({ success: false, message: 'Failed to retrieve devices' });
   });
 };
 
 // Gets device transactions
 exports.getDeviceInfo = (req, res, next) => {
   if (req.query.user) {
+    let success = false;
+    let data = null;
+    let message = null;
+
     db.query('SELECT * FROM device_transactions WHERE deviceid=${deviceid} AND useraccountid=(SELECT id FROM user_pay_accounts WHERE userid=${userid})', {
       deviceid: req.params.deviceId,
       userid: req.query.user,
     })
     .then((result) => {
-      logger.info('SUCCESS in getDevices: ', result);
-      return res.json(result);
+      if (result && result.length > 0) {
+        success = true;
+        data = result;
+        logger.info('SUCCESS in getDevices: ', result);
+      } else {
+        success = false;
+        message = 'Failed to retrieve device information';
+        data = [];
+        logger.info('ERROR in getDevices: ', result);
+      }
+
+      return res.json({ success, data, message });
     })
     .catch((error) => {
       logger.info('ERROR in get devices: ', error);
-      return res.send(error);
+      return res.json({ success: false, message: 'Failed to retrieve devices' });
     })
     .finally(() => {
       next();
@@ -138,9 +152,6 @@ exports.pingDevice = (req, res) => {
 // Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
-
-  console.log('req.body: ', req.body);
-
   const updateDevice = {
     deviceId: req.params.deviceId,
     isactive: req.body.isactive,

@@ -7,6 +7,7 @@ import styles from '../assets/formStyles';
 import { DeleteDeviceButton } from './DeleteDeviceButton';
 import { DeviceChart } from '../components/DeviceChart';
 import CircularProgress from 'material-ui/CircularProgress';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
 
 export class DeviceProfilePage extends React.Component {
@@ -25,17 +26,36 @@ export class DeviceProfilePage extends React.Component {
     const deviceId = this.props.appState.featured.id;
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
-    $.get(apiPath, (req) => {
-      this.setState({
-        deviceTransactions: req,
-      });
+    $.get(apiPath, (res) => {
+      if (res.success === false) {
+        this.setState({
+          error: 'Communication error',
+          details: 'Failed to retrieve devices from home, please try again.',
+        });
+        this.openErrorMessage();
+      } else {
+        this.setState({
+          deviceTransactions: res,
+        });
+      }
     })
-    .fail((error) => {
-      console.log('error in server response', error);
+    .fail((/* error */) => {
+      this.setState({
+        error: 'Communication error',
+        details: 'Failed to retrieve devices from home, please try again.',
+      });
+      this.openErrorMessage();
     });
   }
 
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
+  }
+
   toggleDevice() {
+    this.state.error = '';
+    this.state.details = '';
+
     const id = this.props.appState.featured.id;
     const deviceState = {
       isactive: !this.props.appState.featured.isactive,
@@ -50,8 +70,10 @@ export class DeviceProfilePage extends React.Component {
     $.post(apiPath, deviceState, (res) => {
       if (!res.success) {
         this.setState({
-          error: res.message,
+          error: 'Device communication error',
+          details: res.message,
         });
+        this.openErrorMessage();
       } else {
         if (this.props.appState.featured.isactive) {
           this.props.actions.toggleDevice(false);
@@ -61,10 +83,11 @@ export class DeviceProfilePage extends React.Component {
       }
     })
     .fail(() => {
-      // set local state to display error
       this.setState({
-        error: 'Failed to connect to device, try again.',
+        error: 'Device communication error',
+        details: 'Failed to connect to device, please try again.',
       });
+      this.openErrorMessage();
     })
     .always(() => {
       this.setState({ spinner: false });
@@ -72,7 +95,6 @@ export class DeviceProfilePage extends React.Component {
   }
 
   render() {
-    let errorMsg = <div style={styles.error}>{this.state.error}</div>;
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
     let toggle = (
@@ -118,7 +140,6 @@ export class DeviceProfilePage extends React.Component {
     return (
       <div>
         <h1 style={{ textTransform: 'capitalize' }}>{this.props.appState.featured.name}</h1>
-        {errorMsg}
         {spinner}
         <h3>{this.props.appState.featured.description}</h3>
         <h2>Toggle Device</h2>
@@ -127,11 +148,17 @@ export class DeviceProfilePage extends React.Component {
         <DeleteDeviceButton device={this.props.appState.featured} />
         <h2>Recent Guest Transactions</h2>
         {chart}
+        <FormMessageDialogue
+          ref={(node) => { this.messageDialogue = node; }}
+          title={this.state.error}
+          failure
+        >
+          <p>{this.state.details}</p>
+        </FormMessageDialogue>
       </div>
     );
   }
 }
-
 
 DeviceProfilePage.propTypes = {
   actions: PropTypes.object.isRequired,

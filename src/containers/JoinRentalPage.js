@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import { browserHistory } from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
 
 export class JoinRentalPage extends React.Component {
@@ -23,9 +24,14 @@ export class JoinRentalPage extends React.Component {
 
     this.state = {
       error: '',
-      canSubmit: false,
+      details: '',
+      canSubmit: true,
       spinner: false,
     };
+  }
+
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   addRental(data) {
@@ -43,18 +49,27 @@ export class JoinRentalPage extends React.Component {
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
       success: (response) => {
-        const house = {
-          id: response.houseid,
-          code: data.inviteCode,
-          name: response.housename,
-        };
-        this.props.actions.addHouse(house);
-        browserHistory.push('/dashboard');
+        if (!response.success) {
+          this.openErrorMessage();
+          this.setState({
+            error: 'Error Joining Home',
+            details: response.message,
+          });
+        } else {
+          const house = {
+            id: response.houseid,
+            code: data.inviteCode,
+            name: response.housename,
+          };
+          this.props.actions.addHouse(house);
+          browserHistory.push('/dashboard');
+        }
+        this.setState({ spinner: false });
       },
       error: (/* xhr, status, err */) => {
-        this.setState({ error: 'INVALID_JOIN_RENTAL' });
-      },
-      always: () => {
+        this.setState({ error: 'Failed to find home',
+                        details: 'Please resolve invalid input and try again.' });
+        this.openErrorMessage();
         this.setState({ spinner: false });
       },
     });
@@ -82,11 +97,6 @@ export class JoinRentalPage extends React.Component {
   }
 
   render() {
-    let errorMsg = '';
-    if (this.state.error) {
-      errorMsg = <div style={styles.error}>{this.formErrorMessage(this.state.error)}</div>;
-    }
-
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
 
@@ -95,10 +105,8 @@ export class JoinRentalPage extends React.Component {
         <h2>Join new rental</h2>
         {spinner}
         <Paper style={styles.paperStyle}>
-          {errorMsg}
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.addRental(data)}
             onInvalidSubmit={this.errorMessages.submitError}
             autoComplete="off"
@@ -120,6 +128,13 @@ export class JoinRentalPage extends React.Component {
               />
             </div>
           </Formsy.Form>
+          <FormMessageDialogue
+            ref={(node) => { this.messageDialogue = node; }}
+            title={this.state.error}
+            failure
+          >
+            <p>{this.state.details}</p>
+          </FormMessageDialogue>
         </Paper>
         <h1>Current Rental is: {this.props.appState.houseName}</h1>
       </div>

@@ -112,7 +112,7 @@ module.exports = (app, passport) => {
   app.route('/api/v1/session').post((req, res, next) => {
     passport.authenticate('local-login', (err, user, info) => {
       if (err) {
-        return next(err)
+        return next(err);
       };
       if (user) {
         // user was validated 
