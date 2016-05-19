@@ -46,13 +46,14 @@ export class DevicePage extends React.Component {
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
     $.get(apiPath, user, (res) => {
       if (res.success === false) {
-        this.openErrorMessage();
         this.setState({
-          error: 'Error retrieving device info',
-          details: res.message,
+          error: 'Communication error',
+          details: 'Failed to retrieve devices from home, please try again.',
         });
+        this.openErrorMessage();
+      } else {
+        this.calculations(res.data);
       }
-      this.calculations(res);
     })
     .fail((/* error */) => {
       this.openErrorMessage();
