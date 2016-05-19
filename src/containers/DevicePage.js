@@ -12,11 +12,7 @@ import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
-import $ from 'jquery';
-=======
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
 import moment from 'moment';
 import $ from 'jquery';
 
@@ -48,7 +44,6 @@ export class DevicePage extends React.Component {
     const user = { user: this.props.authState.user.id };
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
     $.get(apiPath, user, (res) => {
       if (res.success === false) {
         this.openErrorMessage();
@@ -57,13 +52,7 @@ export class DevicePage extends React.Component {
           details: res.message,
         });
       }
-      this.setState({
-        deviceTransactions: res.data,
-      });
-=======
-    $.get(apiPath, user, (data) => {
-      this.calculations(data);
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
+      this.calculations(res);
     })
     .fail((/* error */) => {
       this.openErrorMessage();
@@ -288,7 +277,6 @@ export class DevicePage extends React.Component {
         {formDisplay}
         {newchart}
         {chart}
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -296,9 +284,7 @@ export class DevicePage extends React.Component {
         >
           <p>{this.state.details}</p>
         </FormMessageDialogue>
-=======
         {transactions}
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
       </div>
     );
   }

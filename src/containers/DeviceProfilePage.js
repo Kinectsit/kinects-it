@@ -9,11 +9,8 @@ import { DeleteDeviceButton } from './DeleteDeviceButton';
 import { DeviceChart } from '../components/DeviceChart';
 import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
-=======
 import moment from 'moment';
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
 import $ from 'jquery';
 
 export class DeviceProfilePage extends React.Component {
@@ -33,7 +30,6 @@ export class DeviceProfilePage extends React.Component {
     const deviceId = this.props.appState.featured.id;
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
     $.get(apiPath, (res) => {
       if (res.success === false) {
         this.setState({
@@ -42,9 +38,7 @@ export class DeviceProfilePage extends React.Component {
         });
         this.openErrorMessage();
       } else {
-        this.setState({
-          deviceTransactions: res,
-        });
+        this.calculations(res);
       }
     })
     .fail((/* error */) => {
@@ -58,13 +52,6 @@ export class DeviceProfilePage extends React.Component {
 
   openErrorMessage() {
     this.messageDialogue.handleOpen();
-=======
-    $.get(apiPath, (data) => {
-      this.calculations(data);
-    })
-    .fail((error) => {
-      console.log('error in server response', error);
-    });
   }
 
   calculations(data) {
@@ -88,7 +75,6 @@ export class DeviceProfilePage extends React.Component {
       totalEarned,
       transactions,
     });
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
   }
 
   toggleDevice() {
@@ -191,7 +177,6 @@ export class DeviceProfilePage extends React.Component {
         <h2> You have earned ${this.state.totalEarned} from this device</h2>
         <h2>Recent Guest Transactions</h2>
         {chart}
-<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -199,9 +184,7 @@ export class DeviceProfilePage extends React.Component {
         >
           <p>{this.state.details}</p>
         </FormMessageDialogue>
-=======
         {transactions}
->>>>>>> Adds device transaction tables and total spent/earned for host and guest
       </div>
     );
   }

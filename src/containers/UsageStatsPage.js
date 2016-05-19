@@ -100,7 +100,6 @@ export class UsageStatsPage extends React.Component {
       usageTable = <div><UsageChartLabel devices={this.state.totalPerDevice} /></div>;
       transactions = <div><TransactionTable transactions={this.state.transactions} /></div>;
     }
-    
     return (
       <div>
         <h1>Usage Stats</h1>
