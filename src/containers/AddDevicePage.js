@@ -9,8 +9,8 @@ import { FormsyText } from 'formsy-material-ui/lib';
 import styles from '../assets/formStyles';
 import { browserHistory } from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
+import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
-// import hardware from '../../config.js';
 
 export class AddDevicePage extends React.Component {
 
@@ -23,21 +23,13 @@ export class AddDevicePage extends React.Component {
 
     this.state = {
       error: '',
-      canSubmit: false,
+      canSubmit: true,
       spinner: false,
     };
   }
 
-  /**
-    Called by onBlur and onChange of form to determine if submit button
-    should be enabled or not
-  */
-  onTextChange(event) {
-    if (event.target.value.length > 0) {
-      this.enableButton();
-    } else {
-      this.disableButton();
-    }
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
   }
 
   /**
@@ -58,8 +50,9 @@ export class AddDevicePage extends React.Component {
       };
 
       if (!req.success === true) {
+        this.openErrorMessage();
         this.setState({
-          error: 'ADD_DEVICE',
+          error: 'Unable to add the device',
           details: req.message,
         });
       } else {
@@ -71,8 +64,8 @@ export class AddDevicePage extends React.Component {
     .fail(() => {
       // set local state to display error
       this.setState({
-        error: 'ADD_DEVICE',
-        details: 'Failed to connect to device, try again.',
+        error: 'Unable to add the device',
+        details: 'Failed to connect to device, please try again.',
       });
     })
     .always(() => {
@@ -80,34 +73,14 @@ export class AddDevicePage extends React.Component {
     });
   }
 
-  /**
-    Called by onTextChange to enable submit button
-  */
-  enableButton() {
-    this.setState({ canSubmit: true });
-  }
-
-  /**
-    Called by onTextChange to disable submit button
-  */
-  disableButton() {
-    this.setState({ canSubmit: false });
-  }
-
   render() {
-    let errorMsg = '';
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
-
-    if (this.state.error === 'ADD_DEVICE') {
-      errorMsg = <div style={styles.error}>{this.state.details}</div>;
-    }
 
     return (
       <div>
         <div style={styles.center}>
           <h2>Add Device</h2>
-          {errorMsg}
           {spinner}
           <div>
             <p>Your device should be OFF before starting this process.</p>
@@ -118,7 +91,6 @@ export class AddDevicePage extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => { this.pingDevice(data); this.disableButton(); }}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
@@ -130,8 +102,6 @@ export class AddDevicePage extends React.Component {
               required
               style={styles.fieldStyles}
               floatingLabelText="Enter Device ID"
-              onChange={(event) => this.onTextChange(event)}
-              onBlur={(event) => this.onTextChange(event)}
             />
             <div style={styles.center}>
               <FlatButton
@@ -142,6 +112,13 @@ export class AddDevicePage extends React.Component {
               />
             </div>
           </Formsy.Form>
+          <FormMessageDialogue
+            ref={(node) => { this.messageDialogue = node; }}
+            title={this.state.error}
+            failure
+          >
+            <p>{this.state.details}</p>
+          </FormMessageDialogue>
         </Paper>
       </div>
     );
