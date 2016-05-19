@@ -18,13 +18,13 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.errorMessages = {
-      emailerror: 'Please provide a valid email',
+      emailError: 'Please provide a valid email',
       passwordError: 'Please enter a password of at least 5 characters',
       nameError: 'Please enter a user name',
       mismatchPassword: 'Your passwords don\'t match',
     };
     this.state = {
-      canSubmit: false,
+      canSubmit: true,
       dialogueOpen: false,
       isHost: true,
     };
@@ -128,7 +128,6 @@ class SignupForm extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
             onInvalidSubmit={() => this.notifyFormError()}
           >
@@ -195,12 +194,14 @@ class SignupForm extends React.Component {
                 />
                 : ''
             }
-            <FlatButton
-              style={styles.submitStyle}
-              type="submit"
-              label="Submit"
-              disabled={!this.state.canSubmit}
-            />
+            <div style={styles.center}>
+              <FlatButton
+                style={styles.submitStyle}
+                type="submit"
+                label="Submit"
+                disabled={!this.state.canSubmit}
+              />
+            </div>
           </Formsy.Form>
           <FormMessageDialogue
             ref={(node) => this.messageDialogue = node}
