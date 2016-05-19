@@ -44,7 +44,6 @@ module.exports.createTxCheckout = (userId, reqBody, callback) => {
     name: reqBody.device.name,
     deviceId: reqBody.device.id,
   };
-
   return db.one('SELECT userid FROM users_houses WHERE houseid=$1 AND isHostHouse=true',
     [reqBody.homeId])
   .then(hostid => {
