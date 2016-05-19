@@ -108,7 +108,7 @@ class SignupForm extends React.Component {
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
       },
-      always: () => {
+      complete: () => {
         this.setState({ spinner: false });
       },
     });

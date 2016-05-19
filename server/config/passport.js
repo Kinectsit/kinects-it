@@ -48,7 +48,7 @@ module.exports = (passport) => {
     var err = null;
     var info = null;
 
-    db.one('SELECT * from users where name=$1', [req.body.name])
+    db.oneOrNone('SELECT * from users where name=$1', [req.body.name])
       .then((userData) => {
         // if no user is found, return the message
         if (!userData) {
@@ -75,15 +75,20 @@ module.exports = (passport) => {
           loggedInUser.house.hostCode = homeData.invitecode;
           loggedInUser.house.name = homeData.housename;
         }
-        db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
-          .then((payAccounts) => {
-            loggedInUser.payAccounts = payAccounts;
-            return done(err, loggedInUser, info);
-          });
+
+        if (loggedInUser) {
+          db.many('SELECT id, nickname FROM user_pay_accounts WHERE userId = $1', [loggedInUser.id])
+            .then((payAccounts) => {
+              loggedInUser.payAccounts = payAccounts;
+              return done(err, loggedInUser, info);
+            });
+        } else {
+          return done(err, loggedInUser, info);
+        }
       })
       .catch((error) => {
-        logger.info(error);
-        done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
+        logger.info('ERROR in logging in: ', error);
+        return done(error, false, { login: false, message: 'Invalid login attempt, please try again.' });
       });
   }));
 

@@ -91,7 +91,7 @@ export class LoginPage extends React.Component {
       error: (/* xhr, status, err */) => {
         this.setState({ error: 'INVALID_LOGIN' });
       },
-      always: () => {
+      complete: () => {
         this.setState({ spinner: false });
       },
     });
