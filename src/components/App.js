@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 import TitleBar from './TitleBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+// import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import kinectsitBaseTheme from '../assets/kinectsitTheme';
+const kinectsitTheme = getMuiTheme(kinectsitBaseTheme);
 
 /**
 * This is an import the global styles sheet.
@@ -11,7 +13,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import '../assets/scss/app.scss';
 
 export const App = (props) => (
-  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+  <MuiThemeProvider muiTheme={kinectsitTheme}>
     <div className="app-container">
       <TitleBar store={props.store} />
       <div className="row medium-10 columns">
