@@ -1,3 +1,5 @@
+/* eslint max-len: ["error", 300] */
+/* eslint-disable strict */
 'use strict';
 
 /*
@@ -23,22 +25,17 @@ const guestPassword = bcrypt.hashSync('12345', bcrypt.genSaltSync(8), null);
 const hostPassword = bcrypt.hashSync('12345', bcrypt.genSaltSync(8), null);
 
 const randomDate = () => {
-  let dt = new Date();
-  const month = Math.floor( Math.random() * 5 );
-  const day = Math.floor( Math.random() * 28 );
+  const dt = new Date();
+  const month = Math.floor(Math.random() * 5);
+  const day = Math.floor(Math.random() * 28);
 
   dt.setMonth(month);
   dt.setDate(day);
   return dt;
 };
 
-const randomSpend = () => {
-  return Math.random() * 20;
-};
-
-const randomTime = () => {
-  return Math.floor(Math.random() * 60);
-};
+const randomSpend = () => Math.random() * 20;
+const randomTime = () => Math.floor(Math.random() * 60);
 
 const hostUser = { name: 'hostBob',
   email: 'hostBob@bob.com',
@@ -126,7 +123,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -140,7 +137,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -154,7 +151,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -168,7 +165,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -182,7 +179,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -196,7 +193,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -210,7 +207,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -224,7 +221,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -238,7 +235,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -252,7 +249,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId1,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -266,7 +263,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -280,7 +277,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -294,7 +291,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -308,7 +305,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -322,7 +319,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -336,7 +333,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -350,7 +347,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -364,7 +361,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -378,7 +375,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -392,7 +389,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -406,7 +403,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId2,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -420,7 +417,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -434,7 +431,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -448,7 +445,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -462,7 +459,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -476,7 +473,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -490,7 +487,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -504,7 +501,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -518,7 +515,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -532,7 +529,7 @@ User.create(guestUser)
 
     // create all the transactions
     const deviceTransaction = {
-      useraccountid: parseInt(guest.payAccounts[0].id),
+      useraccountid: parseInt(guest.payAccounts[0].id, 10),
       deviceid: deviceId3,
       amountspent: randomSpend(),
       timespent: randomTime(),
@@ -543,7 +540,5 @@ User.create(guestUser)
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
+    return;
   });
-
-return;
-
