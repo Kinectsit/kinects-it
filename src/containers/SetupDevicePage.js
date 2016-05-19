@@ -18,12 +18,12 @@ export class SetupDevicePage extends React.Component {
     super(props);
     this.errorMessages = {
       nameError: 'Please provide a valid name',
-      descriptionError: 'Please enter a valid description',
+      costError: 'Please enter a valid cost',
       priceError: 'Please enter time and price options',
     };
     this.state = {
       changed: false,
-      canSubmit: false,
+      canSubmit: true,
       costPerDay: 0,
       costPerThreeHours: 0,
       costPerHour: 0,
@@ -33,7 +33,9 @@ export class SetupDevicePage extends React.Component {
   }
 
   handleChange(e) {
-    const cost = parseInt(e.target.value, 10);
+    const cost = (e.target.value && (parseInt(e.target.value, 10) === parseInt(e.target.value, 10)))
+     ? parseInt(e.target.value, 10) : 0;
+
     this.setState({
       costPerWeek: (168 * cost).toFixed(2),
       costPerDay: (24 * cost).toFixed(2),
@@ -41,7 +43,6 @@ export class SetupDevicePage extends React.Component {
       costPerMinute: (cost / 60).toFixed(2),
     });
   }
-
 
   enableButton() {
     this.setState({
@@ -103,11 +104,8 @@ export class SetupDevicePage extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
             onInvalidSubmit={() => this.notifyFormError()}
-            // onChange={() => this.newChange()}
-            onSuccess={(data) => console.log('request received by the server!', data)}
           >
             <FormsyText
               name="name"
@@ -128,19 +126,21 @@ export class SetupDevicePage extends React.Component {
             <Subheader>How much do you want to charge per day?</Subheader>
             <FormsyText
               name="cost"
-              validations="isExisty" // add validation for number
-              validationError={this.errorMessages.descriptionError}
+              validations="isInt" // add validation for number
+              validationError={this.errorMessages.costError}
               required
               style={styles.fieldStyles}
               onChange={(e) => this.handleChange(e)}
               floatingLabelText="Must be a whole number"
             />
-            <FlatButton
-              style={styles.submitStyle}
-              type="submit"
-              label="Submit"
-              disabled={!this.state.canSubmit}
-            />
+            <div style={styles.center}>
+              <FlatButton
+                style={styles.submitStyle}
+                type="submit"
+                label="Submit"
+                disabled={!this.state.canSubmit}
+              />
+            </div>
           </Formsy.Form>
           <Subheader>
             <p>Cost per Minute: {this.state.costPerMinute}</p>

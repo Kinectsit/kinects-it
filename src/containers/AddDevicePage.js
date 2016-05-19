@@ -32,6 +32,18 @@ export class AddDevicePage extends React.Component {
     this.messageDialogue.handleOpen();
   }
 
+  enableButton() {
+    this.setState({
+      canSubmit: true,
+    });
+  }
+
+  disableButton() {
+    this.setState({
+      canSubmit: false,
+    });
+  }
+
   /**
     Called on after submit form to check hardware
   */
@@ -39,7 +51,7 @@ export class AddDevicePage extends React.Component {
     const deviceState = { isActive: true };
     /* homes id does not matter in this API call, not used */
     const apiPath = '/api/v1/homes/1/devices/ping/'.concat(device.deviceId);
-
+    this.disableButton();
     this.setState({ spinner: true });
 
     $.post(apiPath, deviceState, (req) => {
@@ -70,6 +82,7 @@ export class AddDevicePage extends React.Component {
     })
     .always(() => {
       this.setState({ spinner: false });
+      this.enableButton();
     });
   }
 
@@ -91,7 +104,7 @@ export class AddDevicePage extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            onValidSubmit={(data) => { this.pingDevice(data); this.disableButton(); }}
+            onValidSubmit={(data) => { this.pingDevice(data); }}
             onInvalidSubmit={() => this.notifyFormError()}
             autoComplete="off"
           >
