@@ -34,8 +34,13 @@ const randomDate = () => {
   return dt;
 };
 
-const randomSpend = () => Math.random() * 20;
-const randomTime = () => Math.floor(Math.random() * 60);
+const randomSpend = () => {
+  return Math.random() * 20;
+};
+
+const randomTime = () => {
+  return Math.floor(Math.random() * 10000000);
+};
 
 const hostUser = { name: 'hostBob',
   email: 'hostBob@bob.com',
@@ -540,5 +545,16 @@ User.create(guestUser)
   })
   .then((result) => {
     console.log('SUCCESS adding transaction:', result);
+<<<<<<< a37163a9fbfd6b4c1834d2fbfc6a616e2d84afe7
     return;
+=======
+    return db.one('INSERT INTO users_houses(userid, houseid, ishosthouse) VALUES(${userid}, ${houseid}, ${ishosthouse}) RETURNING *', {
+      userid: 1,
+      houseid: 1,
+      ishosthouse: false
+    });
+  })
+  .then((guestHost) => {
+    console.log('SUCCESS adding guest to host rental')
+>>>>>>> (Feat) adds table for all device transactions formatted in natural language with sorting functionality
   });

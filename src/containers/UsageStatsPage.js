@@ -1,8 +1,10 @@
+/* eslint-disable max-len */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { UsageChart } from '../components/UsageChart';
 import { UsageChartLabel } from '../components/UsageChartLabel';
+import { TransactionTable } from '../components/TransactionTable';
 import * as actions from '../actions/actions';
 import styles from '../assets/formStyles';
 import moment from 'moment';
@@ -23,10 +25,7 @@ export class UsageStatsPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log('====PROPS ARE ', this.props.appState);
     const homeId = this.props.appState.house.id;
-    console.log('in component did mount, homeId is ', homeId);
-
     const urlPath = '/api/v1/homes/'.concat(homeId).concat('/usage/');
 
     $.ajax({
@@ -61,10 +60,12 @@ export class UsageStatsPage extends React.Component {
       if (moment(transactions[i].timestamp).format('MM') === thisMonth) {
         totalEarnedThisMonth += parseFloat(transactions[i].amountspent, 10);
       }
-      // add to total per device object
-      // let found = false;
+      // find the actual name of each device
       for (let j = 0; j < totalPerDevice.length; j++) {
         if (totalPerDevice[j].hardwarekey === transactions[i].deviceid) {
+          // update the transactions array for processing in the transaction table component
+          transactions[i].name = totalPerDevice[j].name;
+          // update the amount per device spent for processing in the usage chart
           if (!totalPerDevice[j].amountspent) {
             totalPerDevice[j].amountspent = parseFloat(transactions[i].amountspent, 10);
           } else {
@@ -72,13 +73,35 @@ export class UsageStatsPage extends React.Component {
           }
         }
       }
+      // update the transactions array to include real-language time for processing in the transaction table component
+      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
+      // update the transactions array to include real-language amount spent for processing in the transaction table component
+      transactions[i].formattedAmount = 0;
+      if (transactions[i].timespent <= 359999) {
+        const time = Math.floor(transactions[i].timespent / 60000);
+        let unit = 'minutes';
+        if (time === 1) { unit = 'minute'; }
+        transactions[i].formattedAmount = `${time} ${unit}`;
+      } else if ((transactions[i].timespent > 35999) && (transactions[i].timespent <= 86399999)) {
+        const time = Math.floor(transactions[i].timespent / 360000);
+        let unit = 'hours';
+        if (time === 1) { unit = 'hour'; }
+        transactions[i].formattedAmount = `${time} ${unit}`;
+      } else if (transactions[i].timespent > 86400000) {
+        const time = Math.floor(transactions[i].timespent / 86400000);
+        let unit = 'days';
+        if (time === 1) { unit = 'day'; }
+        transactions[i].formattedAmount = `${time} ${unit}`;
+      }
     }
-    console.log(totalPerDevice);
+    console.log(transactions);
+
     this.setState({
       thisMonthWord,
       totalEarned: totalEarned.toFixed(2),
       totalEarnedThisMonth: totalEarnedThisMonth.toFixed(2),
       totalPerDevice,
+      transactions,
     });
   }
 
@@ -86,19 +109,24 @@ export class UsageStatsPage extends React.Component {
     let errorMsg = <div style={styles.error}>{this.state.error}</div>;
     let usageChart = <div></div>;
     let usageTable = <div></div>;
+    let transactions = <div></div>;
     if (this.state.totalPerDevice.length > 0) {
       usageChart = <div><UsageChart transactions={this.state.totalPerDevice} /></div>;
-      usageTable = <div><UsageChartLabel devices={this.state.totalPerDevice} /></div>
+      usageTable = <div><UsageChartLabel devices={this.state.totalPerDevice} /></div>;
+      transactions = <div><TransactionTable transactions={this.state.transactions} /></div>;
     }
 
     return (
       <div>
         <h1>Usage Stats</h1>
         {errorMsg}
-        <h2>Total Earned: ${this.state.totalEarned}</h2>
-        <h2>Total Earned in {this.state.thisMonthWord}: ${this.state.totalEarnedThisMonth}</h2>
+        <p>Total Earned: ${this.state.totalEarned}</p>
+        <p>Total Earned in {this.state.thisMonthWord}: ${this.state.totalEarnedThisMonth}</p>
+        <h2>Top Performers</h2>
         {usageChart}
         {usageTable}
+        <h2>Transactions Log</h2>
+        {transactions}
       </div>
     );
   }
