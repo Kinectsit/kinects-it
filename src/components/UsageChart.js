@@ -34,7 +34,7 @@ export class UsageChart extends React.Component {
       <div>
         <PieChart
           data={this.state.pieData}
-          width={450}
+          width={550}
           height={400}
           radius={110}
           innerRadius={20}

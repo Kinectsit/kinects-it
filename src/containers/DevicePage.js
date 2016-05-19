@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { PropTypes } from 'react';
 import { DeviceChart } from '../components/DeviceChart';
 import { connect } from 'react-redux';
@@ -9,10 +10,15 @@ import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
+import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
+=======
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
 import moment from 'moment';
+import $ from 'jquery';
 
 export class DevicePage extends React.Component {
 
@@ -28,9 +34,10 @@ export class DevicePage extends React.Component {
       canSubmit: true,
       error: '',
       totalCost: 0,
+      totalSpent: 0,
       time: 0,
       units: 0,
-      deviceTransactions: [],
+      transactions: [],
       spinner: false,
     };
   }
@@ -41,6 +48,7 @@ export class DevicePage extends React.Component {
     const user = { user: this.props.authState.user.id };
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
     $.get(apiPath, user, (res) => {
       if (res.success === false) {
         this.openErrorMessage();
@@ -52,6 +60,10 @@ export class DevicePage extends React.Component {
       this.setState({
         deviceTransactions: res.data,
       });
+=======
+    $.get(apiPath, user, (data) => {
+      this.calculations(data);
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
     })
     .fail((/* error */) => {
       this.openErrorMessage();
@@ -64,6 +76,29 @@ export class DevicePage extends React.Component {
 
   openErrorMessage() {
     this.messageDialogue.handleOpen();
+  }
+
+  calculations(data) {
+    const transactions = data;
+
+    // set initial state
+    let totalSpent = 0;
+
+    for (let i = 0; i < transactions.length; i++) {
+      // add to total earned
+      totalSpent += parseInt(transactions[i].amountspent, 10);
+      // update the transactions array to include real-language time for processing in the transaction table component
+      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
+      // update the transactions array to include real-language amount spent for processing in the transaction table component
+      const minutes = Math.floor(transactions[i].timespent / 3600000);
+      const formattedTime = `${minutes} minutes`;
+      transactions[i].formattedTimeSpent = formattedTime;
+    }
+
+    this.setState({
+      totalSpent,
+      transactions,
+    });
   }
 
   totalCost(time, units) {
@@ -119,7 +154,7 @@ export class DevicePage extends React.Component {
       } else {
         this.props.actions.toggleDevice(true);
         this.props.actions.paidUsage(true);
-        const updatedTransactions = this.state.deviceTransactions.concat(res.transactionData);
+        const updatedTransactions = this.state.transactions.concat(res.transactionData);
         const currentTime = Date.now();
         const expirationTime = currentTime + res.transactionData.timespent;
         const expiration = moment(expirationTime).calendar().toLowerCase();
@@ -230,9 +265,11 @@ export class DevicePage extends React.Component {
     }
 
     let chart = <div></div>;
+    let transactions = <div></div>;
 
-    if (this.state.deviceTransactions.length > 0) {
-      chart = <div><DeviceChart transactions={this.state.deviceTransactions} /></div>;
+    if (this.state.transactions.length > 0) {
+      chart = <div><DeviceChart transactions={this.state.transactions} /></div>;
+      transactions = <div><DeviceTransactionTable transactions={this.state.transactions} /></div>;
     }
 
     let newchart = <div></div>;
@@ -247,9 +284,11 @@ export class DevicePage extends React.Component {
         <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
         {spinner}
         <h3>This device is: {this.props.appState.featured.description}</h3>
+        <h2> You have spent ${this.state.totalSpent} on this device</h2>
         {formDisplay}
         {newchart}
         {chart}
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -257,6 +296,9 @@ export class DevicePage extends React.Component {
         >
           <p>{this.state.details}</p>
         </FormMessageDialogue>
+=======
+        {transactions}
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
       </div>
     );
   }

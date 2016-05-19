@@ -76,25 +76,10 @@ export class UsageStatsPage extends React.Component {
       // update the transactions array to include real-language time for processing in the transaction table component
       transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
       // update the transactions array to include real-language amount spent for processing in the transaction table component
-      transactions[i].formattedAmount = 0;
-      if (transactions[i].timespent <= 359999) {
-        const time = Math.floor(transactions[i].timespent / 60000);
-        let unit = 'minutes';
-        if (time === 1) { unit = 'minute'; }
-        transactions[i].formattedAmount = `${time} ${unit}`;
-      } else if ((transactions[i].timespent > 35999) && (transactions[i].timespent <= 86399999)) {
-        const time = Math.floor(transactions[i].timespent / 360000);
-        let unit = 'hours';
-        if (time === 1) { unit = 'hour'; }
-        transactions[i].formattedAmount = `${time} ${unit}`;
-      } else if (transactions[i].timespent > 86400000) {
-        const time = Math.floor(transactions[i].timespent / 86400000);
-        let unit = 'days';
-        if (time === 1) { unit = 'day'; }
-        transactions[i].formattedAmount = `${time} ${unit}`;
-      }
+      const minutes = Math.floor(transactions[i].timespent / 3600000);
+      const formattedTime = `${minutes} minutes`;
+      transactions[i].formattedTimeSpent = formattedTime;
     }
-    console.log(transactions);
 
     this.setState({
       thisMonthWord,
@@ -115,7 +100,7 @@ export class UsageStatsPage extends React.Component {
       usageTable = <div><UsageChartLabel devices={this.state.totalPerDevice} /></div>;
       transactions = <div><TransactionTable transactions={this.state.transactions} /></div>;
     }
-
+    
     return (
       <div>
         <h1>Usage Stats</h1>

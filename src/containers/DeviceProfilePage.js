@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -6,8 +7,13 @@ import Toggle from 'material-ui/Toggle';
 import styles from '../assets/formStyles';
 import { DeleteDeviceButton } from './DeleteDeviceButton';
 import { DeviceChart } from '../components/DeviceChart';
+import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
+=======
+import moment from 'moment';
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
 import $ from 'jquery';
 
 export class DeviceProfilePage extends React.Component {
@@ -16,7 +22,8 @@ export class DeviceProfilePage extends React.Component {
     super(props);
     this.state = {
       error: '',
-      deviceTransactions: [],
+      transactions: [],
+      totalEarned: 0,
       spinner: false,
     };
   }
@@ -26,6 +33,7 @@ export class DeviceProfilePage extends React.Component {
     const deviceId = this.props.appState.featured.id;
 
     const apiPath = '/api/v1/homes/'.concat(homeId).concat('/devices/').concat(deviceId);
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
     $.get(apiPath, (res) => {
       if (res.success === false) {
         this.setState({
@@ -50,6 +58,37 @@ export class DeviceProfilePage extends React.Component {
 
   openErrorMessage() {
     this.messageDialogue.handleOpen();
+=======
+    $.get(apiPath, (data) => {
+      this.calculations(data);
+    })
+    .fail((error) => {
+      console.log('error in server response', error);
+    });
+  }
+
+  calculations(data) {
+    const transactions = data;
+
+    // set initial state
+    let totalEarned = 0;
+
+    for (let i = 0; i < transactions.length; i++) {
+      // add to total earned
+      totalEarned += parseInt(transactions[i].amountspent, 10);
+      // update the transactions array to include real-language time for processing in the transaction table component
+      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
+      // update the transactions array to include real-language amount spent for processing in the transaction table component
+      const minutes = Math.floor(transactions[i].timespent / 3600000);
+      const formattedTime = `${minutes} minutes`;
+      transactions[i].formattedTimeSpent = formattedTime;
+    }
+
+    this.setState({
+      totalEarned,
+      transactions,
+    });
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
   }
 
   toggleDevice() {
@@ -94,6 +133,7 @@ export class DeviceProfilePage extends React.Component {
     });
   }
 
+
   render() {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
@@ -132,9 +172,11 @@ export class DeviceProfilePage extends React.Component {
     }
 
     let chart = <div></div>;
+    let transactions = <div></div>;
 
-    if (this.state.deviceTransactions.length > 0) {
-      chart = <div><DeviceChart transactions={this.state.deviceTransactions} /></div>;
+    if (this.state.transactions.length > 0) {
+      chart = <div><DeviceChart transactions={this.state.transactions} /></div>;
+      transactions = <div><DeviceTransactionTable transactions={this.state.transactions} /></div>;
     }
 
     return (
@@ -146,8 +188,10 @@ export class DeviceProfilePage extends React.Component {
         <p>Use this to test the device or enable without payment</p>
         {toggle}
         <DeleteDeviceButton device={this.props.appState.featured} />
+        <h2> You have earned ${this.state.totalEarned} from this device</h2>
         <h2>Recent Guest Transactions</h2>
         {chart}
+<<<<<<< 813373a9f050af082eed2e819678ef223a4854d2
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -155,6 +199,9 @@ export class DeviceProfilePage extends React.Component {
         >
           <p>{this.state.details}</p>
         </FormMessageDialogue>
+=======
+        {transactions}
+>>>>>>> Adds device transaction tables and total spent/earned for host and guest
       </div>
     );
   }

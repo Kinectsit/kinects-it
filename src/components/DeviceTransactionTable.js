@@ -4,7 +4,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRowColumn, Table
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import moment from 'moment';
 
-export class TransactionTable extends React.Component {
+export class DeviceTransactionTable extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,16 +19,6 @@ export class TransactionTable extends React.Component {
 
   sortByColumn(column) {
     const sortedData = this.state.data;
-
-    if (column === 'name') {
-      sortedData.sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA < nameB) { return -1; }
-        if (nameA > nameB) { return 1; }
-        return 0;
-      });
-    }
 
     if (column === 'timespent') {
       sortedData.sort((a, b) => a.timespent - b.timespent);
@@ -58,16 +48,12 @@ export class TransactionTable extends React.Component {
   render() {
     return (
       <div>
-        <Table style={{ width: '650px' }}>
+        <Table style={{ width: '500px' }}>
           <TableHeader>
             <TableRow>
               <TableHeaderColumn style={{ width: '150px', paddingLeft: '0px', color: 'black' }}>
                 <SortIcon color={'black'} id={"date"} onClick={(e) => this.sortByColumn(e.target.id)} />
                 Date
-              </TableHeaderColumn>
-              <TableHeaderColumn style={{ width: '150px', paddingLeft: '0px', color: 'black' }}>
-                <SortIcon color={'black'} id={"name"} onClick={(e) => this.sortByColumn(e.target.id)} />
-                Name
               </TableHeaderColumn>
               <TableHeaderColumn style={{ width: '150px', paddingLeft: '0px', color: 'black' }}>
                 <SortIcon color={'black'} id={"timespent"} onClick={(e) => this.sortByColumn(e.target.id)} />
@@ -83,7 +69,6 @@ export class TransactionTable extends React.Component {
             {this.state.data.map((transaction, index) =>
               <TableRow key={index} style={{ color: 'black' }}>
                 <TableRowColumn style={{ width: '200px' }}>{transaction.formattedTime}</TableRowColumn>
-                <TableRowColumn style={{ width: '150px' }}>{transaction.name}</TableRowColumn>
                 <TableRowColumn style={{ width: '150px' }}>{transaction.formattedTimeSpent}</TableRowColumn>
                 <TableRowColumn style={{ width: '100px' }}>${transaction.amountspent}</TableRowColumn>
               </TableRow>
@@ -95,7 +80,7 @@ export class TransactionTable extends React.Component {
   }
 }
 
-TransactionTable.propTypes = {
+DeviceTransactionTable.propTypes = {
   transactions: PropTypes.array.isRequired,
 };
 
