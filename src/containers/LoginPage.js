@@ -127,7 +127,6 @@ export class LoginPage extends React.Component {
         <Paper style={styles.paperStyle}>
           <Formsy.Form
             onValid={() => this.enableButton()}
-            //onInvalid={() => this.disableButton()}
             onValidSubmit={(data) => this.login(data)}
             onInvalidSubmit={this.errorMessages.submitError}
             autoComplete="off"

@@ -30,7 +30,7 @@ exports.getDevices = (req, res) => {
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
-    return res.send(error);
+    return res.json({ success: false, message: 'Failed to retrieve devices' });
   });
 };
 
@@ -138,9 +138,6 @@ exports.pingDevice = (req, res) => {
 // Toggles device for both guests and hosts
 exports.toggleDevice = (req, res) => {
   const deviceId = req.params.deviceId;
-
-  console.log('req.body: ', req.body);
-
   const updateDevice = {
     deviceId: req.params.deviceId,
     isactive: req.body.isactive,
