@@ -14,6 +14,35 @@ client.on('error', (err) => {
   console.log(`Error ${err}`);
 });
 
+// Gets all device transactions for a home
+exports.getUsage = (req, res, next) => {
+  db.query('SELECT * FROM device_transactions WHERE deviceId IN(SELECT id FROM devices WHERE houseid=${houseid})', {
+    houseid: req.params.homeId,
+  })
+  .then((result) => {
+    const message = { transactions: result };
+    db.query('SELECT name, hardwarekey from devices WHERE houseid=${houseid}', { houseid: req.params.homeId })
+      .then((devices) => {
+        message.devices = devices;
+        return res.json(message);
+      })
+      .catch((error) => {
+        logger.info('ERROR in get devices: ', error);
+        return res.send(error);
+      })
+      .finally(() => {
+        next();
+      });
+  })
+  .catch((error) => {
+    logger.info('ERROR in get devices: ', error);
+    return res.send(error);
+  })
+  .finally(() => {
+    next();
+  });
+};
+
 // Gets list of devices when dashboard first loads
 exports.getDevices = (req, res) => {
   const homeId = req.params.homeId;
@@ -34,7 +63,7 @@ exports.getDevices = (req, res) => {
   });
 };
 
-// Gets device transactions
+// Gets device transactions for individual devices
 exports.getDeviceInfo = (req, res, next) => {
   if (req.query.user) {
     let success = false;
