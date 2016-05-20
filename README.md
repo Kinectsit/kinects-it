@@ -13,16 +13,16 @@ With Kinects.it, you don't need to wait for your home to get smart. Just plug in
 1. [Introduction](#Introduction)__
 2. [Requirements](#requirements)__
 3. [Development](#development)__
------ [Dependencies](#dependencies)__
------ [Tasks](#tasks)__
+-- [Dependencies](#dependencies)__
+-- [Tasks](#tasks)__
 5. [Resources](#resources)__
------ [User Flow](#user-flow)__
------ [Client File Structure](#client-file-structure)__
------ [Server Architecture](#server-architecture)__
------ [Database Schema](#database-schema)__
------ [Local API Routes](#local-api-routes)__
------ [Third-Party API Interactions](#third-party-api-interactions)__
------ [Styling](#styling)__
+-- [User Flow](#user-flow)__
+-- [Client File Structure](#client-file-structure)__
+-- [Server Architecture](#server-architecture)__
+-- [Database Schema](#database-schema)__
+-- [Local API Routes](#local-api-routes)__
+-- [Third-Party API Interactions](#third-party-api-interactions)__
+-- [Styling](#styling)__
 4. [Team](#team)__
 6. [Contributing](#contributing)__
 
@@ -205,7 +205,7 @@ The pictures below show the the urls, methods, purpose, and data received back f
 ####__LittleBits API__
 The sequence diagram below shows how we use the LittleBits API for three actions: pinging the device on setup, toggling the device (host), and toggling the device a second time from the worker (guest). 
 
-####_Coinbase API__
+####__Coinbase API__
 The diagram also shows the sequence for Coinbase O-Auth in our application.
 
 ![kinectsitexternalapisequencediagram](https://cloud.githubusercontent.com/assets/5761911/15415229/2ecaca7c-1df6-11e6-92ee-917fb12975c6.png)
