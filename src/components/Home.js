@@ -19,7 +19,7 @@ export const Home = () => (
       </video>
     </div>
     <div className="home-container row">
-      <div className="medium-6 medium-offset-6 columns ">
+      <div className="small-10 small-offset-1 medium-6 medium-offset-5 columns">
         <Card
           className="card"
           style={{

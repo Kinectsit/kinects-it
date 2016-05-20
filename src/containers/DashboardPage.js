@@ -37,15 +37,21 @@ export class DashboardPage extends React.Component {
   render() {
     if (this.props.appState.isHost) {
       return (
-        <DashboardHost appState={this.props.appState} actions={this.props.actions} />
+        <div className="row">
+          <DashboardHost appState={this.props.appState} actions={this.props.actions} />
+        </div>
       );
     }
     return (
-      <DashboardGuest
-        appState={this.props.appState}
-        authState={this.props.authState}
-        actions={this.props.actions}
-      />
+      <div className="row">
+        <div className="medium-8 medium-centered columns">
+          <DashboardGuest
+            appState={this.props.appState}
+            authState={this.props.authState}
+            actions={this.props.actions}
+          />
+        </div>
+      </div>
     );
   }
 }

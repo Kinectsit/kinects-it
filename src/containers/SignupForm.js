@@ -31,6 +31,14 @@ class SignupForm extends React.Component {
     };
   }
 
+  componentWillMount() {
+    $('#app').addClass('blur-bg');
+  }
+
+  componentWillUnmount() {
+    $('#app').removeClass('blur-bg');
+  }
+
   onUserTypeChange(event) {
     if (event.target.value === 'guest') {
       this.setState({
@@ -122,23 +130,24 @@ class SignupForm extends React.Component {
   render() {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
-    console.log(browserHistory);
     return (
       <div>
         {spinner}
         <Paper style={styles.paperStyle}>
           <div className="row">
-            <FlatButton
-              className="large-8 offset-large-2 columns"
-              label="Sign Up With Coinbase"
-              backgroundColor="#2b71b1"
-              hoverColor="#18355C"
-              linkButton
-              href="/api/v1/auth/coinbase"
-              style={{ color: 'white' }}
-              secondary
-              icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
-            />
+            <div className="medium-8 medium-offset-2 small-12 columns">
+              <FlatButton
+                className="expanded button"
+                label="Sign Up With Coinbase"
+                backgroundColor="#2b71b1"
+                hoverColor="#18355C"
+                linkButton
+                href="/api/v1/auth/coinbase"
+                style={{ color: 'white' }}
+                secondary
+                icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+              />
+            </div>
           </div>
           <Formsy.Form
             onValid={() => this.enableButton()}
@@ -210,6 +219,7 @@ class SignupForm extends React.Component {
             }
             <div style={styles.center}>
               <FlatButton
+                className="expanded button"
                 style={styles.submitStyle}
                 type="submit"
                 label="Submit"

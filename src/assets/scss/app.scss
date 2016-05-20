@@ -10,7 +10,7 @@
 */
 @import '/settings';
 @import 'foundation';
-@include foundation-everything(true);
+@include foundation-everything;
 
 $kinectsit-palette: (
   text-color: #FFFFFF,
@@ -22,10 +22,19 @@ $kinectsit-palette: (
 );
 
 #app {
-  height: 100%;
-  padding-top: 8%;
-  background-image: url('http://localhost:3001/assets/images/videoframeblur.png');
-  background-image-size: cover;
+  padding-top:65px;
+  min-height:550px;
+  @include breakpoint(medium) {
+    // All CSS in here goes inside the media query
+    min-height: 800px;
+  }
+  &.blur-bg{
+    background: url('http://localhost:3001/assets/images/videoframeblur.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 }
 
 .app-container {
