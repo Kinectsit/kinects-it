@@ -158,13 +158,14 @@ export class DevicePage extends React.Component {
       const eventType = event.data.split('|')[0];     // "coinbase_payment_complete"
       if (eventType === 'coinbase_payment_complete') {
         console.log('Successful payment, toggle device');
-
         this.setState({ readyPayment: false });
         this.toggleDevice(this.state.deviceState);
       } else if (eventType === 'coinbase_payment_mispaid') {
         /* output error */
+        this.setState({ readyPayment: false });
         console.log('Mispayment made');
       } else if (eventType === 'coinbase_payment_expired') {
+        this.setState({ readyPayment: false });
         console.log('Mispayment made');
       } else {
         // Do something else, or ignore
@@ -281,7 +282,7 @@ export class DevicePage extends React.Component {
 
     let formDisplay = <h2>This device is currently active!</h2>;
 
-    if (!this.props.appState.featured.isactive || (this.state.deviceActive && !this.state.readyPayment)) {
+    if (!this.props.appState.featured.isactive && !this.state.readyPayment) {
       formDisplay = (
         <Paper style={styles.paperStyle}>
           <Formsy.Form
