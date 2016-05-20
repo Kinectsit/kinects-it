@@ -34,5 +34,6 @@ export default (
     <Route path="/device" component={requireAuthentication(DevicePage)} />
     <Route path="/choose-role" component={requireAuthentication(ChooseRolePage)} />
     <Route path="/logout" component={requireAuthentication(Logout)} />
+    <Route path="*" component={requireAuthentication(DashboardPage)} />
   </Route>
 );

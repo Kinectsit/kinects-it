@@ -14,6 +14,7 @@ import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/li
 import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
+import { browserHistory } from 'react-router';
 import moment from 'moment';
 import $ from 'jquery';
 
@@ -32,7 +33,7 @@ export class DevicePage extends React.Component {
       error: '',
       totalCost: 0,
       totalSpent: 0,
-      time: 0,
+      time: 6000,
       units: 0,
       transactions: [],
       spinner: false,
@@ -42,6 +43,12 @@ export class DevicePage extends React.Component {
       readyPayment: false,
       deviceState: '',
     };
+  }
+
+  componentWillMount() {
+    if (!this.props.appState.featured.id) {
+      browserHistory.push('/dashboard');
+    }
   }
 
   componentDidMount() {
@@ -152,7 +159,7 @@ export class DevicePage extends React.Component {
     console.log('Im in event: ', event);
     if (event.origin === 'https://www.coinbase.com') {
       const eventType = event.data.split('|')[0];     // "coinbase_payment_complete"
-      const eventId = event.data.split('|')[1];     // ID for this payment type
+      // const eventId = event.data.split('|')[1];     // ID for this payment type
       if (eventType === 'coinbase_payment_complete') {
         console.log('Successful payment, toggle device');
         this.toggleDevice(this.state.deviceState);

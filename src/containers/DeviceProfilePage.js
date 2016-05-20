@@ -11,6 +11,7 @@ import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import { Card, CardTitle } from 'material-ui/Card';
+import { browserHistory } from 'react-router';
 import moment from 'moment';
 import $ from 'jquery';
 
@@ -24,6 +25,12 @@ export class DeviceProfilePage extends React.Component {
       totalEarned: 0,
       spinner: false,
     };
+  }
+
+  componentWillMount() {
+    if (!this.props.appState.featured.id) {
+      browserHistory.push('/dashboard');
+    }
   }
 
   componentDidMount() {

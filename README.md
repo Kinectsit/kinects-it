@@ -10,21 +10,21 @@ With Kinects.it, you don't need to wait for your home to get smart. Just plug in
 
 ##__Table of Contents__
 
-1. [Introduction](#Introduction)__
-2. [Requirements](#requirements)__
-3. [Development](#development)__
--- [Dependencies](#dependencies)__
--- [Tasks](#tasks)__
-5. [Resources](#resources)__
--- [User Flow](#user-flow)__
--- [Client File Structure](#client-file-structure)__
--- [Server Architecture](#server-architecture)__
--- [Database Schema](#database-schema)__
--- [Local API Routes](#local-api-routes)__
--- [Third-Party API Interactions](#third-party-api-interactions)__
--- [Styling](#styling)__
-4. [Team](#team)__
-6. [Contributing](#contributing)__
+1. [Introduction](#Introduction)
+2. [Requirements](#requirements)
+3. [Development](#development)
+- [Dependencies](#dependencies)
+- [Tasks](#tasks)
+5. [Resources](#resources)
+- [User Flow](#user-flow)
+- [Client File Structure](#client-file-structure)
+- [Server Architecture](#server-architecture)
+- [Database Schema](#database-schema)
+- [Local API Routes](#local-api-routes)
+- [Third-Party API Interactions](#third-party-api-interactions)
+- [Styling](#styling)
+4. [Team](#team)
+6. [Contributing](#contributing)
 
 
 ##__Introduction__

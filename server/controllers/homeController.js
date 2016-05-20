@@ -288,8 +288,9 @@ crontab.scheduleJob('*/1 * * * *', () => {
 module.exports.removeDevice = (req, res) => {
   const device = {
     id: req.params.deviceId,
+    houseid: null,
   };
-  db.one('DELETE FROM devices WHERE id=${id} RETURNING *', device)
+  db.one('UPDATE devices SET houseid=${houseid} WHERE id=${id} RETURNING *', device)
     .then((result) => {
       logger.info(result);
       return res.json(result);
