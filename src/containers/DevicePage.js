@@ -17,6 +17,9 @@ import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
 import $ from 'jquery';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
+import { List, ListItem } from 'material-ui/List';
+import FontIcon from 'material-ui/FontIcon';
 
 export class DevicePage extends React.Component {
 
@@ -284,7 +287,7 @@ export class DevicePage extends React.Component {
 
     if (!this.props.appState.featured.isactive && !this.state.readyPayment) {
       formDisplay = (
-        <Paper style={styles.paperStyle}>
+        <Paper style={styles.paperStyle} className="transaction-form paper">
           <Formsy.Form
             onValid={() => this.enableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
@@ -357,37 +360,61 @@ export class DevicePage extends React.Component {
 
     return (
       <div>
-        <h2>How much time would you like to use the {this.props.appState.featured.name}?</h2>
+        <h2>Enable Device</h2>
         {spinner}
-        <h3>This device is: {this.props.appState.featured.description}</h3>
-        <h2> You have spent ${this.state.totalSpent} on this device</h2>
-        {formDisplay}
-        {this.state.readyPayment &&
-          <iframe
-            id={this.state.checkoutFrameId}
-            src={this.state.checkoutFrameSrc}
-            style={
-              {
-                width: '460px',
-                height: '350px',
-                border: 'none',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+
+        <Card className="card header-card device-header">
+          <CardHeader title={this.props.appState.featured.name} className="card-header" />
+          <CardText>
+            <List className="list">
+              <Subheader>Device Description</Subheader>
+              <ListItem
+                className="list-item"
+                primaryText={this.props.appState.featured.description}
+                leftAvatar={<FontIcon className="material-icons">description</FontIcon>}
+              />
+              <Subheader>Total Spent</Subheader>
+              <ListItem
+                className="list-item"
+                primaryText={'$'.concat(this.state.totalSpent)}
+                leftAvatar={<FontIcon className="material-icons">highlight</FontIcon>}
+              />
+            </List>
+          </CardText>
+        </Card>
+        <div>
+          {formDisplay}
+          {this.state.readyPayment &&
+            <iframe
+              id={this.state.checkoutFrameId}
+              src={this.state.checkoutFrameSrc}
+              style={
+                {
+                  width: '460px',
+                  height: '350px',
+                  border: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+                }
               }
-            }
-            allowTransparency="true"
-            frameBorder="0"
-          ></iframe>
-        }
-        <FormMessageDialogue
-          ref={(node) => { this.messageDialogue = node; }}
-          title={this.state.error}
-          failure
-        >
-          <p>{this.state.details}</p>
-        </FormMessageDialogue>
-        {transactions}
-        {newchart}
-        {chart}
+              allowTransparency="true"
+              frameBorder="0"
+            ></iframe>
+          }
+          <FormMessageDialogue
+            ref={(node) => { this.messageDialogue = node; }}
+            title={this.state.error}
+            failure
+          >
+            <p>{this.state.details}</p>
+          </FormMessageDialogue>
+          <div className="row">
+            <div className="medium-10 medium-centered columns">
+              {transactions}
+              {newchart}
+              {chart}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
