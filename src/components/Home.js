@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import kinectsitTheme from '../assets/kinectsitTheme';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import SignupForm from '../containers/SignupForm';
 
 export const Home = () => (
   <div>
