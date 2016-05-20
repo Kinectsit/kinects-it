@@ -17,6 +17,7 @@ import Subheader from 'material-ui/Subheader';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
 import $ from 'jquery';
+import kinectsitTheme from '../assets/kinectsitTheme';
 
 export class DeviceProfilePage extends React.Component {
 
@@ -149,13 +150,20 @@ export class DeviceProfilePage extends React.Component {
     }
     if (this.props.appState.featured.paidusage === true) {
       toggle = (
-        <div>
-          <p>Your guest has paid to use the device</p>
-          <Toggle
-            disabled={'true'}
-            onToggle={() => this.toggleDevice()}
-            defaultToggled={this.props.appState.featured.isactive}
-          />
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ marginBottom: '0px' }}>Your guest has paid to use the device</p>
+          <FontIcon
+            className="material-icons"
+            style={{ fontSize: '4em' }}
+            color={kinectsitTheme.palette.warning1Color}
+          >
+          warning
+          </FontIcon>
+          <Subheader
+            style={{ color: kinectsitTheme.palette.darkTextColor, lineHeight: '0px' }}
+          >
+          It cannot be toggled until it is complete
+          </Subheader>
         </div>
       );
     }
@@ -192,14 +200,13 @@ export class DeviceProfilePage extends React.Component {
         </Card>
         {spinner}
         <div className="row">
-          <div className="medium-6 large-6 centered-medium columns">
+          <div className="medium-6 columns">
             {toggle}
           </div>
+          <div className="medium-6 columns">
+            <DeleteDeviceButton device={this.props.appState.featured} />
+          </div>
         </div>
-        <h4 className="header"> </h4>
-        <h2>Recent Guest Transactions</h2>
-        {chart}
-        <DeleteDeviceButton device={this.props.appState.featured} />
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -207,7 +214,11 @@ export class DeviceProfilePage extends React.Component {
         >
           <p>{this.state.details}</p>
         </FormMessageDialogue>
-        {transactions}
+        <div className="chart-container">
+          <h2>Recent Guest Transactions</h2>
+          {chart}
+          {transactions}
+        </div>
       </div>
     );
   }
