@@ -4,7 +4,7 @@
 
 Your appliances are lazy. Put them to work with Kinects.it.
 
-With Kinects.it you don't need to wait for your home to get smart. Just plug in and get started. No more hunting for quarters or surprises on your electricity bill.
+With Kinects.it, you don't need to wait for your home to get smart. Just plug in and get started. No more hunting for quarters or surprises on your electricity bill.
 
 #### Master branch build status: ![](https://travis-ci.org/Kinectsit/kinects-it.svg?branch=master)
 
@@ -21,7 +21,7 @@ With Kinects.it you don't need to wait for your home to get smart. Just plug in 
     c. [Server Architecture](#server-architecture)
     d. [Database Schema](#database-schema)
     e. [Local API Routes](#local-api-routes)
-    f. [External API Interactions](#external-api-interactions)
+    f. [Third-Party API Interactions](#third-party-api-interactions)
     g. [Styling](#styling)
 4. [Team](#team)
 6. [Contributing](#contributing)
@@ -162,7 +162,7 @@ Redux was the missing piece we need to build out our file structure. It allowed 
 
 ###__Server Architecture__ 
 
-Currently, there is one server, which interacts with two APIs, and two databases. Postgres holds relational and persisent data (schema below), and Redis stores the expiration time for devices in use by a guest. 
+Currently, there is one server, that acts as the API to the client. It also interacts with two third-party APIs, and two databases. Postgres holds relational data (schema below), and Redis stores the expiration time for devices in use by a guest. 
 
 ####__Why We Chose Node__
 Our front-end was written using JavaScript so we chose Node to keep the language consistent between both sides of the application - this allowed the development team to work on both sides of the application. We also used Express to abstract away unncessary complexity, particulary with parsing requests and responses.
@@ -191,7 +191,7 @@ We needed to run a cron job (once per minute) to deal with toggling off devices 
 ###__Local API Routes__
 
 ####__Primary Interactions__
-The pictures below show the the urls, methods, purpose, and data received back from our primary server API requests. 
+The pictures below show the the urls, methods, purpose, and data received back from our client-to-server API requests. 
 
 ![kinectsitlocalusersapi](https://cloud.githubusercontent.com/assets/5761911/15413749/557e183a-1de8-11e6-8aa7-3e41d95cf74c.png)
 
@@ -200,10 +200,13 @@ The pictures below show the the urls, methods, purpose, and data received back f
 ![kinectsitlocalhomesapi](https://cloud.githubusercontent.com/assets/5761911/15413748/557dfbde-1de8-11e6-9a42-2d03fc0a51f0.png)
 
 
-###__External API Interactions__
+###__Third-Party API Interactions__
 
 ####__LittleBits API__
-The sequence diagram below shows how we use the LittleBits API for three actions: pinging the device on setup, toggling the device (host), and toggling the device a second time from the worker (guest). It also shows the flow for Coinbase O-Auth.
+The sequence diagram below shows how we use the LittleBits API for three actions: pinging the device on setup, toggling the device (host), and toggling the device a second time from the worker (guest). 
+
+####_Coinbase API__
+The diagram also shows the sequence for Coinbase O-Auth in our application.
 
 ![kinectsitexternalapisequencediagram](https://cloud.githubusercontent.com/assets/5761911/15415229/2ecaca7c-1df6-11e6-92ee-917fb12975c6.png)
 
@@ -211,7 +214,6 @@ The sequence diagram below shows how we use the LittleBits API for three actions
 ###__Styling__
 
 ####__Tech Stack__
-The primary tools we used for styling are:
 1. Material UI (for components) <http://www.material-ui.com/#/>
 2. Foundation (primarily for the grid system) <http://foundation.zurb.com/grid.html>
 3. SASS <http://sass-lang.com/> 
@@ -225,10 +227,9 @@ The link below contains the original design files, which also include integrated
 
 
 ##__Team__
-
-Product Owner: Bucko Perley
-Scrum Master: Bryan Newby
-Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
+- Product Owner: Bucko Perley
+- Scrum Master: Bryan Newby
+- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
 
 
 ##__Contributing__
