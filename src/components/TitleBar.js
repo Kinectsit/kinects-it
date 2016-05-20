@@ -27,7 +27,7 @@ class TitleBar extends React.Component {
         <AppBar
           title="Kinects.It"
           onLeftIconButtonTouchTap={() => this.handleToggle()}
-          style={{ position: 'fixed', textAlign: 'center' }}
+          style={{ position: 'fixed', textAlign: 'center', top: 0 }}
           titleStyle={{ marginLeft: '-6%' }}
         />
         <Drawer

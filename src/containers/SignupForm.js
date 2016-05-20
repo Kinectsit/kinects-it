@@ -13,6 +13,7 @@ import styles from '../assets/formStyles';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import { browserHistory } from 'react-router';
+import FontIcon from 'material-ui/FontIcon';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -121,11 +122,24 @@ class SignupForm extends React.Component {
   render() {
     let spinner = this.state.spinner ?
       <div className="loading"><CircularProgress size={2} /></div> : '';
-
+    console.log(browserHistory);
     return (
       <div>
         {spinner}
         <Paper style={styles.paperStyle}>
+          <div className="row">
+            <FlatButton
+              className="large-8 offset-large-2 columns"
+              label="Sign Up With Coinbase"
+              backgroundColor="#2b71b1"
+              hoverColor="#18355C"
+              linkButton
+              href="/api/v1/auth/coinbase"
+              style={{ color: 'white' }}
+              secondary
+              icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+            />
+          </div>
           <Formsy.Form
             onValid={() => this.enableButton()}
             onValidSubmit={(data) => this.submitForm(data)}

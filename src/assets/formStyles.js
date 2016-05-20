@@ -1,23 +1,23 @@
-import { orange500, blue500 } from 'material-ui/styles/colors';
+import { orange500 } from 'material-ui/styles/colors';
+import kinectsitTheme from './kinectsitTheme';
 
 export default {
   errorStyle: {
     color: orange500,
   },
   underlineStyle: {
-    borderColor: orange500,
+    borderColor: kinectsitTheme.palette.accent1Color,
   },
   floatingLabelStyle: {
-    color: orange500,
+    color: kinectsitTheme.palette.accent1Color,
   },
   floatingLabelFocusStyle: {
-    color: blue500,
+    color: kinectsitTheme.palette.accent1Color,
   },
   fieldStyles: {
     width: '100%',
   },
   paperStyle: {
-    width: '50%',
     margin: 'auto',
     padding: 20,
   },
