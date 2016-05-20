@@ -65,8 +65,8 @@ export class SetupDevicePage extends React.Component {
     const apiPath = `/api/v1/homes/${house}/devices`;
     this.setState({ spinner: true });
 
-    $.post(apiPath, device, () => {
-      this.props.actions.setFeatured(device);
+    $.post(apiPath, device, (res) => {
+      this.props.actions.setFeatured(res);
       browserHistory.push('/device-profile');
     })
     .fail((error) => {

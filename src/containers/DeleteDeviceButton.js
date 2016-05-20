@@ -23,8 +23,7 @@ export class DeleteDeviceButton extends React.Component {
       crossDomain: true,
       method: 'DELETE',
       contentType: 'application/json; charset=utf-8',
-      success: (result) => {
-        console.log('result is ', result);
+      success: () => {
         // send user to dashboard and new list of devices will populate
         browserHistory.push('/dashboard');
       },
