@@ -10,7 +10,10 @@ export const DashboardGuest = (props) => (
       <h4 style={{ textAlign: 'center' }}> Welcome Home! </h4>
     </div>
     <div className="row">
-      <Paper zDepth={1} className="dashboard-title medium-10 medium-centered columns">
+      <Paper
+        zDepth={1}
+        className="dashboard-title medium-10 medium-centered columns"
+      >
         <h2>
           <FontIcon
             className="material-icons"
@@ -22,12 +25,14 @@ export const DashboardGuest = (props) => (
         </h2>
       </Paper>
     </div>
-    <LeaveHomeButton
-      appState={props.appState}
-      authState={props.authState}
-      actions={props.actions}
-    />
     <DeviceList appState={props.appState} actions={props.actions} />
+    <div className="row">
+      <LeaveHomeButton
+        appState={props.appState}
+        authState={props.authState}
+        actions={props.actions}
+      />
+    </div>
   </div>
 );
 

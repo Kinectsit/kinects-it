@@ -13,12 +13,14 @@
 @include foundation-everything;
 
 $kinectsit-palette: (
-  text-color: #FFFFFF,
-  primary: #DD2C00,
-  secondary: #1585cf,
-  success: #3adb76,
-  warning: #ffae00,
-  alert: #ec5840,
+  text-color: #F5F5F5,
+  dark-text-color: #212121,
+  primary: #0288D1,
+  secondary: #E64A19,
+  success: #43A047,
+  warning: #B71C1C,
+  alert: #B71C1C,
+  white: #F5F5F5,
 );
 
 #app {
@@ -40,7 +42,7 @@ $kinectsit-palette: (
 .app-container {
   .page {
     background-image: url('../videos/videoframe.png');
-    // margin-top: 60px;
+    padding-bottom: 30px;
   }
 }
 
@@ -130,6 +132,7 @@ $kinectsit-palette: (
 }
 
 /*************** Inner Pages ************/
+/******* Dashboards ******/
 .dashboard-container .guest-dasboard{
   padding-top:15px;
 }
@@ -137,12 +140,58 @@ $kinectsit-palette: (
 .dashboard-title {
   text-align: center;
   position: relative;
+  border-radius: 3px;
   .material-icons {
     font-size: 100%;
     vertical-align: top;
-    padding-top: 1%;
+    padding-top: 2%;
     margin-left: 10px;
-    position: absolute;
+    position: absolute!important;
+    left:0;
   }
 } 
+
+.device-list-container {
+  h3 {
+    text-align: center;
+  }
+  .device-list {
+    margin-top:10px;
+    .device-card{
+      margin: 40px 0px;
+      padding: 10px;
+      position: relative;
+      &.active{
+        .device-button button {
+          background-color: map-get($kinectsit-palette, success)!important;
+        }
+      }
+      &.inactive{
+        .device-button button {
+          background-color: map-get($kinectsit-palette, secondary)!important;
+        }
+      }
+      .device-header{
+        padding-left: 35px!important;
+        padding-top: 5px !important;
+        span{
+          font-size: 1.2em;
+        }
+      }
+      .device-description {
+        background-color: map-get($kinectsit-palette, white)!important;
+        -moz-box-shadow:    inset 0 0 10px #000000;
+           -webkit-box-shadow: inset 0 0 10px #000000;
+           box-shadow:         inset 0 0 10px #000000;
+           .description-list span {
+              color: map-get($kinectsit-palette, dark-text-color)!important;
+           }
+      }
+      .material-icons {
+        position: absolute!important;
+        top:13px;
+      }
+    }
+  }
+}
 

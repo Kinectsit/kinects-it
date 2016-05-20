@@ -41,9 +41,15 @@ export class LeaveHomeButton extends React.Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="medium-10 medium-centered columns">
         <RaisedButton
-          className="medium-10 medium-centered columns"
+          style={
+            {
+              width: '100%',
+              backgroundColor: kinectsitTheme.palette.alert1Color,
+              padding: '10px',
+            }
+          }
           backgroundColor={kinectsitTheme.palette.alert1Color}
           label="Leave Home"
           onClick={() => (this.leaveHome())}
