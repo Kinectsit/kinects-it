@@ -5,6 +5,7 @@ import * as actions from '../actions/actions';
 import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import kinectsitTheme from '../assets/kinectsitTheme';
 
 export class LeaveHomeButton extends React.Component {
 
@@ -40,8 +41,13 @@ export class LeaveHomeButton extends React.Component {
 
   render() {
     return (
-      <div>
-        <RaisedButton label="Leave Home" onClick={() => (this.leaveHome())} />
+      <div className="row">
+        <RaisedButton
+          className="medium-10 medium-centered columns"
+          backgroundColor={kinectsitTheme.palette.alert1Color}
+          label="Leave Home"
+          onClick={() => (this.leaveHome())}
+        />
         {this.state.error}
       </div>
     );

@@ -16,7 +16,7 @@ export const App = (props) => (
   <MuiThemeProvider muiTheme={kinectsitTheme}>
     <div className="app-container">
       <TitleBar store={props.store} />
-      <div className="row medium-10 columns">
+      <div className="expanded row">
         <div className="page">
           {props.children}
         </div>

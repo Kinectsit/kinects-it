@@ -8,17 +8,39 @@
 * We can edit defaults in there directly. Or we can choose to manage these separately
 * in separate components for example
 */
-// @import '/settings';
+@import '/settings';
 @import 'foundation';
 @include foundation-everything;
 
+$kinectsit-palette: (
+  text-color: #FFFFFF,
+  primary: #DD2C00,
+  secondary: #1585cf,
+  success: #3adb76,
+  warning: #ffae00,
+  alert: #ec5840,
+);
+
 #app {
-  height: 100%;
+  padding-top:65px;
+  min-height:550px;
+  @include breakpoint(medium) {
+    // All CSS in here goes inside the media query
+    min-height: 800px;
+  }
+  &.blur-bg{
+    background: url('http://localhost:3001/assets/images/videoframeblur.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 }
 
 .app-container {
   .page {
-    margin-top: 60px;
+    background-image: url('../videos/videoframe.png');
+    // margin-top: 60px;
   }
 }
 
@@ -48,43 +70,79 @@
 
 /********* HomePage *********/
 .fullscreen-bg {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-  z-index: -100;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
 }
 
 .fullscreen-bg__video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-@media (min-aspect-ratio: 16/9) {
-  .fullscreen-bg__video {
-    height: 300%;
-    top: -100%;
-  }
-}
-
-@media (max-aspect-ratio: 16/9) {
-  .fullscreen-bg__video {
-    width: 300%;
-    left: -100%;
-  }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
 }
 
 @media (max-width: 767px) {
-  .fullscreen-bg {
-    background: url('../videos/videoframe.png') center center / cover no-repeat;
-  }
+    .fullscreen-bg {
+        background: url('/assets/videos/videoframe.png') center center / cover no-repeat;
+    }
 
-  .fullscreen-bg__video {
-    display: none;
+    .fullscreen-bg__video {
+        display: none;
+    }
+}
+
+.home-container {
+  .card {
+    margin-top: 20%;
+    text-align: center;
+    padding-bottom: 0px;
+    padding: .5em 2em 1.5em;
+    padding-top: .5em;
+    position: relative;
+    bottom: 10%;
+    text-shadow: 1px 1px 2px black;
+    font-family: $body-font-family!important;
+    @include breakpoint(large up) {
+        // All CSS in here goes inside the media query
+        position: absolute;
+        bottom: 10%;
+        right: 10%;
+        width: 45%;
+      }
+    a{
+      :hover{
+        border: 0px!important;
+      }
+    }
   }
 }
+
+/*************** Inner Pages ************/
+.dashboard-container .guest-dasboard{
+  padding-top:15px;
+}
+
+.dashboard-title {
+  text-align: center;
+  position: relative;
+  .material-icons {
+    font-size: 100%;
+    vertical-align: top;
+    padding-top: 1%;
+    margin-left: 10px;
+    position: absolute;
+  }
+} 
+

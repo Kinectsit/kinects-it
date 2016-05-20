@@ -13,6 +13,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
 import $ from 'jquery';
 import FontIcon from 'material-ui/FontIcon';
+import { Card, CardTitle } from 'material-ui/Card';
 
 export class LoginPage extends React.Component {
   constructor(props) {
@@ -28,6 +29,14 @@ export class LoginPage extends React.Component {
       canSubmit: true,
       error: '',
     };
+  }
+
+  componentWillMount() {
+    $('#app').addClass('blur-bg');
+  }
+
+  componentWillUnmount() {
+    $('#app').removeClass('blur-bg');
   }
 
   enableButton() {
@@ -112,20 +121,36 @@ export class LoginPage extends React.Component {
       <div className="loading"><CircularProgress size={2} /></div> : '';
 
     return (
-      <div>
-        <h2>Login to your account</h2>
-        <FlatButton
-          label="Login With Coinbase"
-          backgroundColor="#2b71b1"
-          hoverColor="#18355C"
-          linkButton
-          href="/api/v1/auth/coinbase"
-          style={{ color: 'white' }}
-          secondary
-          icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
-        />
+      <div className="medium-8 medium-centered columns">
+        <Card
+          className="card"
+          style={{
+            boxShadow: 'none',
+            textAlign: 'center',
+            backgroundColor: 'none',
+          }}
+        >
+          <CardTitle
+            title="Login to your account"
+          />
+        </Card>
         {spinner}
-        <Paper style={styles.paperStyle}>
+        <Paper style={styles.paperStyle} className="column align-self-middle">
+          <div className="row">
+            <div className="medium-8 medium-offset-2 small-12 columns">
+              <FlatButton
+                className="expanded button"
+                label="Login With Coinbase"
+                backgroundColor="#2b71b1"
+                hoverColor="#18355C"
+                linkButton
+                href="/api/v1/auth/coinbase"
+                style={{ color: 'white' }}
+                secondary
+                icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+              />
+            </div>
+          </div>
           <Formsy.Form
             onValid={() => this.enableButton()}
             onValidSubmit={(data) => this.login(data)}
@@ -153,6 +178,7 @@ export class LoginPage extends React.Component {
             />
             <div style={styles.center}>
               <FlatButton
+                className="expanded button"
                 style={styles.submitStyle}
                 type="submit"
                 label="Login"
