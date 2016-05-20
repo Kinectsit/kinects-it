@@ -105,8 +105,10 @@ npm install
 
 Set up Postgres database to handle persistent data:
 ```sh
-createdb kinectdb -U postgres
 psql -U postgres -d kinectdb -f ./server/config/schema.sql
+
+// to use dummy data in application
+node dummyData.js
 ```
 
 Set up Redis server to handle device usage expiration times:
@@ -206,6 +208,41 @@ We needed to run a cron job (once per minute) to deal with toggling off devices 
 5. The DEVICE_TRANSACTIONS table holds ALL device transactions, so dealing with this data is not as efficient as we'd like. The backlog has an open issue for creating a query cache.
 
 ![kinectsitdatabaseshema](https://cloud.githubusercontent.com/assets/5761911/15413746/5557457a-1de8-11e6-9bd9-f3576a0967ff.png)
+
+####__Useful Database Commands__
+To check the content in your databases while in development, use the following commands:
+
+```sh
+//// FROM POSTGRES TERMINAL
+
+// show all databases
+\list
+
+// connect to the database used in this project
+\c kinectdb
+
+// show all tables in that database
+\dt
+
+// show all data in the table called 'device transactions' 
+// don't forget the semi-colon!
+select * from device_transactions;
+```
+
+```sh
+//// FROM REDIS TERMINAL
+
+// will return the value of all items stored
+// this is the hardware key for the devices waiting to be toggled off
+zrangebyscore device -inf +inf
+
+// will return the score for all items stored
+// this is the 'expiration time' for each device - in milliseconds
+// the worker is checking every minute if this time is older than the current time
+// once it is, the worker will send a call to toggle the hardware
+// and will delete this key-value set from this database
+zrem device [deviceHardwareKey]
+```
 
 
 ###__Local API Routes__
