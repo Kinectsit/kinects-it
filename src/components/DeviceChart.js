@@ -15,19 +15,36 @@ export class DeviceChart extends React.Component {
   }
 
   componentWillMount() {
-    const arrayLength = this.props.transactions.length - 1;
-    const chartLength = arrayLength - (Math.min(this.props.transactions.length, 5));
-    const values = [];
-    for (let i = arrayLength; i > chartLength; i--) {
-      const newObj = {};
-      const time = this.props.transactions[i].timestamp;
-      const formattedTime = moment(time).format('M/D, h:mm');
-      newObj.x = formattedTime;
-      newObj.y = this.props.transactions[i].amountspent;
-      values.push(newObj);
+    const now = Date.now();
+    const thisMonth = moment(now).format('MM');
+    const lastFiveMonths = [];
+
+    // find the last five months, and push the month into an array
+    for (let i = thisMonth; i > thisMonth - 5; i--) {
+      if (i > 0) {
+        const currentMonth = JSON.stringify(i);
+        const displayMonth = moment(currentMonth).format('MMM');
+        lastFiveMonths.push({ x: displayMonth, y: 0 });
+      }
+    }
+    if (thisMonth < 5) {
+      const neg = 5 - thisMonth;
+      for (let j = 12; j > 12 - neg; j--) {
+        const currentMonth = JSON.stringify(j);
+        const displayMonth = moment(currentMonth).format('MMM');
+        lastFiveMonths.push({ x: displayMonth, y: 0 });
+      }
+    }
+    for (let k = 0; k < this.props.transactions.length; k++) {
+      const month = moment(this.props.transactions[k].timestamp).format('MMM');
+      for (let l = 0; l < lastFiveMonths.length; l++) {
+        if (month === lastFiveMonths[l].x) {
+          lastFiveMonths[l].y += parseInt(this.props.transactions[k].amountspent, 10);
+        }
+      }
     }
     this.setState({
-      barData: [{ values }],
+      barData: [{ values: lastFiveMonths }],
     });
   }
 
