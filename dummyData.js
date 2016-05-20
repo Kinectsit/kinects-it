@@ -99,7 +99,7 @@ User.create(guestUser)
     const newDevice2 = {
       houseId: homeId,
       name: 'Dryer',
-      description: 'New Whirlpool dryer.  A standard washing cycle is 60 minutes.',
+      description: 'New Whirlpool dryer.  A standard drying cycle is 60 minutes.',
       isactive: true,
       paidusage: true,
       deviceId: '11234lj234',
