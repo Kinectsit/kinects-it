@@ -1,4 +1,4 @@
-#__KINECTS.IT__  
+#__Kinects.It__  
 
 ##__An application for homeowners to rent their appliances to guests.__
 
