@@ -166,7 +166,6 @@ export class DeviceProfilePage extends React.Component {
             boxShadow: 'none',
             textAlign: 'center',
             backgroundColor: 'none',
-            textColor: 'black',
           }}
         >
           <CardTitle

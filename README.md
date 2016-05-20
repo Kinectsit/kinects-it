@@ -135,6 +135,26 @@ module.exports = {
 };
 ```
 
+##__Team__
+- Product Owner: Bucko Perley
+- Scrum Master: Bryan Newby
+- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
+
+
+##__Contributing__
+
+To contribute, create a fork on a pull request on a feature branch. We will do our best to review pull requests in a timely fashion. 
+
+
+###__Backlog__
+
+1. Add a third database to store device transaction query data (stored for lookup per device, and/or by user).
+2. Add the ability for users to upload photos for devices, and/or use the device category table in the database.
+3. Add the ability for users to be both a host and a guest.
+4. Allow hosts or guests to be in multiple houses at once.
+5. Integrate additional payment options.
+
+
 ##__Resources__
 
 ###__User Flow__
@@ -224,24 +244,4 @@ The diagram also shows the sequence for Coinbase O-Auth in our application.
 The link below contains the original design files, which also include integrated payment dashboards (in backlog). View all of the mockups in the image below here: <https://goo.gl/IhnrhM>
 
 ![kinectsmockupfolderview](https://cloud.githubusercontent.com/assets/5761911/15413743/5372f880-1de8-11e6-9d82-bd1006400bcf.png)
-
-
-##__Team__
-- Product Owner: Bucko Perley
-- Scrum Master: Bryan Newby
-- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
-
-
-##__Contributing__
-
-To contribute, create a fork on a pull request on a feature branch. We will do our best to review pull requests in a timely fashion. 
-
-
-###__Backlog__
-
-1. Add a third database to store device transaction query data (stored for lookup per device, and/or by user).
-2. Add the ability for users to upload photos for devices, and/or use the device category table in the database.
-3. Add the ability for users to be both a host and a guest.
-4. Allow hosts or guests to be in multiple houses at once.
-5. Integrate additional payment options.
 
