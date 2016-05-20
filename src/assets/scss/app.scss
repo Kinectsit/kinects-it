@@ -27,7 +27,7 @@ $kinectsit-palette: (
 #app {
   padding-top:65px;
   min-height:550px;
-  // background-color: map-get($kinectsit-palette, white);
+  // background-color: map-get($kinectsit-palette, lightgrey);
   @include breakpoint(medium) {
     // All CSS in here goes inside the media query
     min-height: 800px;
