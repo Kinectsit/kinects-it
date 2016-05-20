@@ -1,15 +1,32 @@
 import React, { PropTypes } from 'react';
 import { DeviceList } from './DeviceList';
 import { LeaveHomeButton } from '../containers/LeaveHomeButton';
+import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
 
 export const DashboardGuest = (props) => (
   <div>
-    <h1>{props.appState.house.name}</h1>
-    <LeaveHomeButton
-      appState={props.appState}
-      authState={props.authState}
-      actions={props.actions}
-    />
+    <div className="row">
+      <h4 style={{ textAlign: 'center' }}> Welcome Home! </h4>
+    </div>
+    <div className="row">
+      <Paper zDepth={1} className="dashboard-title medium-10 medium-centered columns">
+        <h2>
+          <FontIcon
+            className="material-icons"
+            style={{ fontSize: '100%' }}
+          >
+          home
+          </FontIcon>
+          {props.appState.house.name}
+        </h2>
+      </Paper>
+    </div>
+      <LeaveHomeButton
+        appState={props.appState}
+        authState={props.authState}
+        actions={props.actions}
+      />
     <DeviceList appState={props.appState} actions={props.actions} />
   </div>
 );

@@ -43,8 +43,8 @@ export class DashboardPage extends React.Component {
       );
     }
     return (
-      <div className="row">
-        <div className="medium-8 medium-centered columns">
+      <div className="row dashboard-container">
+        <div className="medium-8 medium-centered columns guest-dashboard dashboard">
           <DashboardGuest
             appState={this.props.appState}
             authState={this.props.authState}

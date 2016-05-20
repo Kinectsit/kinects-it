@@ -128,3 +128,21 @@ $kinectsit-palette: (
     }
   }
 }
+
+/*************** Inner Pages ************/
+.dashboard-container .guest-dasboard{
+  padding-top:15px;
+}
+
+.dashboard-title {
+  text-align: center;
+  position: relative;
+  .material-icons {
+    font-size: 100%;
+    vertical-align: top;
+    padding-top: 1%;
+    margin-left: 10px;
+    position: absolute;
+  }
+} 
+

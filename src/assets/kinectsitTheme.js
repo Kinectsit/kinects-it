@@ -35,6 +35,7 @@ exports.default = {
     accent1Color: _colors.deepOrangeA700,
     accent2Color: _colors.deepOrangeA700,
     accent3Color: _colors.deepOrangeA700,
+    alert1Color: _colors.red900,
     textColor,
     alternateTextColor: '#303030',
     canvasColor: '#303030',
