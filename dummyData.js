@@ -35,7 +35,7 @@ const randomDate = () => {
 };
 
 const randomSpend = () => {
-  return Math.random() * 20;
+  return Math.random() * 40;
 };
 
 const randomTime = () => {
