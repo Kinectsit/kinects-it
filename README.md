@@ -10,21 +10,21 @@ With Kinects.it, you don't need to wait for your home to get smart. Just plug in
 
 ##__Table of Contents__
 
-1. [Introduction](#Introduction)
-2. [Requirements](#requirements)
-3. [Development](#development)
-    a. [Dependencies](#dependencies)
-    b. [Tasks](#tasks)
-5. [Resources](#resources)
-    a. [User Flow](#user-flow)
-    b. [Client File Structure](#client-file-structure)
-    c. [Server Architecture](#server-architecture)
-    d. [Database Schema](#database-schema)
-    e. [Local API Routes](#local-api-routes)
-    f. [Third-Party API Interactions](#third-party-api-interactions)
-    g. [Styling](#styling)
-4. [Team](#team)
-6. [Contributing](#contributing)
+1. [Introduction](#Introduction)__
+2. [Requirements](#requirements)__
+3. [Development](#development)__
+----- [Dependencies](#dependencies)__
+----- [Tasks](#tasks)__
+5. [Resources](#resources)__
+----- [User Flow](#user-flow)__
+----- [Client File Structure](#client-file-structure)__
+----- [Server Architecture](#server-architecture)__
+----- [Database Schema](#database-schema)__
+----- [Local API Routes](#local-api-routes)__
+----- [Third-Party API Interactions](#third-party-api-interactions)__
+----- [Styling](#styling)__
+4. [Team](#team)__
+6. [Contributing](#contributing)__
 
 
 ##__Introduction__
@@ -125,7 +125,7 @@ npm run build
 node server/server.js
 ```
 
-Create a config.js file at the root level to store your API keys. You can find your access token for your Cloudbit by following these instructions: <http://developers.littlebitscloud.cc/access>, and you can get your Coinbase keys from this link: <https://www.coinbase.com/settings/api​>. Make sure you add this to your .gitignore file if it isn't alraedy.
+Create a config.js file at the root level to store your API keys. You can find your access token for your Cloudbit by following these instructions: <http://developers.littlebitscloud.cc/access>, and you can get your Coinbase keys from this link: <https://www.coinbase.com/settings/api​>. Make sure you add this to your .gitignore file if it isn't already.
 
 ```sh
 module.exports = {
