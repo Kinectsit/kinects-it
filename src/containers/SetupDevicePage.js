@@ -123,7 +123,7 @@ export class SetupDevicePage extends React.Component {
               style={styles.fieldStyles}
               floatingLabelText="Instructions for device use"
             />
-            <Subheader>How much do you want to charge per day?</Subheader>
+            <Subheader>How much do you want to charge (evaluated per hour)?</Subheader>
             <FormsyText
               name="cost"
               validations="isInt" // add validation for number

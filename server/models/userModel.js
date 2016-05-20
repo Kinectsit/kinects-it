@@ -1,4 +1,4 @@
-/* eslint max-len: ["error", 250] */
+/* eslint max-len: ["error", 300] */
 /* eslint-disable arrow-body-style, strict */
 'use strict';
 
@@ -29,14 +29,16 @@ User.create = (newUser) => {
           pay.nickname = 'My Coinbase';
           pay.paymethodid = 2;
           pay.accessToken = newUser.accessToken;
+          pay.refreshToken = newUser.refreshToken;
           pay.accountid = newUser.coinbaseId;
         } else {
           pay.nickname = 'My Demo Pay Method';
           pay.paymethodid = 1;
           pay.accessToken = '';
+          pay.refreshToken = '';
           pay.accountid = '';
         }
-        return t.one('INSERT INTO user_pay_accounts(nickname, userid, paymethodid, accesstoken, accountid) VALUES(${nickname}, ${userid}, ${paymethodid}, ${accessToken}, ${accountid}) RETURNING id, nickname, paymethodid', pay)
+        return t.one('INSERT INTO user_pay_accounts(nickname, userid, paymethodid, accesstoken, refreshtoken, accountid) VALUES(${nickname}, ${userid}, ${paymethodid}, ${accessToken}, ${refreshToken}, ${accountid}) RETURNING id, nickname, paymethodid', pay)
         .then((payAccount) => {
           // need to handle if this is coming from coinbase then
           // skip until we can update the user with the host information
@@ -87,8 +89,9 @@ User.update = (updateUser) => {
   let newUserObject = updateUser;
   const returnObject = {};
   return db.tx(t => (
-    t.any('SELECT * from users where email=$1 OR name=$2', [updateUser.email, updateUser.name])
+    t.any('SELECT * from users WHERE email=$1 OR name=$2', [updateUser.email, updateUser.name])
         .then((result) => {
+          console.log('================== finding user');
           if (!result.length) {
            // if nothing is found then throw error that it doesn't exist
             return { Error: 'That user does not exist in the database. Update failed.' };
@@ -100,6 +103,7 @@ User.update = (updateUser) => {
           return newUserObject;
         })
         .then(() => {
+          console.log('===================== updating user next');
           // now we update the found user with the new user object
           return t.one('UPDATE users SET name=${name}, email=${email}, password=${password}, defaultviewhost=${defaultviewhost}, avatarurl=${avatarurl} WHERE email = ${email} RETURNING id, name, email, defaultviewhost, avatarURL', newUserObject);
         })
@@ -107,12 +111,15 @@ User.update = (updateUser) => {
           Object.assign(newUserObject, updatedUser);
           // if the user object has an access token from coinbase
           // need to save that in the datbase
+          console.log('============== check if pay accounts is coinbase and getting acct info');
+          console.log('newUserObject:', newUserObject);
           if (newUserObject.payAccount && newUserObject.payAccount === 'coinbase') {
-            return t.one('UPDATE user_pay_accounts SET accesstoken=$1, accountid=$2 WHERE userid=$3 AND paymethodid=2 RETURNING id, userid, nickname, paymethodid', [newUserObject.accessToken, newUserObject.coinbaseId, newUserObject.id]);
+            return t.one('UPDATE user_pay_accounts SET accesstoken=$1, refreshtoken=$2, accountid=$3  WHERE userid=$4 AND paymethodid=2 RETURNING id, userid, nickname, paymethodid', [newUserObject.accessToken, newUserObject.refreshToken, newUserObject.coinbaseId, newUserObject.id]);
           }
           return {};
         })
         .then(() => {
+          console.log('============== updated user now need to check if has home to update');
           // updated user now need to check if has home to update
           return t.any('SELECT * FROM users_houses WHERE userid=$1', newUserObject.id);
         })

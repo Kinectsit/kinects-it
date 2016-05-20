@@ -8,6 +8,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 // const userRouter = require('./routers/userRouter');
 const homeRouter = require('./routers/homeRouter.js');
+const notificationRouter = require('./routers/notificationRouter.js');
 const apiRouter = require('./routers/routes');
 
 // configuration ===============================================================
@@ -25,9 +26,9 @@ app.all('*', (req, res, next) => {
   next();
 });
 
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, srcPath)));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(cookieParser('kinectsit2016team3feb'));
 app.use(session({
   secret: 'kinectsit2016team3feb',
@@ -40,6 +41,7 @@ app.use(passport.session());
 // routes ======================================================================
 // load our routes and pass in our app and fully configured passport
 app.use('/api/v1/homes', homeRouter);
+app.use('/api/v1/notifications', notificationRouter);
 // app.use('/api/v1/users', userRouter);
 apiRouter(app, passport);
 

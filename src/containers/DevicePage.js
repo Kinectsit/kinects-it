@@ -9,6 +9,7 @@ import Subheader from 'material-ui/Subheader';
 import Paper from 'material-ui/Paper';
 import styles from '../assets/formStyles';
 import Formsy from 'formsy-react';
+// import FontIcon from 'material-ui/FontIcon';
 import { FormsyText, FormsyRadioGroup, FormsyRadio } from 'formsy-material-ui/lib';
 import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -35,6 +36,11 @@ export class DevicePage extends React.Component {
       units: 0,
       transactions: [],
       spinner: false,
+      checkoutFrameId: '',
+      checkoutFrameSrc: '',
+      paymentReceived: false,
+      readyPayment: false,
+      deviceState: '',
     };
   }
 
@@ -64,8 +70,55 @@ export class DevicePage extends React.Component {
     });
   }
 
-  openErrorMessage() {
-    this.messageDialogue.handleOpen();
+/**
+* A method to retrieve the account information of the currently signed in user
+*/
+  purchaseDevice(deviceState) {
+    /**
+    * @type constant
+    * @description This object gets sent in the post request body to the REST API for transactions
+    */
+    console.log('running purchaseDevice');
+    const txBody = {
+      homeId: this.props.appState.house.id,
+      device: {
+        name: this.props.appState.featured.name,
+        id: this.props.appState.featured.id,
+        description: this.props.appState.featured.description,
+      },
+      amount: parseFloat(this.state.totalCost),
+      deviceState,
+    };
+    const userId = this.props.authState.user.id;
+    const txApiRoute = '/api/v1/users/'.concat(userId).concat('/payment');
+    $.ajax({
+      url: txApiRoute,
+      dataType: 'json',
+      crossDomain: true,
+      method: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(txBody),
+      success: (txResult) => {
+        console.log('got a response back from transaction server:', txResult);
+        const checkoutFrameSrc = 'https://www.coinbase.com/checkouts/'.concat(txResult).concat('/inline');
+        const checkoutFrameId = 'coinbase_inline_iframe_'.concat(txResult);
+        this.setState({
+          checkoutFrameId,
+          checkoutFrameSrc,
+        });
+        window.addEventListener('message', this.receivePaymentMessage.bind(this), false);
+      },
+      error: (xhr, status, err) => {
+        console.error('there was an error', status, err.toString());
+      },
+      complete: () => {
+        this.setState({
+          readyPayment: true,
+          deviceState,
+        });
+        // this.setState({ spinner: false });
+      },
+    });
   }
 
   calculations(data) {
@@ -89,6 +142,28 @@ export class DevicePage extends React.Component {
       totalSpent,
       transactions,
     });
+  }
+
+  openErrorMessage() {
+    this.messageDialogue.handleOpen();
+  }
+
+  receivePaymentMessage(event) {
+    console.log('Im in event: ', event);
+    if (event.origin === 'https://www.coinbase.com') {
+      const eventType = event.data.split('|')[0];     // "coinbase_payment_complete"
+      const eventId = event.data.split('|')[1];     // ID for this payment type
+      if (eventType === 'coinbase_payment_complete') {
+        console.log('Successful payment, toggle device');
+        this.toggleDevice(this.state.deviceState);
+      } else if (eventType === 'coinbase_payment_mispaid') {
+        console.log('Mispayment made');
+      } else if (eventType === 'coinbase_payment_expired') {
+        console.log('Mispayment made');
+      } else {
+        // Do something else, or ignore
+      }
+    }
   }
 
   totalCost(time, units) {
@@ -177,8 +252,8 @@ export class DevicePage extends React.Component {
     deviceState.paidusage = true;
     deviceState.isactive = true;
     deviceState.deviceid = this.props.appState.featured.id;
-
-    this.toggleDevice(deviceState);
+    this.state.formData = data;
+    this.purchaseDevice(deviceState);
   }
 
   notifyFormError(data) {
@@ -276,8 +351,6 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         <h2> You have spent ${this.state.totalSpent} on this device</h2>
         {formDisplay}
-        {newchart}
-        {chart}
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -286,6 +359,24 @@ export class DevicePage extends React.Component {
           <p>{this.state.details}</p>
         </FormMessageDialogue>
         {transactions}
+        {this.state.readyPayment &&
+          <iframe
+            id={this.state.checkoutFrameId}
+            src={this.state.checkoutFrameSrc}
+            style={
+              {
+                width: '460px',
+                height: '350px',
+                border: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+              }
+            }
+            allowTransparency="true"
+            frameBorder="0"
+          ></iframe>
+        }
+        {newchart}
+        {chart}
       </div>
     );
   }
@@ -316,3 +407,18 @@ export default connect(
   mapDispatchToProps
 )(DevicePage);
 
+/* ***** was using to test the purchase ****
+<FlatButton
+  label="Check Coinbase Account"
+  backgroundColor="#2b71b1"
+  hoverColor="#18355C"
+  onMouseUp={() => this.getAcctInfo()}
+  onTouchEnd={() => this.getAcctInfo()}
+  style={{ color: 'white' }}
+  secondary
+  icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+/>
+<Paper style={styles.paperStyle}>
+  <a href={this.state.accountInfo} data-button-text="Rent Device">Click Me</a>
+</Paper>
+*/

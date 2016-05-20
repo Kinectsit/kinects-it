@@ -1,10 +1,13 @@
 /* eslint new-cap: ["error", { "capIsNewExceptions": "Router" }] */
 const router = require('express').Router();
 const userController = require('../controllers/userController.js');
+const transactionController = require('../controllers/transactionController.js');
+const homeController = require('../controllers/homeController.js');
 const https = require('https');
 const authKeys = require('../../config.js');
 const User = require('../models/userModel');
 const logger = require('../config/logger.js');
+
 
 module.exports = (app, passport) => {
 
@@ -13,7 +16,7 @@ module.exports = (app, passport) => {
 *******************************/
   app.route('/api/v1/users/:id/homes/:code').post(userController.addToHome);
   app.route('/api/v1/users/:id/homes/:code').delete(userController.leaveHome);
-  
+
   // Update a user's profile information
   app.put('/api/v1/users',(req, res, next) => {
     return User.update(req.body)
@@ -69,6 +72,16 @@ module.exports = (app, passport) => {
       }
 
     })(req, res, next);
+  });
+
+/*****************************************
+********* Transaction ROUTES **********
+******************************************/
+  app.post('/api/v1/users/:id/payment', (req, res, next) => {
+    return transactionController.createTxCheckout(req.params.id, req.body, (checkoutPath) => {
+      console.log('this is the checkoutPath:', checkoutPath);
+      return res.json(checkoutPath);
+    });
   });
 
 /*****************************************
