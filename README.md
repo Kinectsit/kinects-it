@@ -162,7 +162,7 @@ Redux was the missing piece we need to build out our file structure. It allowed 
 
 ###__Server Architecture__ 
 
-Currently, there is one server, that acts at the API to the client. It also interacts with two third-party APIs, and two databases. Postgres holds relational data (schema below), and Redis stores the expiration time for devices in use by a guest. 
+Currently, there is one server, that acts as the API to the client. It also interacts with two third-party APIs, and two databases. Postgres holds relational data (schema below), and Redis stores the expiration time for devices in use by a guest. 
 
 ####__Why We Chose Node__
 Our front-end was written using JavaScript so we chose Node to keep the language consistent between both sides of the application - this allowed the development team to work on both sides of the application. We also used Express to abstract away unncessary complexity, particulary with parsing requests and responses.
