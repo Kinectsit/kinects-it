@@ -22,11 +22,11 @@ export const DashboardGuest = (props) => (
         </h2>
       </Paper>
     </div>
-      <LeaveHomeButton
-        appState={props.appState}
-        authState={props.authState}
-        actions={props.actions}
-      />
+    <LeaveHomeButton
+      appState={props.appState}
+      authState={props.authState}
+      actions={props.actions}
+    />
     <DeviceList appState={props.appState} actions={props.actions} />
   </div>
 );
