@@ -31,14 +31,14 @@ With Kinects.it you don't need to wait for your home to get smart. Just plug in 
 
 ###__How it works__
 
-####__Instructions for hosts__
+####__Instructions for Hosts__
 1. Sign up for a host account on the website. You can use local sign-in for demo purposes - or you can use Coinbase to set up payments.
 2. Plug your applicance into the power socket we provide *
 3. Use the hardware code on that socket to add your device to the website.
 4. Share your house code with any guests who stay in your house.
 5. Start collecting payments and view detailed usage stats. 
 
-####__Instructions for house guests__
+####__Instructions for House Guests__
 1. Sign up for a guest account on the website. You can use local sign-in for demo purposes, or to purchase device use, set up a Coinbase account.
 2. Add your current rental to your account by using the code your host has provided. 
 3. View all devices and activity on your dashboard. Click on a device to view previous transactions or purchase time. 
@@ -147,10 +147,10 @@ The home dashboard is the primary screen for both guests and hosts. From there, 
 ###__Client File Structure__
 This project uses React with React-Router and Redux. The image below shows the primary files in the project, and how Redux interacts with them to manage an immutable state tree. 
 
-####__Why we chose React__
+####__Why We Chose React__
 Having a responsive client-side for this application is important; users are quickly (and often!) navigating through many different pages. Because of that, we decided to build a single-page application using React. We chose React beause of its speed and modularity - we liked that we were able to separate concerns and we also liked the number of useful libraries (like React Router and Redux) that supported the framework. Additionally, React Native is quickly gaining credibility in developer circles - and transitioning this application to a mobile application (which it is a natural fit for) would be fairly simple.
 
-####__Why we chose Redux__
+####__Why We Chose Redux__
 Redux was the missing piece we need to build out our file structure. It allowed us to handle state in a more controlled way (a centralized, immutable state tree), and also allowed us to pass only the information down that was necessary (so we didn’t have to bog down each page with unncessary information). If you are not familiar with Redux, the following resources may be useful: 
 1. Logger middleware for Redux (open Chrome Console when interacting with code to see state tree) <https://github.com/theaqua/redux-logger>
 2. Egghead tutorial from creator of Redux: <https://egghead.io/series/getting-started-with-redux>
@@ -164,21 +164,21 @@ Redux was the missing piece we need to build out our file structure. It allowed 
 
 Currently, there is one server, which interacts with two APIs, and two databases. Postgres holds relational and persisent data (schema below), and Redis stores the expiration time for devices in use by a guest. 
 
-####__Why we chose Node__
+####__Why We Chose Node__
 Our front-end was written using JavaScript so we chose Node to keep the language consistent between both sides of the application - this allowed the development team to work on both sides of the application. We also used Express to abstract away unncessary complexity, particulary with parsing requests and responses.
 
-####__Why we chose Postgres__
+####__Why We Chose Postgres__
 Relationships are important in our application - so we wanted a relational database that could handle this complexity. We chose Postgres because of its ability to scale and fast lookup times. We chose not to use an ORM because it wasn’t necessary to abstract out our interactions with Postgres. We ended up using a library called pgPromise that made structuring queries a bit cleaner.
 
-####__Why we chose Redis__
-We needed to run an ongoing cron job (once per minute) to deal with toggling off devices with “expired time” for guests. Redis allowed us to keep and delete this data in an fast and efficient key-value store. We chose Redis over other non-persistent databases because of the functionality to sort sets based on a ‘score’ (see here: <http://redis.io/commands/ZRANGE>). The score we used for each guest device was the expiration time in milliseconds. Adding and returning items from this set has time complexities of O(log(N)) and O(log(N) + M).
+####__Why We Chose Redis__
+We needed to run a cron job (once per minute) to deal with toggling off devices with “expired time” for guests. Redis allowed us to keep and delete this data in an fast and efficient key-value store. We chose Redis over other non-persistent databases because of the functionality to sort sets based on a ‘score’ (see here: <http://redis.io/commands/ZRANGE>). The score we used for each guest device was the expiration time in milliseconds. Adding and returning items from this set has time complexities of O(log(N)) and O(log(N) + M).
 
 ![kinectsitserverarchitecture](https://cloud.githubusercontent.com/assets/5761911/15413704/f2101910-1de7-11e6-8026-302a126eab5f.png)
 
 
 ###__Database Schema__ 
 
-####__Schema decisions and backlog issues:__
+####__Schema Decisions and Backlog Issues:__
 1. There is a join table between users and houses right now (USERS_HOUSES), even though the current application is built to only handle one house per user at a time. Allowing users to be in multiple houses is currently in the backlog, so we built our database to support that future possibility.
 2. The PAY_METHODS table needs to be pre-populated with payment options. Currently, the only option is Coinbase and a Demo method (empty).
 3. The DEVICES table has two fields for caching total time spent and total cost spent (for a more efficent lookup). This is not currently being utilized (backlog).
