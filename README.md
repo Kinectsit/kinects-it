@@ -215,6 +215,7 @@ The primary tools we used for styling are:
 1. Material UI (for components) <http://www.material-ui.com/#/>
 2. Foundation (primarily for the grid system) <http://foundation.zurb.com/grid.html>
 3. SASS <http://sass-lang.com/> 
+4. rd3.js for data visualization <https://yang-wei.github.io/rd3/>
 4. Video (shot with Panasonic Lumix GX7 with Olympus M. Zuiko 45mm f1.8 lens)
 
 ####__Original Mockups__
