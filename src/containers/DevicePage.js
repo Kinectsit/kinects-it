@@ -18,6 +18,8 @@ import { browserHistory } from 'react-router';
 import moment from 'moment';
 import $ from 'jquery';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
+import { List, ListItem } from 'material-ui/List';
+import FontIcon from 'material-ui/FontIcon';
 
 export class DevicePage extends React.Component {
 
@@ -360,13 +362,24 @@ export class DevicePage extends React.Component {
       <div>
         <h2>Enable Device</h2>
         {spinner}
-        <Card className="card">
-          <CardHeader title={this.props.appState.featured.name} />
+
+        <Card className="card header-card device-header">
+          <CardHeader title={this.props.appState.featured.name} className="card-header" />
           <CardText>
-            <h4>Device Description</h4>
-            <p>{this.props.appState.featured.description}</p>
-            <h4>Total Spent on this Device:</h4>
-            <p>${this.state.totalSpent}</p>
+            <List className="list">
+              <Subheader>Device Description</Subheader>
+              <ListItem
+                className="list-item"
+                primaryText={this.props.appState.featured.description}
+                leftAvatar={<FontIcon className="material-icons">description</FontIcon>}
+              />
+              <Subheader>Total Spent</Subheader>
+              <ListItem
+                className="list-item"
+                primaryText={'$'.concat(this.state.totalSpent)}
+                leftAvatar={<FontIcon className="material-icons">highlight</FontIcon>}
+              />
+            </List>
           </CardText>
         </Card>
         <div>

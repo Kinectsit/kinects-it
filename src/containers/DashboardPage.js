@@ -38,7 +38,7 @@ export class DashboardPage extends React.Component {
     if (this.props.appState.isHost) {
       return (
         <div className="row dashboard-container">
-          <div className="medium-8 medium-centered columns guest-dashboard dashboard">
+          <div className="host-dashboard dashboard">
             <DashboardHost appState={this.props.appState} actions={this.props.actions} />
           </div>
         </div>
