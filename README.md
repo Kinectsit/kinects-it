@@ -167,19 +167,11 @@ Currently, there is one server, that acts at the API to the client. It also inte
 ####__Why We Chose Node__
 Our front-end was written using JavaScript so we chose Node to keep the language consistent between both sides of the application - this allowed the development team to work on both sides of the application. We also used Express to abstract away unncessary complexity, particulary with parsing requests and responses.
 
-<<<<<<< 6a681352d29ce549ac49e49828bbb0ec8e735093
 ####__Why We Chose Postgres__
 Relationships are important in our application - so we wanted a relational database that could handle this complexity. We chose Postgres because of its ability to scale and fast lookup times. We chose not to use an ORM because it wasn’t necessary to abstract out our interactions with Postgres. We ended up using a library called pgPromise that made structuring queries a bit cleaner.
 
 ####__Why We Chose Redis__
 We needed to run a cron job (once per minute) to deal with toggling off devices with “expired time” for guests. Redis allowed us to keep and delete this data in an fast and efficient key-value store. We chose Redis over other non-persistent databases because of the functionality to sort sets based on a ‘score’ (see here: <http://redis.io/commands/ZRANGE>). The score we used for each guest device was the expiration time in milliseconds. Adding and returning items from this set has time complexities of O(log(N)) and O(log(N) + M).
-=======
-####__Why we chose Postgres__
-Relationships are important in our application- so we wanted a relational database that could handle this complexity. We chose Postgres because of its ability to scale and fast lookup times. We chose not to use an ORM because it wasn’t necessary to abstract out our interactions with Postgres. We used a library called pgPromise that made structuring queries a bit cleaner.
-
-####__Why we chose Redis__
-We needed to run a cron job (once per minute) to deal with toggling off devices with “expired time” for guests. Redis allowed us to keep and delete this data in an fast and efficient key-value store. We chose Redis for our in-memory data storage because of the functionality to sort sets based on a ‘score’ (see here: <http://redis.io/commands/ZRANGE>). The score we used for each guest device was the expiration time in milliseconds. Adding and returning items from this set has time complexities of O(log(N)) and O(log(N) + M).
->>>>>>> (Feat) Change bar chart to aggregate $ spent in last five months
 
 ![kinectsitserverarchitecture](https://cloud.githubusercontent.com/assets/5761911/15413704/f2101910-1de7-11e6-8026-302a126eab5f.png)
 
