@@ -59,7 +59,7 @@ exports.getDevices = (req, res) => {
   })
   .catch((error) => {
     logger.info('ERROR in get devices: ', error);
-    return res.json({ success: false, message: 'Failed to retrieve devices' });
+    return res.send({ success: false, message: 'Failed to retrieve devices' });
   });
 };
 
