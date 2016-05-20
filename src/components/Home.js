@@ -34,7 +34,7 @@ export const Home = () => (
             subtitle="Put them to work with Kinects It!"
           />
           <CardText>
-            With Kinects.It don't need to wait for your home to get smart.
+            With Kinects.It, you don't need to wait for your home to get smart.
             Just plug in and get started. No more hunting for quarters or
             surprises on your electricity bill.
           </CardText>

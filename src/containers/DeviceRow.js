@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import { NavLink } from '../components/NavLink';
+import FontIcon from 'material-ui/FontIcon';
+import { List, ListItem } from 'material-ui/List';
+import Badge from 'material-ui/Badge';
+import kinectsitTheme from '../assets/kinectsitTheme';
+import FolderIcon from 'material-ui/svg-icons/file/folder-open';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 
 export class DeviceRow extends React.Component {
 
@@ -22,27 +29,53 @@ export class DeviceRow extends React.Component {
 
     let guestButton = (
       <NavLink to="/device">
-        <RaisedButton label={buttonMessage} onClick={() => this.setFeatured()} />
+        <RaisedButton className="device-button" label={buttonMessage} onClick={() => this.setFeatured()} />
       </NavLink>
     );
 
     if (this.props.appState.isHost) {
       return (
-        <div>
-          <li>Name: {this.props.device.name}</li>
-          <li>Is Active: {active}</li>
-          <NavLink to="/device-profile">
-            <RaisedButton label="Device Options" onClick={() => this.setFeatured()} />
-          </NavLink>
-        </div>
+        <Card>
+          <CardHeader
+            title={this.props.device.name}
+            subtitle="Subtitle"
+            avatar="http://lorempixel.com/100/100/nature/"
+          />
+          <div>
+            <li>Is Active: {active}</li>
+            <NavLink to="/device-profile">
+              <RaisedButton
+                label="Device Options"
+                onClick={() => this.setFeatured()}
+              />
+            </NavLink>
+          </div>
+        </Card>
       );
     }
     return (
-      <div key={this.props.device.id}>
-        <li>Name: {this.props.device.name}</li>
-        <li>Is Active: {active}</li>
+      <Card className={'device-card '.concat(active === 'No' ? 'inactive' : 'active')}>
+        <FontIcon
+          className="material-icons"
+        >
+        widgets
+        </FontIcon>
+        <CardHeader
+          className="device-header"
+          title={this.props.device.name}
+          actAsExpander
+          showExpandableButton
+        />
+        <CardText expandable>
+          <div key={this.props.device.id} className="device-description">
+            <List className="description-list">
+              <ListItem primaryText={'Name: '.concat(this.props.device.name)} />
+              <ListItem primaryText={'Is Active: '.concat(active)} />
+            </List>
+          </div>
+        </CardText>
         {guestButton}
-      </div>
+      </Card>
     );
   }
 }
