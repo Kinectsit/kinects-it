@@ -1,32 +1,44 @@
-# kinectsit       
+#__KINECTS.IT__  
 
-__An application for homeowners to rent out the appliances in their homes.__
+##__An application for homeowners to rent their appliances to guests.__
 
-####Master branch build status: ![](https://travis-ci.org/Kinectsit/kinects-it.svg?branch=master)
+Your appliances are lazy. Put them to work with Kinects.it.
 
-## __Table of Contents__
+With Kinects.it you don't need to wait for your home to get smart. Just plug in and get started. No more hunting for quarters or surprises on your electricity bill.
+
+#### Master branch build status: ![](https://travis-ci.org/Kinectsit/kinects-it.svg?branch=master)
+
+##__Table of Contents__
 
 1. [Introduction](#Introduction)
 2. [Requirements](#requirements)
 3. [Development](#development)
     a. [Dependencies](#dependencies)
     b. [Tasks](#tasks)
+5. [Resources](#resources)
+    a. [User Flow](#user-flow)
+    b. [Client File Structure](#client-file-structure)
+    c. [Server Architecture](#server-architecture)
+    d. [Database Schema](#database-schema)
+    e. [Local API Routes](#local-api-routes)
+    f. [External API Interactions](#external-api-interactions)
+    g. [Styling](#styling)
 4. [Team](#team)
-5. [Resources] (#resources)
 6. [Contributing](#contributing)
 
-## __Introduction__
 
-#### __How it works__
+##__Introduction__
 
-__Instructions for hosts__
+###__How it works__
+
+####__Instructions for hosts__
 1. Sign up for a host account on the website. You can use local sign-in for demo purposes - or you can use Coinbase to set up payments.
 2. Plug your applicance into the power socket we provide *
 3. Use the hardware code on that socket to add your device to the website.
 4. Share your house code with any guests who stay in your house.
 5. Start collecting payments and view detailed usage stats. 
 
-__Instructions for house guests__
+####__Instructions for house guests__
 1. Sign up for a guest account on the website. You can use local sign-in for demo purposes, or to purchase device use, set up a Coinbase account.
 2. Add your current rental to your account by using the code your host has provided. 
 3. View all devices and activity on your dashboard. Click on a device to view previous transactions or purchase time. 
@@ -34,17 +46,18 @@ __Instructions for house guests__
 
 > * You can create your own demo using Little Bits - read the hardware section below for more information.
 
-## __Requirements__
 
-### __Tech Stack__
+##__Requirements__
 
-#### Server
+###__Tech Stack__
+
+####__Server__
 - Node 
 - Express
 - Postgres
 - Redis
 
-#### Client
+####__Client__
 - React 
 - Redux 
 - Material UI
@@ -52,28 +65,28 @@ __Instructions for house guests__
 - SASS
 - Webpack
 
-#### Hardware
+####__Hardware__
 - Provided
 
 > Alternatively, you can create your own testing account using the Little Bits Smart Home Kit: Power, Button, CloudBit, AC & IR. Use the MAC address of your CloudBit in the device set up page, and add your access token to your config.js file.
 
-#### APIs
+####__APIs__
 - Little Bits <http://developers.littlebitscloud.cc/>
 - Coinbase Connect <https://developers.coinbase.com/>
 - Coinbase Merchant Checkout
 
-#### Continuous Integration and Testing
+####__Continuous Integration and Testing__
 - Mocha
 - Supertest
 - TravisCI - <https://travis-ci.org/Kinectsit/kinects-it>
 
-#### Deployment
+####__Deployment__
 - AWS EC2 
 
 
-## __Development__
+##__Development__
 
-### __Dependencies__
+###__Dependencies__
 
 You should have the following applications installed on your local machine:
 - NPM
@@ -81,7 +94,7 @@ You should have the following applications installed on your local machine:
 - Postgres
 - Redis
 
-### __Tasks__
+### Tasks
 
 From within the root directory:
 
@@ -122,98 +135,111 @@ module.exports = {
 };
 ```
 
-## __Roadmap__
+##__Resources__
 
-### __User Flow__
+###__User Flow__
 
 The home dashboard is the primary screen for both guests and hosts. From there, each user can select a device - and depending on their role, interact with that device in different ways - including toggling the power on/off, paying for usage, and/or viewing transaction history.
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![kinectsituserflow](https://cloud.githubusercontent.com/assets/5761911/15413706/f2437986-1de7-11e6-9b99-c097845bef7d.png)
 
 
-#### __Client File Structure__
-
+###__Client File Structure__
 This project uses React with React-Router and Redux. The image below shows the primary files in the project, and how Redux interacts with them to manage an immutable state tree. 
 
-#### Why we chose React
+####__Why we chose React__
 Having a responsive client-side for this application is important; users are quickly (and often!) navigating through many different pages. Because of that, we decided to build a single-page application using React. We chose React beause of its speed and modularity - we liked that we were able to separate concerns and we also liked the number of useful libraries (like React Router and Redux) that supported the framework. Additionally, React Native is quickly gaining credibility in developer circles - and transitioning this application to a mobile application (which it is a natural fit for) would be fairly simple.
 
-#### Why we chose Redux 
+####__Why we chose Redux__
 Redux was the missing piece we need to build out our file structure. It allowed us to handle state in a more controlled way (a centralized, immutable state tree), and also allowed us to pass only the information down that was necessary (so we didn’t have to bog down each page with unncessary information). If you are not familiar with Redux, the following resources may be useful: 
 1. Logger middleware for Redux (open Chrome Console when interacting with code to see state tree) <https://github.com/theaqua/redux-logger>
 2. Egghead tutorial from creator of Redux: <https://egghead.io/series/getting-started-with-redux>
 3. Full-stack Redux tutorial: <http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html>
 4. Redux Boilerplate (we used components of this): <https://github.com/coryhouse/react-slingshot>
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![kinectsitclientfilestructure](https://cloud.githubusercontent.com/assets/5761911/15413705/f2102c52-1de7-11e6-8a60-4c116452648e.png)
 
 
-### __Server Architecture__ 
+###__Server Architecture__ 
 
 Currently, there is one server, which interacts with two APIs, and two databases. Postgres holds relational and persisent data (schema below), and Redis stores the expiration time for devices in use by a guest. 
 
-#### Why we chose Node
+####__Why we chose Node__
 Our front-end was written using JavaScript so we chose Node to keep the language consistent between both sides of the application - this allowed the development team to work on both sides of the application. We also used Express to abstract away unncessary complexity, particulary with parsing requests and responses.
 
-#### Why we chose Postgres
+####__Why we chose Postgres__
 Relationships are important in our application - so we wanted a relational database that could handle this complexity. We chose Postgres because of its ability to scale and fast lookup times. We chose not to use an ORM because it wasn’t necessary to abstract out our interactions with Postgres. We ended up using a library called pgPromise that made structuring queries a bit cleaner.
 
-#### Why we chose Redis
+####__Why we chose Redis__
 We needed to run an ongoing cron job (once per minute) to deal with toggling off devices with “expired time” for guests. Redis allowed us to keep and delete this data in an fast and efficient key-value store. We chose Redis over other non-persistent databases because of the functionality to sort sets based on a ‘score’ (see here: <http://redis.io/commands/ZRANGE>). The score we used for each guest device was the expiration time in milliseconds. Adding and returning items from this set has time complexities of O(log(N)) and O(log(N) + M).
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![kinectsitserverarchitecture](https://cloud.githubusercontent.com/assets/5761911/15413704/f2101910-1de7-11e6-8026-302a126eab5f.png)
 
 
-### __Database Schema__ 
+###__Database Schema__ 
 
-#### Schema decisions and backlog issues:
+####__Schema decisions and backlog issues:__
 1. There is a join table between users and houses right now (USERS_HOUSES), even though the current application is built to only handle one house per user at a time. Allowing users to be in multiple houses is currently in the backlog, so we built our database to support that future possibility.
 2. The PAY_METHODS table needs to be pre-populated with payment options. Currently, the only option is Coinbase and a Demo method (empty).
 3. The DEVICES table has two fields for caching total time spent and total cost spent (for a more efficent lookup). This is not currently being utilized (backlog).
 4. The DEVICE_CATEGORY table is not currently being used (backlog).
 5. The DEVICE_TRANSACTIONS table holds ALL device transactions, so dealing with this data is not as efficient as we'd like. The backlog has an open issue for creating a query cache.
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![kinectsitdatabaseshema](https://cloud.githubusercontent.com/assets/5761911/15413746/5557457a-1de8-11e6-9bd9-f3576a0967ff.png)
 
 
-### __Database Schema__ 
+###__Local API Routes__
 
-#### Schema decisions and backlog issues:
-1. There is a join table between users and houses right now (USERS_HOUSES), even though t
+####__Primary Interactions__
+The pictures below show the the urls, methods, purpose, and data received back from our primary server API requests. 
 
+![kinectsitlocalusersapi](https://cloud.githubusercontent.com/assets/5761911/15413749/557e183a-1de8-11e6-8aa7-3e41d95cf74c.png)
 
+![kinectsitlocaldeviceapi](https://cloud.githubusercontent.com/assets/5761911/15415218/13edb502-1df6-11e6-829f-fc877857daee.png)
 
-
-
-
-
-
+![kinectsitlocalhomesapi](https://cloud.githubusercontent.com/assets/5761911/15413748/557dfbde-1de8-11e6-9a42-2d03fc0a51f0.png)
 
 
-// TEST THE DEVICE IN YOUR TERMINAL
-// curl -XPOST https://api-http.littlebitscloud.cc/devices/00e04c038343/output \
-//     -H 'Authorization: Bearer c585ac4524b44283515b3c11f860a8bd0e7283154f683b2e1ab1702888be4bc7' \
-//     -H 'Accept: application/vnd.littlebits.v2+json' \
-//     -H 'Content-Type: application/json' \
-//     -d '{"duration_ms":100}'
+###__External API Interactions__
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+####__LittleBits API__
+The sequence diagram below shows how we use the LittleBits API for three actions: pinging the device on setup, toggling the device (host), and toggling the device a second time from the worker (guest). It also shows the flow for Coinbase O-Auth.
 
-## Team
-
-  - __Product Owner__: Bucko Perley
-  - __Scrum Master__: Bryan Newby
-  - __Development Team Members__: Krista Moroder, Bucko Perley, Bryan Newby
+![kinectsitexternalapisequencediagram](https://cloud.githubusercontent.com/assets/5761911/15415229/2ecaca7c-1df6-11e6-92ee-917fb12975c6.png)
 
 
+###__Styling__
 
-## Contributing
+####__Tech Stack__
+The primary tools we used for styling are:
+1. Material UI (for components) <http://www.material-ui.com/#/>
+2. Foundation (primarily for the grid system) <http://foundation.zurb.com/grid.html>
+3. SASS <http://sass-lang.com/> 
+4. Video (shot with Panasonic Lumix GX7 with Olympus M. Zuiko 45mm f1.8 lens)
 
-### __Backlog__
+####__Original Mockups__
+The link below contains the original design files, which also include integrated payment dashboards (in backlog). View all of the mockups in the image below here: <https://goo.gl/IhnrhM>
+
+![kinectsmockupfolderview](https://cloud.githubusercontent.com/assets/5761911/15413743/5372f880-1de8-11e6-9d82-bd1006400bcf.png)
+
+
+##__Team__
+
+Product Owner: Bucko Perley
+Scrum Master: Bryan Newby
+Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
+
+
+##__Contributing__
+
+To contribute, create a fork on a pull request on a feature branch. We will do our best to review pull requests in a timely fashion. 
+
+
+###__Backlog__
 
 1. Add a third database to store device transaction query data (stored for lookup per device, and/or by user).
+2. Add the ability for users to upload photos for devices, and/or use the device category table in the database.
 3. Add the ability for users to be both a host and a guest.
 4. Allow hosts or guests to be in multiple houses at once.
 5. Integrate additional payment options.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
