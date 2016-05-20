@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import { NavLink } from '../components/NavLink';
 import FontIcon from 'material-ui/FontIcon';
 import { List, ListItem } from 'material-ui/List';
-import Badge from 'material-ui/Badge';
-import kinectsitTheme from '../assets/kinectsitTheme';
-import FolderIcon from 'material-ui/svg-icons/file/folder-open';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+// import kinectsitTheme from '../assets/kinectsitTheme';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
 
 export class DeviceRow extends React.Component {
 
@@ -29,7 +26,11 @@ export class DeviceRow extends React.Component {
 
     let guestButton = (
       <NavLink to="/device">
-        <RaisedButton className="device-button" label={buttonMessage} onClick={() => this.setFeatured()} />
+        <RaisedButton
+          className="device-button"
+          label={buttonMessage}
+          onClick={() => this.setFeatured()}
+        />
       </NavLink>
     );
 
