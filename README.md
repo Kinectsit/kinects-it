@@ -10,21 +10,21 @@ With Kinects.it, you don't need to wait for your home to get smart. Just plug in
 
 ##__Table of Contents__
 
-1. [Introduction](#Introduction)
-2. [Requirements](#requirements)
-3. [Development](#development)
-    a. [Dependencies](#dependencies)
-    b. [Tasks](#tasks)
-5. [Resources](#resources)
-    a. [User Flow](#user-flow)
-    b. [Client File Structure](#client-file-structure)
-    c. [Server Architecture](#server-architecture)
-    d. [Database Schema](#database-schema)
-    e. [Local API Routes](#local-api-routes)
-    f. [Third-Party API Interactions](#third-party-api-interactions)
-    g. [Styling](#styling)
-4. [Team](#team)
-6. [Contributing](#contributing)
+1. [Introduction](#Introduction)__
+2. [Requirements](#requirements)__
+3. [Development](#development)__
+-- [Dependencies](#dependencies)__
+-- [Tasks](#tasks)__
+5. [Resources](#resources)__
+-- [User Flow](#user-flow)__
+-- [Client File Structure](#client-file-structure)__
+-- [Server Architecture](#server-architecture)__
+-- [Database Schema](#database-schema)__
+-- [Local API Routes](#local-api-routes)__
+-- [Third-Party API Interactions](#third-party-api-interactions)__
+-- [Styling](#styling)__
+4. [Team](#team)__
+6. [Contributing](#contributing)__
 
 
 ##__Introduction__
@@ -125,7 +125,7 @@ npm run build
 node server/server.js
 ```
 
-Create a config.js file at the root level to store your API keys. You can find your access token for your Cloudbit by following these instructions: <http://developers.littlebitscloud.cc/access>, and you can get your Coinbase keys from this link: <https://www.coinbase.com/settings/api​>. Make sure you add this to your .gitignore file if it isn't alraedy.
+Create a config.js file at the root level to store your API keys. You can find your access token for your Cloudbit by following these instructions: <http://developers.littlebitscloud.cc/access>, and you can get your Coinbase keys from this link: <https://www.coinbase.com/settings/api​>. Make sure you add this to your .gitignore file if it isn't already.
 
 ```sh
 module.exports = {
@@ -134,6 +134,26 @@ module.exports = {
   COINBASE_CLIENT_SECRET: '',
 };
 ```
+
+##__Team__
+- Product Owner: Bucko Perley
+- Scrum Master: Bryan Newby
+- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
+
+
+##__Contributing__
+
+To contribute, create a fork on a pull request on a feature branch. We will do our best to review pull requests in a timely fashion. 
+
+
+###__Backlog__
+
+1. Add a third database to store device transaction query data (stored for lookup per device, and/or by user).
+2. Add the ability for users to upload photos for devices, and/or use the device category table in the database.
+3. Add the ability for users to be both a host and a guest.
+4. Allow hosts or guests to be in multiple houses at once.
+5. Integrate additional payment options.
+
 
 ##__Resources__
 
@@ -205,7 +225,7 @@ The pictures below show the the urls, methods, purpose, and data received back f
 ####__LittleBits API__
 The sequence diagram below shows how we use the LittleBits API for three actions: pinging the device on setup, toggling the device (host), and toggling the device a second time from the worker (guest). 
 
-####_Coinbase API__
+####__Coinbase API__
 The diagram also shows the sequence for Coinbase O-Auth in our application.
 
 ![kinectsitexternalapisequencediagram](https://cloud.githubusercontent.com/assets/5761911/15415229/2ecaca7c-1df6-11e6-92ee-917fb12975c6.png)
@@ -224,24 +244,4 @@ The diagram also shows the sequence for Coinbase O-Auth in our application.
 The link below contains the original design files, which also include integrated payment dashboards (in backlog). View all of the mockups in the image below here: <https://goo.gl/IhnrhM>
 
 ![kinectsmockupfolderview](https://cloud.githubusercontent.com/assets/5761911/15413743/5372f880-1de8-11e6-9d82-bd1006400bcf.png)
-
-
-##__Team__
-- Product Owner: Bucko Perley
-- Scrum Master: Bryan Newby
-- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
-
-
-##__Contributing__
-
-To contribute, create a fork on a pull request on a feature branch. We will do our best to review pull requests in a timely fashion. 
-
-
-###__Backlog__
-
-1. Add a third database to store device transaction query data (stored for lookup per device, and/or by user).
-2. Add the ability for users to upload photos for devices, and/or use the device category table in the database.
-3. Add the ability for users to be both a host and a guest.
-4. Allow hosts or guests to be in multiple houses at once.
-5. Integrate additional payment options.
 

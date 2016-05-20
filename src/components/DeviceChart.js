@@ -53,7 +53,7 @@ export class DeviceChart extends React.Component {
       <div>
         <BarChart
           data={this.state.barData}
-          width={600}
+          width={400}
           height={300}
           fill={'#3182bd'}
         />
