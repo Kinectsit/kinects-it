@@ -74,7 +74,7 @@ export class UsageStatsPage extends React.Component {
         }
       }
       // update the transactions array to include real-language time for processing in the transaction table component
-      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
+      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY');
       // update the transactions array to include real-language amount spent for processing in the transaction table component
       const minutes = Math.floor(transactions[i].timespent / 3600000);
       const formattedTime = `${minutes} minutes`;

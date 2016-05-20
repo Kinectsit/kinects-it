@@ -58,10 +58,10 @@ export class TransactionTable extends React.Component {
   render() {
     return (
       <div>
-        <Table style={{ width: '650px' }}>
+        <Table style={{ width: '600px' }}>
           <TableHeader>
             <TableRow>
-              <TableHeaderColumn style={{ width: '150px', paddingLeft: '0px', color: 'black' }}>
+              <TableHeaderColumn style={{ width: '100px', paddingLeft: '0px', color: 'black' }}>
                 <SortIcon color={'black'} id={"date"} onClick={(e) => this.sortByColumn(e.target.id)} />
                 Date
               </TableHeaderColumn>
@@ -82,9 +82,9 @@ export class TransactionTable extends React.Component {
           <TableBody displayRowCheckbox={false}>
             {this.state.data.map((transaction, index) =>
               <TableRow key={index} style={{ color: 'black' }}>
-                <TableRowColumn style={{ width: '200px' }}>{transaction.formattedTime}</TableRowColumn>
+                <TableRowColumn style={{ width: '120px' }}>{transaction.formattedTime}</TableRowColumn>
                 <TableRowColumn style={{ width: '150px' }}>{transaction.name}</TableRowColumn>
-                <TableRowColumn style={{ width: '150px' }}>{transaction.formattedTimeSpent}</TableRowColumn>
+                <TableRowColumn style={{ width: '120px' }}>{transaction.formattedTimeSpent}</TableRowColumn>
                 <TableRowColumn style={{ width: '100px' }}>${transaction.amountspent}</TableRowColumn>
               </TableRow>
             )}

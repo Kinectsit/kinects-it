@@ -10,6 +10,7 @@ import { DeviceChart } from '../components/DeviceChart';
 import { DeviceTransactionTable } from '../components/DeviceTransactionTable';
 import CircularProgress from 'material-ui/CircularProgress';
 import { FormMessageDialogue } from '../components/FormMessageDialogue';
+import { Card, CardTitle } from 'material-ui/Card';
 import moment from 'moment';
 import $ from 'jquery';
 
@@ -56,7 +57,7 @@ export class DeviceProfilePage extends React.Component {
       // add to total earned
       totalEarned += parseInt(transactions[i].amountspent, 10);
       // update the transactions array to include real-language time for processing in the transaction table component
-      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY, h:ma');
+      transactions[i].formattedTime = moment(transactions[i].timestamp).format('MMM Do, YYYY');
       // update the transactions array to include real-language amount spent for processing in the transaction table component
       const minutes = Math.floor(transactions[i].timespent / 3600000);
       const formattedTime = `${minutes} minutes`;
@@ -158,17 +159,34 @@ export class DeviceProfilePage extends React.Component {
     }
 
     return (
-      <div>
-        <h1 style={{ textTransform: 'capitalize' }}>{this.props.appState.featured.name}</h1>
+      <div className="medium-8 medium-centered columns">
+        <Card
+          className="card"
+          style={{
+            boxShadow: 'none',
+            textAlign: 'center',
+            backgroundColor: 'none',
+            textColor: 'black',
+          }}
+        >
+          <CardTitle
+            title={this.props.appState.featured.name}
+          />
+        </Card>
         {spinner}
-        <h3>{this.props.appState.featured.description}</h3>
-        <h2>Toggle Device</h2>
-        <p>Use this to test the device or enable without payment</p>
-        {toggle}
-        <DeleteDeviceButton device={this.props.appState.featured} />
-        <h2> You have earned ${this.state.totalEarned} from this device</h2>
+        <div className="row">
+          <div className="medium-6 large-6 columns">
+            <h5 className="header">Your description:</h5>
+            <h5 className="subheader">{this.props.appState.featured.description}</h5>
+          </div>
+          <div className="medium-6 large-6 columns">
+            {toggle}
+          </div>
+        </div>
+        <h4 className="header"> You have earned ${this.state.totalEarned} from this device</h4>
         <h2>Recent Guest Transactions</h2>
         {chart}
+        <DeleteDeviceButton device={this.props.appState.featured} />
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
