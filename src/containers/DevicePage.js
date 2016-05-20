@@ -287,7 +287,7 @@ export class DevicePage extends React.Component {
 
     if (!this.props.appState.featured.isactive && !this.state.readyPayment) {
       formDisplay = (
-        <Paper style={styles.paperStyle}>
+        <Paper style={styles.paperStyle} className="transaction-form paper">
           <Formsy.Form
             onValid={() => this.enableButton()}
             onValidSubmit={(data) => this.submitForm(data)}
@@ -407,9 +407,13 @@ export class DevicePage extends React.Component {
           >
             <p>{this.state.details}</p>
           </FormMessageDialogue>
-          {transactions}
-          {newchart}
-          {chart}
+          <div className="row">
+            <div className="medium-10 medium-centered columns">
+              {transactions}
+              {newchart}
+              {chart}
+            </div>
+          </div>
         </div>
       </div>
     );

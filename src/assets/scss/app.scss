@@ -19,19 +19,21 @@ $kinectsit-palette: (
   secondary: #BF360C,
   secondary-highlight: #F4511E,
   success: #4DB6AC,
+  success-dark: #009688,
   warning: #FF9800,
   alert: #FF9800,
   white: #F5F5F5,
-  light-grey: #E0E0E0,
+  light-grey: #F5F5F5,
 );
 
 #app {
   padding-top:65px;
-  min-height:550px;
-  // background-color: map-get($kinectsit-palette, lightgrey);
+  min-height:650px;
+  background-color: map-get($kinectsit-palette, light-grey);
+  
   @include breakpoint(medium) {
     // All CSS in here goes inside the media query
-    min-height: 800px;
+    min-height: 750px;
   }
   &.blur-bg{
     background: url('https://www.kinects.it/assets/images/videoframeblur.png') no-repeat center center fixed; 
@@ -145,13 +147,19 @@ $kinectsit-palette: (
 }
 
 .card.header-card {
-  .card-header{
+  .card-header {
     // background-color: map-get($kinectsit-palette, primary);
     // border-top: 3px solid map-get($kinectsit-palette, secondary-highlight);
     font-size: 1.2em;
     font-weight: bold!important;
     background-color: map-get($kinectsit-palette, secondary);
     border-top: 3px solid map-get($kinectsit-palette, secondary-highlight);
+  }
+  .card-title {
+    padding-bottom: 0px!important;
+  }
+  .card-text {
+    padding-top: 0px!important;
   }
 }
 
@@ -225,7 +233,11 @@ $kinectsit-palette: (
   }
 }
 
-/*********** Device Pate *****/
+/*********** Device Page *****/
+.transaction-form {
+  margin: 45px 0px!important;
+}
+
 .device-header.card {
   .list-item:hover{
     cursor: default!important;

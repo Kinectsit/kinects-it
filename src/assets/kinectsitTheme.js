@@ -37,6 +37,7 @@ exports.default = {
     alert1Color: _colors.orange500,
     textColor: _colors.grey100,
     successColor: _colors.teal300,
+    successDark: _colors.teal500,
     darkTextColor: _colors.grey900,
     alternateTextColor: '#303030',
     canvasColor: '#303030',
