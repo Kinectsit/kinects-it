@@ -40,6 +40,7 @@ export class DevicePage extends React.Component {
       checkoutFrameSrc: '',
       paymentReceived: false,
       readyPayment: false,
+      deviceState: '',
     };
   }
 
@@ -100,15 +101,12 @@ export class DevicePage extends React.Component {
       success: (txResult) => {
         console.log('got a response back from transaction server:', txResult);
         const checkoutFrameSrc = 'https://www.coinbase.com/checkouts/'.concat(txResult).concat('/inline');
-        // const checkoutButtonLink = 'https://www.coinbase.com/checkouts/'.concat(txResult);
         const checkoutFrameId = 'coinbase_inline_iframe_'.concat(txResult);
-        console.log('frameSrc: ', checkoutFrameSrc);
-        console.log('frameId: ', checkoutFrameId);
         this.setState({
           checkoutFrameId,
           checkoutFrameSrc,
         });
-        window.addEventListener('message', this.receivePaymentMessage, false);
+        window.addEventListener('message', this.receivePaymentMessage.bind(this), false);
       },
       error: (xhr, status, err) => {
         console.error('there was an error', status, err.toString());
@@ -116,6 +114,7 @@ export class DevicePage extends React.Component {
       complete: () => {
         this.setState({
           readyPayment: true,
+          deviceState,
         });
         // this.setState({ spinner: false });
       },
@@ -150,11 +149,20 @@ export class DevicePage extends React.Component {
   }
 
   receivePaymentMessage(event) {
+    console.log('Im in event: ', event);
     if (event.origin === 'https://www.coinbase.com') {
       const eventType = event.data.split('|')[0];     // "coinbase_payment_complete"
       const eventId = event.data.split('|')[1];     // ID for this payment type
-      console.log('eventType:', eventType);
-      console.log('eventId:', eventId);
+      if (eventType === 'coinbase_payment_complete') {
+        console.log('Successful payment, toggle device');
+        this.toggleDevice(this.state.deviceState);
+      } else if (eventType === 'coinbase_payment_mispaid') {
+        console.log('Mispayment made');
+      } else if (eventType === 'coinbase_payment_expired') {
+        console.log('Mispayment made');
+      } else {
+        // Do something else, or ignore
+      }
     }
   }
 
@@ -244,9 +252,8 @@ export class DevicePage extends React.Component {
     deviceState.paidusage = true;
     deviceState.isactive = true;
     deviceState.deviceid = this.props.appState.featured.id;
-
+    this.state.formData = data;
     this.purchaseDevice(deviceState);
-    // this.toggleDevice(deviceState);
   }
 
   notifyFormError(data) {
@@ -344,8 +351,6 @@ export class DevicePage extends React.Component {
         <h3>This device is: {this.props.appState.featured.description}</h3>
         <h2> You have spent ${this.state.totalSpent} on this device</h2>
         {formDisplay}
-        {newchart}
-        {chart}
         <FormMessageDialogue
           ref={(node) => { this.messageDialogue = node; }}
           title={this.state.error}
@@ -356,8 +361,8 @@ export class DevicePage extends React.Component {
         {transactions}
         {this.state.readyPayment &&
           <iframe
-            id="coinbase_inline_iframe_342c513cb4ea6f9b5c4e8b7904421ad1"
-            src="https://www.coinbase.com/checkouts/342c513cb4ea6f9b5c4e8b7904421ad1/inline"
+            id={this.state.checkoutFrameId}
+            src={this.state.checkoutFrameSrc}
             style={
               {
                 width: '460px',
@@ -370,6 +375,8 @@ export class DevicePage extends React.Component {
             frameBorder="0"
           ></iframe>
         }
+        {newchart}
+        {chart}
       </div>
     );
   }
@@ -400,17 +407,18 @@ export default connect(
   mapDispatchToProps
 )(DevicePage);
 
-// ****** was using to test the purchase *****/
-// <FlatButton
-//   label="Check Coinbase Account"
-//   backgroundColor="#2b71b1"
-//   hoverColor="#18355C"
-//   onMouseUp={() => this.getAcctInfo()}
-//   onTouchEnd={() => this.getAcctInfo()}
-//   style={{ color: 'white' }}
-//   secondary
-//   icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
-// />
-// <Paper style={styles.paperStyle}>
-//   <a href={this.state.accountInfo} data-button-text="Rent Device">Click Me</a>
-// </Paper>
+/* ***** was using to test the purchase ****
+<FlatButton
+  label="Check Coinbase Account"
+  backgroundColor="#2b71b1"
+  hoverColor="#18355C"
+  onMouseUp={() => this.getAcctInfo()}
+  onTouchEnd={() => this.getAcctInfo()}
+  style={{ color: 'white' }}
+  secondary
+  icon={<FontIcon className="material-icons">arrow_right</FontIcon>}
+/>
+<Paper style={styles.paperStyle}>
+  <a href={this.state.accountInfo} data-button-text="Rent Device">Click Me</a>
+</Paper>
+*/
