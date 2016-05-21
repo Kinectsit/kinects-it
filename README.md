@@ -158,7 +158,7 @@ To contribute, create a fork on a pull request on a feature branch. We will do o
 3. Add the ability for users to be both a host and a guest.
 4. Allow hosts or guests to be in multiple houses at once.
 5. Integrate additional payment options.
-
+6. Add sockets to render instant updates of device status to guests / hosts.
 
 ##__Resources__
 
