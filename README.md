@@ -8,23 +8,30 @@ With Kinects.it, you don't need to wait for your home to get smart. Just plug in
 
 #### Master branch build status: ![](https://travis-ci.org/Kinectsit/kinects-it.svg?branch=master)
 
+<img src="https://github.com/Kinectsit/kinects-it/blob/5787a374f1fae3a0b79916f23742196a5c31d413/tools/demokinectsit.gif?raw=true">
+
+##__Team__
+- <img src="https://avatars1.githubusercontent.com/u/5761911?v=3" width="64"> [**Krista Moroder**](https://github.com/kmoroder)
+- <img src="https://avatars2.githubusercontent.com/u/4344978?v=3" width="64"> [**Bucko Perley**](https://github.com/bucko13)
+- <img src="https://avatars2.githubusercontent.com/u/7966607?v=3" width="64"> [**Bryan Newby**](https://github.com/brnewby602)
+
+
 ##__Table of Contents__
 
 1. [Introduction](#Introduction)
-2. [Requirements](#requirements)
-3. [Development](#development)
- 1. [Dependencies](#dependencies)
- 2. [Tasks](#tasks)
-4. [Team](#team)
-5. [Contributing](#contributing)
-6. [Resources](#resources)
- 1. [User Flow](#user-flow)
- 2. [Client File Structure](#client-file-structure)
- 3. [Server Architecture](#server-architecture)
- 4. [Database Schema](#database-schema)
- 5. [Local API Routes](#local-api-routes)
- 6. [Third-Party API Interactions](#third-party-api-interactions)
- 7. [Styling](#styling)
+1. [Requirements](#requirements)
+1. [Development](#development)
+  1. [Dependencies](#dependencies)
+  1. [Tasks](#tasks)
+1. [Contributing](#contributing)
+1. [Resources](#resources)
+  1. [User Flow](#user-flow)
+  1. [Client File Structure](#client-file-structure)
+  1. [Server Architecture](#server-architecture)
+  1. [Database Schema](#database-schema)
+  1. [Local API Routes](#local-api-routes)
+  1. [Third-Party API Interactions](#third-party-api-interactions)
+  1. [Styling](#styling)
 
 
 
@@ -139,12 +146,6 @@ module.exports = {
   COINBASE_CLIENT_SECRET: '',
 };
 ```
-
-##__Team__
-- Product Owner: Bucko Perley
-- Scrum Master: Bryan Newby
-- Development Team Members: Krista Moroder, Bucko Perley, Bryan Newby
-
 
 ##__Contributing__
 
